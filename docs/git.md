@@ -55,6 +55,4 @@ Trykk på <img src="./img/branch.png" width="100"/> nederst i VSCode. Du burde f
 
 Hvis du ikke ser den branchen du leter etter, åpne en terminal; `Ctrl+J` på Windows, og `Cmd+T` på MacBooks. Skriv deretter inn `git fetch` og trykk `Enter`. Prøv deretter igjenn fra starten av.
 
-## Annent
-
 **[Tilbake til oversikt](./README.md)**
