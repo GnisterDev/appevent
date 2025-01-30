@@ -1,11 +1,9 @@
-# Info om prosjektet
+# Info om verktøy i prosjektet
 
-Info om dette prosjektet er skrevet i mardown - et språk for å lage formatert tekst. I VSCode, når du har denne file åpen, klikk <img src="./img/show.png" alt="drawing" width="20"/> ikonet på fanevisningen for å få en rendert versjon av filen, og for å navigere mellom sidene.
-![fanevisning](img/fanevisning.png)
+Info om dette prosjektet er skrevet i mardown - et språk for å lage formatert tekst. Hvis du bruker VSCode, når du har denne file åpen, klikk <img src="./img/show.png" alt="drawing" width="20"/> ikonet på fanevisningen for å få en rendert versjon av filen, og for å navigere mellom sidene.
+![fanevisning](img/fanevisning.png) Hvis du ikke ser syntaxen \<img> og \!\[]() har du gjort det riktig. [**Bilde av hva du burde se**... Ctrl/Command klikk på lenken.](./img/bilde.png)
 
-Hvis du ikke ser syntaxen \<img> og \!\[]() har du gjort det riktig.
-
-[**Bilde av hva du burde se**... Ctrl/Command klikk på lenken.](./img/bilde.png)
+Hvis du leser dette i GitLab tenger du ikke å gjøre noe. Bare å navigere med lenkene i **Oversikt** seksjonen under.
 
 Jeg anbefaler også sterk å skumme gjennom dokumentasjonen, spesielt `getting started` eller `beginner` dokumentasjonen for hver av redskapene, bare for å få et godt overblikk. Lenke til disse er under. De viktigste er markert med **[\*]**.
 
