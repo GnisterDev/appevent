@@ -49,7 +49,7 @@ useEffect(() => {
 });
 ```
 
-Dette kan være problematisk. Tenk at vi har en side som teller hvor mange som har besøkt nettop den siden. Siden vil dermed ha et nummer **n** når du laster inn siden. Men når siden blir lastet inn, vil koden som øker besøksatallet med 1 kjøre. Hvis vi bruker `useEffect` som over, vil noe siden oppdatere seg, noe som betyr at `useEffect` oppdaterer seg, noe som gjør at noe på siden oppdaterer seg igjenn. Dette vil gå ut i uendligheten. Dermed bruker vi ofte `useEffect` med `dependencies` som vist under.
+Dette kan være problematisk. Tenk at vi har en side som teller hvor mange som har besøkt nettop den siden. Siden vil dermed ha et nummer **n** når du laster inn siden. Men når siden blir lastet inn, vil koden som øker besøksatallet med 1 kjøre. Hvis vi bruker `useEffect` som over, vil noe på siden ha oppdatere seg, noe som betyr at `useEffect` kjører. Det betyr igjenn at noe på siden oppdaterer seg, som gjør at `useEffect` kjører. Dette vil gå ut i uendligheten. Dermed bruker vi ofte `useEffect` med `dependencies` som vist under.
 
 #### Med dependency array [count]
 
@@ -76,7 +76,7 @@ useEffect(() => {
 }, []);
 ```
 
-### Oppsummering
+### Oppsummering av hooks
 
 Etter å ha gått igjennom eksemplene over kan du se om du forstår eksempelet under. Hvis du forstår det er du allerede godt på vei.
 

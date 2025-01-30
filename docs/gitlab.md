@@ -2,6 +2,8 @@
 
 GitLab er et verktøy programvarepakke som kan utvikle, sikre og drive programvare. GitLab brukes ofte når flere personer skal jobbe på et prosjekt og inneholder derfor en rekke verktøy som er nyttige i en slik sammenheng.
 
+Denne siden kommer bare til å forklare de mest grunnleggende delene av GitLab.
+
 ## Issues
 
 Alt av utvikling med GitLab starter med å lage en ny **issue**. Naviger til issue siden i menyen på venstre side. Her kan du opprette en ny issue ved å klikke på <img src="./img/issue.png" width="60"/>. Fyll inn all nødvendig informasjon. Husk å være spesifik slik at det blir enklere for den som må fikse. Deretter trykk på <img src="./img/create_issue.png" width="80"/>.

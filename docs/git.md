@@ -19,7 +19,7 @@ For hver av disse komandoene burde det bli printet ut et navn for `user.name` og
 `git config --global user.name "<DITT_NAVN>"` </br>
 `git config --global user.email "<DIN_EPOST>"`
 
-der du bytter `<DITT_NAVN>` og `<DIN_EPOST>` (inkludert <>) med ditt ekte navn og NTNU eposten din. Dette er så git og GitLab vet hvem somn gjør hvilke endringer.
+der du bytter `<DITT_NAVN>` og `<DIN_EPOST>` (inkludert <>) med ditt ekte navn og NTNU eposten din. Dette er så git og GitLab vet hvem som gjør hvilke endringer.
 
 ## Git med VSCode
 
@@ -47,9 +47,9 @@ Man pleier å gjøre mange små commits, i steden for en stor. Dette er fordi hv
 
 ### Branches
 
-I prosjekter som denne pleier man å jobbe i **branches**. Hvordan man oppretter en branch kan en lese om i [GitLab](./gitlab.md). Her forklares bare hvordan en byter mellom brancher.
+I prosjekter som denne pleier man å jobbe i **branches**. Hvordan man oppretter en branch kan en lese om i [GitLab](./gitlab.md). Denne siden forklar hvordan en byter mellom brancher i VSCode.
 
-Trykk på <img src="./img/branch.png" width="100"/> nederst i VSCode. Du burde få opp en oversikt over alle brancene i prosjektet;
+Trykk på <img src="./img/branch.png" width="100"/> nederst i VSCode. Navnet (her `docs/explanation`) vil endre seg etter navnet på den nåværende branchen du er i. Du burde få opp en oversikt over alle brancene i prosjektet;
 
 <img src="./img/select_branch.png"/>
 
