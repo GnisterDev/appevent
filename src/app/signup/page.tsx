@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { auth } from "../firebase/config";
+import { auth } from "@/firebase/config";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import styles from "./styles.module.css";
 import { useRouter } from "next/navigation";
@@ -34,8 +34,8 @@ const SignUp: React.FC = () => {
         password: "",
       });
       return router.push("/");
-    } catch (err: any) {
-      console.error("Error creating user:", err.message);
+    } catch (err: unknown) {
+      console.error("Error creating user:", err instanceof Error ? err.message : err);
     }
   };
 

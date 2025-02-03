@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { auth } from "../firebase/config";
+import { auth } from "@/firebase/config";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import styles from "./styles.module.css";
@@ -35,9 +35,9 @@ const SignIn: React.FC = () => {
         password: "",
       });
       return router.push("/");
-    } catch (err: any) {
-      console.error("Error signing in:", err.message);
-      setError(err.message);
+    } catch (err: unknown) {
+      console.error("Error signing in:", err instanceof Error ? err.message : err);
+      setError((err as Error)?.message);
     }
   };
 
