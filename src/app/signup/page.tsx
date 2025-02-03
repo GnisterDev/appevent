@@ -35,13 +35,16 @@ const SignUp: React.FC = () => {
       });
       return router.push("/");
     } catch (err: unknown) {
-      console.error("Error creating user:", err instanceof Error ? err.message : err);
+      console.error(
+        "Error creating user:",
+        err instanceof Error ? err.message : err
+      );
     }
   };
 
   return (
     <div className={styles.wrapper}>
-      <div className="signup-container">
+      <div className={styles.container}>
         <form className="signup-form" onSubmit={handleSubmit}>
           <h2>Sign Up</h2>
 
@@ -74,7 +77,7 @@ const SignUp: React.FC = () => {
           <button type="submit" className="signup-button">
             Sign Up
           </button>
-          <button type="button" onClick={() => router.push("/signin")}>
+          <button type="button" onClick={() => router.push("/login")}>
             Go to Sign In
           </button>
         </form>
