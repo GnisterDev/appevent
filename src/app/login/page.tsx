@@ -36,14 +36,17 @@ const SignIn: React.FC = () => {
       });
       return router.push("/");
     } catch (err: unknown) {
-      console.error("Error signing in:", err instanceof Error ? err.message : err);
+      console.error(
+        "Error signing in:",
+        err instanceof Error ? err.message : err
+      );
       setError((err as Error)?.message);
     }
   };
 
   return (
     <div className={styles.wrapper}>
-      <div className="signin-container">
+      <div className={styles.container}>
         <form className="signin-form" onSubmit={handleSubmit}>
           <h2>Sign In</h2>
 
