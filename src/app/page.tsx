@@ -3,9 +3,9 @@
 import Image from "next/image";
 import styles from "./page.module.css";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "./firebase/config";
+import { auth } from "../firebase/config";
 
 export default function Home() {
   const router = useRouter();
@@ -14,7 +14,7 @@ export default function Home() {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, user => {
       if (!user) {
-        router.push("/signin");
+        router.push("/login");
       }
       setLoading(false);
     });
@@ -28,7 +28,7 @@ export default function Home() {
 
   const signOut = async () => {
     await auth.signOut();
-    router.push("/signin");
+    router.push("/login");
   };
 
   return (

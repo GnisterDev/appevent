@@ -1,18 +1,18 @@
 "use client";
 
 import React, { useState } from "react";
-import { auth } from "../firebase/config";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { useRouter } from "next/navigation";
+import { auth } from "@/firebase/config";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 import styles from "./styles.module.css";
+import { useRouter } from "next/navigation";
 
-const SignIn: React.FC = () => {
+const SignUp: React.FC = () => {
+  const router = useRouter();
+
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
-  const [error, setError] = useState<string | null>(null);
-  const router = useRouter();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -21,33 +21,32 @@ const SignIn: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError(null); // Clear previous errors
 
     try {
-      const userCredential = await signInWithEmailAndPassword(
+      const userCredential = await createUserWithEmailAndPassword(
         auth,
         formData.email,
         formData.password
       );
-      console.log("User signed in:", userCredential.user);
+      console.log("User created:", userCredential.user);
       setFormData({
         email: "",
         password: "",
       });
       return router.push("/");
-    } catch (err: any) {
-      console.error("Error signing in:", err.message);
-      setError(err.message);
+    } catch (err: unknown) {
+      console.error(
+        "Error creating user:",
+        err instanceof Error ? err.message : err
+      );
     }
   };
 
   return (
     <div className={styles.wrapper}>
-      <div className="signin-container">
-        <form className="signin-form" onSubmit={handleSubmit}>
-          <h2>Sign In</h2>
-
-          {error && <p className="error-message">{error}</p>}
+      <div className={styles.container}>
+        <form className="signup-form" onSubmit={handleSubmit}>
+          <h2>Sign Up</h2>
 
           <div className="form-group">
             <label htmlFor="email">Email</label>
@@ -75,11 +74,11 @@ const SignIn: React.FC = () => {
             />
           </div>
 
-          <button type="submit" className="signin-button">
-            Sign In
+          <button type="submit" className="signup-button">
+            Sign Up
           </button>
-          <button type="button" onClick={() => router.push("/signup")}>
-            Go to Sign Up
+          <button type="button" onClick={() => router.push("/login")}>
+            Go to Sign In
           </button>
         </form>
       </div>
@@ -87,4 +86,4 @@ const SignIn: React.FC = () => {
   );
 };
 
-export default SignIn;
+export default SignUp;
