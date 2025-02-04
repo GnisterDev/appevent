@@ -1,18 +1,18 @@
 "use client";
 
 import React, { useState } from "react";
-import { auth } from "@/firebase/config";
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import styles from "./styles.module.css";
+import { auth } from "../firebase/config";
+import { signInWithEmailAndPassword } from "firebase/auth";
 import { useRouter } from "next/navigation";
+import styles from "./styles.module.css";
 
-const SignUp: React.FC = () => {
-  const router = useRouter();
-
+const SignIn: React.FC = () => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
+  const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -21,32 +21,33 @@ const SignUp: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError(null); // Clear previous errors
 
     try {
-      const userCredential = await createUserWithEmailAndPassword(
+      const userCredential = await signInWithEmailAndPassword(
         auth,
         formData.email,
         formData.password
       );
-      console.log("User created:", userCredential.user);
+      console.log("User signed in:", userCredential.user);
       setFormData({
         email: "",
         password: "",
       });
       return router.push("/");
-    } catch (err: unknown) {
-      console.error(
-        "Error creating user:",
-        err instanceof Error ? err.message : err
-      );
+    } catch (err: any) {
+      console.error("Error signing in:", err.message);
+      setError(err.message);
     }
   };
 
   return (
     <div className={styles.wrapper}>
-      <div className={styles.container}>
-        <form className="signup-form" onSubmit={handleSubmit}>
-          <h2>Sign Up</h2>
+      <div className="signin-container">
+        <form className="signin-form" onSubmit={handleSubmit}>
+          <h2>Sign In</h2>
+
+          {error && <p className="error-message">{error}</p>}
 
           <div className="form-group">
             <label htmlFor="email">Email</label>
@@ -74,11 +75,11 @@ const SignUp: React.FC = () => {
             />
           </div>
 
-          <button type="submit" className="signup-button">
-            Sign Up
+          <button type="submit" className="signin-button">
+            Sign In
           </button>
-          <button type="button" onClick={() => router.push("/login")}>
-            Go to Sign In
+          <button type="button" onClick={() => router.push("/signup")}>
+            Go to Sign Up
           </button>
         </form>
       </div>
@@ -86,4 +87,4 @@ const SignUp: React.FC = () => {
   );
 };
 
-export default SignUp;
+export default SignIn;
