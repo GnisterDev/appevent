@@ -11,6 +11,7 @@ const SignIn: React.FC = () => {
     email: "",
     password: "",
   });
+
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
@@ -34,7 +35,7 @@ const SignIn: React.FC = () => {
         email: "",
         password: "",
       });
-      return router.push("/");
+      return router.push("/"); //ved sukksess
     } catch (err: unknown) {
       console.error(
         "Error signing in:",
@@ -49,7 +50,6 @@ const SignIn: React.FC = () => {
       <div className={styles.container}>
         <form className="signin-form" onSubmit={handleSubmit}>
           <h2>Sign In</h2>
-
           {error && <p className="error-message">{error}</p>}
 
           <div className="form-group">
