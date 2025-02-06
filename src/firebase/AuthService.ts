@@ -1,52 +1,63 @@
 import {
-  AuthError,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  UserCredential,
 } from "firebase/auth";
 import Result from "./Result";
 import { auth } from "./config";
 import { LoginRequest, SignupRequest } from "./User";
+import databaseService from "./DatabaseService";
 
 class AuthService {
-  public signup(data: SignupRequest) {
+  public signup(
+    data: SignupRequest
+  ): Result<never, unknown> | Result<UserCredential, Error> {
     try {
-      const user = createUserWithEmailAndPassword(
+      const userCredentialPromise = createUserWithEmailAndPassword(
         auth,
         data.email,
         data.password
       );
-      console.log("user", user);
-      return Result.success(user);
-    } catch (error: unknown) {
-      console.log("error", error);
-      return Result.failure(error as AuthError);
+
+      userCredentialPromise.then(userCredential =>
+        databaseService.createUser(
+          Promise.resolve({ ...userCredential, displayName: data.name })
+        )
+      );
+
+      return Result.success(userCredentialPromise);
+    } catch (error) {
+      return Result.failure(error);
     }
   }
 
-  public login(data: LoginRequest) {
+  public login(
+    data: LoginRequest
+  ): Result<never, unknown> | Result<UserCredential, Error> {
     try {
       const user = signInWithEmailAndPassword(auth, data.email, data.password);
       return Result.success(user);
-    } catch (error: unknown) {
-      return Result.failure(error as AuthError);
+    } catch (error) {
+      return Result.failure(error);
     }
   }
 
-  public logout() {
+  public logout(): Result<never, unknown> | Result<undefined, Error> {
     try {
       auth.signOut();
-      return Result.success(null);
-    } catch (error: unknown) {
-      return Result.failure(error as AuthError);
+      return Result.success(undefined);
+    } catch (error) {
+      return Result.failure(error);
     }
   }
 
-  public isAdministrator() {
-    new Error("Not implemented");
+  public getUserID(): string | null {
+    return auth.currentUser?.uid ?? null;
   }
 
-  public getUserID() {
+  public isAdministrator(): boolean {
     new Error("Not implemented");
+    return false;
   }
 }
 

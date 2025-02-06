@@ -4,14 +4,15 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import styles from "./styles.module.css";
 import authService from "@/firebase/AuthService";
+import { SignupRequest } from "@/firebase/User";
 
 const SignIn: React.FC = () => {
-  const [formData, setFormData] = useState({
+  const router = useRouter();
+  const [formData, setFormData] = useState<SignupRequest>({
     email: "",
     password: "",
     name: "",
   });
-  const router = useRouter();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -20,18 +21,11 @@ const SignIn: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    (await authService.signup(formData))
-      .onSuccess(() => {
-        console.log("success");
-        router.push("/");
-      })
-      .onFailure(error => {
-        console.log("error");
-        console.error(error);
-      })
-      .finally(() => {
-        console.log("done");
-      });
+    authService
+      .signup(formData)
+      .onSuccess(() => console.log("Success"))
+      .onFailure(() => console.log("Failure"))
+      .finally(() => console.log("Finally"));
   };
 
   return (

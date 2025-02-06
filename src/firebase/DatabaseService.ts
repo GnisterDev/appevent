@@ -1,15 +1,19 @@
-import { doc, getFirestore, setDoc } from "firebase/firestore";
-const db = getFirestore();
-import Result from "./Result";
-import { User } from "./User";
+import { UserCredential } from "firebase/auth";
+import { db } from "./config";
+import { doc, setDoc } from "firebase/firestore";
 
 class DatabaseService {
-  public async createUser(user: User) {
-    try {
-      setDoc(doc(db, "users", user.userID), user);
-      return Result.success(null);
-    } catch (error: unknown) {
-      return Result.failure(error as Error);
+  public async createUser(
+    userInfo: Promise<UserCredential & { displayName: string }>
+  ) {
+    const userCredential = await userInfo;
+    const user = userCredential.user;
+    if (user) {
+      await setDoc(doc(db, "users", user.uid), {
+        name: (await userInfo)?.displayName,
+        email: user?.email,
+        role: "user",
+      });
     }
   }
 }
