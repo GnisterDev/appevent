@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import styles from "./styles.module.css";
-import authService from "@/firebase/AuthService";
+import AuthService from "@/firebase/AuthService";
 import { SignupRequest } from "@/firebase/User";
 
 const SignIn: React.FC = () => {
@@ -21,8 +21,7 @@ const SignIn: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    authService
-      .signup(formData)
+    AuthService.signup(formData)
       .onSuccess(() => console.log("Success"))
       .onFailure(() => console.log("Failure"))
       .finally(() => console.log("Finally"));

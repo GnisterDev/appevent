@@ -1,66 +1,51 @@
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
-  UserCredential,
+  signOut,
 } from "firebase/auth";
-import Result from "./Result";
 import { auth } from "./config";
 import { LoginRequest, SignupRequest } from "./User";
-import databaseService from "./DatabaseService";
+import AuthResult from "./AuthResult";
+import { DatabaseService } from "./DatabaseService";
 
 class AuthService {
-  public signup(
-    data: SignupRequest
-  ): Result<never, unknown> | Result<UserCredential, Error> {
-    try {
-      const userCredentialPromise = createUserWithEmailAndPassword(
-        auth,
-        data.email,
-        data.password
-      );
-
-      userCredentialPromise.then(userCredential =>
-        databaseService.createUser(
-          Promise.resolve({ ...userCredential, displayName: data.name })
-        )
-      );
-
-      return Result.success(userCredentialPromise);
-    } catch (error) {
-      return Result.failure(error);
-    }
+  public static signup(data: SignupRequest): AuthResult {
+    return new AuthResult(
+      createUserWithEmailAndPassword(auth, data.email, data.password).then(
+        userCredential => {
+          return DatabaseService.createUser({
+            name: data.name,
+            email: data.email,
+            userID: userCredential.user.uid,
+            type: "user",
+          });
+        }
+      )
+    );
   }
 
-  public login(
-    data: LoginRequest
-  ): Result<never, unknown> | Result<UserCredential, Error> {
-    try {
-      const user = signInWithEmailAndPassword(auth, data.email, data.password);
-      return Result.success(user);
-    } catch (error) {
-      return Result.failure(error);
-    }
+  public static login(data: LoginRequest): AuthResult {
+    return new AuthResult(
+      signInWithEmailAndPassword(auth, data.email, data.password).then(() => {})
+    );
   }
 
-  public logout(): Result<never, unknown> | Result<undefined, Error> {
-    try {
-      auth.signOut();
-      return Result.success(undefined);
-    } catch (error) {
-      return Result.failure(error);
-    }
+  public static logout(): AuthResult {
+    return new AuthResult(signOut(auth));
   }
 
-  public getUserID(): string | null {
-    return auth.currentUser?.uid ?? null;
+  public static async isLoggedIn(): Promise<boolean> {
+    return !!auth.currentUser;
   }
 
-  public isAdministrator(): boolean {
+  public static getUserID(): string | null {
+    return auth.currentUser?.uid || null;
+  }
+
+  public static async isAdministrator(): Promise<boolean> {
     new Error("Not implemented");
     return false;
   }
 }
 
-const authService = new AuthService();
-
-export default authService;
+export default AuthService;

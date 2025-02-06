@@ -1,23 +1,42 @@
-import { UserCredential } from "firebase/auth";
+import { deleteDoc, doc, setDoc, updateDoc } from "firebase/firestore";
 import { db } from "./config";
-import { doc, setDoc } from "firebase/firestore";
+import { User } from "./User";
 
-class DatabaseService {
-  public async createUser(
-    userInfo: Promise<UserCredential & { displayName: string }>
-  ) {
-    const userCredential = await userInfo;
-    const user = userCredential.user;
-    if (user) {
-      await setDoc(doc(db, "users", user.uid), {
-        name: (await userInfo)?.displayName,
-        email: user?.email,
-        role: "user",
-      });
-    }
+export class DatabaseService {
+  static async createUser(user: User): Promise<void> {
+    return setDoc(doc(db, "users", user.userID), user);
+  }
+
+  static async changeUser(
+    userID: string,
+    data: Partial<{ name: string; email: string; role: string }>
+  ): Promise<void> {
+    return updateDoc(doc(db, "users", userID), data);
+  }
+
+  static async deleteUser(userID: string): Promise<void> {
+    return deleteDoc(doc(db, "users", userID));
+  }
+
+  static async getUser(userID: string) {
+    return doc(db, "users", userID);
+  }
+
+  static async createEvent(
+    eventID: string,
+    eventData: Record<string, unknown>
+  ): Promise<void> {
+    return setDoc(doc(db, "events", eventID), eventData);
+  }
+
+  static async changeEvent(
+    eventID: string,
+    eventData: Partial<unknown>
+  ): Promise<void> {
+    return updateDoc(doc(db, "events", eventID), eventData);
+  }
+
+  static async deleteEvent(eventID: string): Promise<void> {
+    return deleteDoc(doc(db, "events", eventID));
   }
 }
-
-const databaseService = new DatabaseService();
-
-export default databaseService;
