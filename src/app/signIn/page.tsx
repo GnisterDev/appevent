@@ -1,14 +1,14 @@
 "use client";
 
-import SignUp from "@/components/auth/SignUp";
+import SignIn from "@/components/auth/SignIn";
 import React, { useState }from "react";
 import styles from "./signIn.module.css";
 
-const signUp = () =>{
+const signIn = () =>{
     return(
         <div className = {styles.page}>
-            <SignUp/>
+            <SignIn/>
         </div>
     )
 }
-export default signUp;
+export default signIn;

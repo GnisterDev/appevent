@@ -1,18 +1,18 @@
 "use client";
 
 import React, { useState } from "react";
-import { auth } from "@/firebase/config";
-import { signInWithEmailAndPassword } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import styles from "./styles.module.css";
+import AuthService from "@/firebase/AuthService";
+import { SignupRequest } from "@/firebase/User";
 
 const SignIn: React.FC = () => {
-  const [formData, setFormData] = useState({
+  const router = useRouter();
+  const [formData, setFormData] = useState<SignupRequest>({
     email: "",
     password: "",
+    name: "",
   });
-  const [error, setError] = useState<string | null>(null);
-  const router = useRouter();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -21,27 +21,10 @@ const SignIn: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError(null); // Clear previous errors
-
-    try {
-      const userCredential = await signInWithEmailAndPassword(
-        auth,
-        formData.email,
-        formData.password
-      );
-      console.log("User signed in:", userCredential.user);
-      setFormData({
-        email: "",
-        password: "",
-      });
-      return router.push("/");
-    } catch (err: unknown) {
-      console.error(
-        "Error signing in:",
-        err instanceof Error ? err.message : err
-      );
-      setError((err as Error)?.message);
-    }
+    AuthService.signup(formData)
+      .then(() => console.log("Success"))
+      .catch(error => console.log(error))
+      .finally(() => console.log("Finally"));
   };
 
   return (
@@ -50,7 +33,18 @@ const SignIn: React.FC = () => {
         <form className="signin-form" onSubmit={handleSubmit}>
           <h2>Sign In</h2>
 
-          {error && <p className="error-message">{error}</p>}
+          <div className="form-group">
+            <label htmlFor="name">Name</label>
+            <input
+              type="name"
+              id="name"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              placeholder="Enter your name"
+              required
+            />
+          </div>
 
           <div className="form-group">
             <label htmlFor="email">Email</label>
