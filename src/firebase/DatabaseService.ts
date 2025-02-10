@@ -19,10 +19,10 @@ export const deleteUser = (userID: string): Promise<void> => {
 
 export const getUser = async (userID: string) => {
   const userDoc = await getDoc(doc(db, "users", userID));
-  if (!userDoc.exists()) return null;
+  if (!userDoc.exists()) return [null, null, null] as const;
 
   const userData = userDoc.data();
-  return [userData.username, userData.name, userData.type] as const;
+  return [userData.name, userData.email, userData.type] as const;
 };
 
 export const createEvent = (
