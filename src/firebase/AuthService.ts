@@ -1,12 +1,36 @@
 import {
   createUserWithEmailAndPassword,
+  onAuthStateChanged,
   signInWithEmailAndPassword,
   signOut,
+  User as FirebaseUser,
   UserCredential,
 } from "firebase/auth";
 import { auth } from "./config";
 import { LoginRequest, SignupRequest } from "./User";
 import { createUser } from "./DatabaseService";
+import { useEffect, useState } from "react";
+
+export const useAuth = () => {
+  const [user, setUser] = useState<FirebaseUser | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, user => {
+      setUser(user);
+      setLoading(false);
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  return {
+    user,
+    loading,
+    isLoggedIn: !!user,
+    userID: user?.uid || null,
+  };
+};
 
 export const useSignup = (data: SignupRequest) => {
   return createUserWithEmailAndPassword(auth, data.email, data.password).then(
