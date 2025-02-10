@@ -3,8 +3,7 @@
 import React, { useState, useEffect } from "react";
 import styles from "./profile.module.css";
 import { getUser } from "../../firebase/DatabaseService";
-import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "../../firebase/config";
+import { useAuth } from "@/firebase/AuthService";
 
 interface ProfileData {
   name: string;
@@ -18,7 +17,7 @@ const ProfilePage = () => {
     name: "",
     email: "",
     area: "",
-    interests: []
+    interests: [],
   });
 
   const [editing, setEditing] = useState(false);
@@ -34,7 +33,7 @@ const ProfilePage = () => {
     "Møre og Romsdal",
     "Trøndelag",
     "Nordland",
-    "Troms og Finnmark"
+    "Troms og Finnmark",
   ];
 
   const interestOptions = [
@@ -43,38 +42,52 @@ const ProfilePage = () => {
     "Helse",
     "Matlaging",
     "Musikk",
-    "Kunst"
+    "Kunst",
   ];
 
   // Vent til Firebase har satt opp auth-tilstanden
+  // useEffect(() => {
+  //   const unsubscribe = onAuthStateChanged(auth, async (user) => {
+  //     if (!user) {
+  //       console.log("Ingen bruker er logget inn.");
+  //       return;
+  //     }
+  //     try {
+  //       const [fetchedName, fetchedEmail, fetchedType] = await getUser(user.uid);
+  //       console.log("Hentet data:", fetchedName, fetchedEmail, fetchedType);
+  //       if (!fetchedName) {
+  //         console.log("Brukerdokumentet finnes ikke for bruker-ID:", user.uid);
+  //       }
+  //       setProfileData(prev => ({
+  //         ...prev,
+  //         name: fetchedName || "",
+  //         email: fetchedEmail || ""
+  //       }));
+  //     } catch (error) {
+  //       console.error("Feil ved henting av brukerdata:", error);
+  //     }
+  //   });
+  //   return () => unsubscribe();
+  // }, []);
+
+  const { userID } = useAuth();
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      if (!user) {
-        console.log("Ingen bruker er logget inn.");
-        return;
-      }
-      try {
-        const [fetchedName, fetchedEmail, fetchedType] = await getUser(user.uid);
-        console.log("Hentet data:", fetchedName, fetchedEmail, fetchedType);
-        if (!fetchedName) {
-          console.log("Brukerdokumentet finnes ikke for bruker-ID:", user.uid);
-        }
-        setProfileData(prev => ({
-          ...prev,
-          name: fetchedName || "",
-          email: fetchedEmail || ""
-        }));
-      } catch (error) {
-        console.error("Feil ved henting av brukerdata:", error);
-      }
-    });
-    return () => unsubscribe();
-  }, []);
+    if (!userID) return;
+    const fetchUserData = async () => {
+      const [fetchName, fetchEmail] = await getUser(userID);
+      setProfileData(prev => ({
+        ...prev,
+        name: fetchName,
+        email: fetchEmail,
+      }));
+    };
+    fetchUserData();
+  }, [userID]);
 
   const handleAreaChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setProfileData(prev => ({
       ...prev,
-      area: e.target.value
+      area: e.target.value,
     }));
   };
 
@@ -84,7 +97,7 @@ const ProfilePage = () => {
       ...prev,
       interests: checked
         ? [...prev.interests, value]
-        : prev.interests.filter(item => item !== value)
+        : prev.interests.filter(item => item !== value),
     }));
   };
 
@@ -103,16 +116,21 @@ const ProfilePage = () => {
       <h1>Min Profil</h1>
       <div>
         <label>Navn:</label>
-        <span>{profileData.name || "Ikke angitt"}</span>
+        <span>{profileData.name || " ..."}</span>
       </div>
       <div>
         <label>E-post:</label>
-        <span>{profileData.email || "Ikke angitt"}</span>
+        <span>{profileData.email || " ..."}</span>
       </div>
       <div>
         <label>Område (fylke):</label>
         {editing ? (
-          <select name="area" value={profileData.area} onChange={handleAreaChange} required>
+          <select
+            name="area"
+            value={profileData.area}
+            onChange={handleAreaChange}
+            required
+          >
             <option value="">Velg fylke</option>
             {areaOptions.map(area => (
               <option key={area} value={area}>
@@ -142,7 +160,9 @@ const ProfilePage = () => {
           ))
         ) : (
           <span>
-            {profileData.interests.length > 0 ? profileData.interests.join(", ") : "Ikke angitt"}
+            {profileData.interests.length > 0
+              ? profileData.interests.join(", ")
+              : "Ikke angitt"}
           </span>
         )}
       </div>
