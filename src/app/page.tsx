@@ -5,7 +5,7 @@ import styles from "./page.module.css";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { auth } from "../firebase/config";
-import authService from "@/firebase/AuthService";
+import { useLogout } from "../firebase/AuthService";
 
 export default function Home() {
   const router = useRouter();
@@ -28,10 +28,9 @@ export default function Home() {
   }
 
   const signOut = async () => {
-    authService
-      .logout()
-      .onSuccess(() => router.push("/login"))
-      .onFailure(() => console.log("Failed to sign out"));
+    useLogout()
+      .then(() => router.push("/login"))
+      .catch(() => console.log("Failed to sign out"));
   };
 
   return (

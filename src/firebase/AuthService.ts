@@ -2,50 +2,42 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
+  UserCredential,
 } from "firebase/auth";
 import { auth } from "./config";
 import { LoginRequest, SignupRequest } from "./User";
-import AuthResult from "./AuthResult";
-import { DatabaseService } from "./DatabaseService";
+import { createUser } from "./DatabaseService";
 
-class AuthService {
-  public static signup(data: SignupRequest): AuthResult {
-    return new AuthResult(
-      createUserWithEmailAndPassword(auth, data.email, data.password).then(
-        userCredential => {
-          return DatabaseService.createUser({
-            name: data.name,
-            email: data.email,
-            userID: userCredential.user.uid,
-            type: "user",
-          });
-        }
-      )
-    );
-  }
+export const useSignup = (data: SignupRequest) => {
+  return createUserWithEmailAndPassword(auth, data.email, data.password).then(
+    userCredential => {
+      return createUser({
+        name: data.name,
+        email: data.email,
+        userID: userCredential.user.uid,
+        type: "user",
+      });
+    }
+  );
+};
 
-  public static login(data: LoginRequest): AuthResult {
-    return new AuthResult(
-      signInWithEmailAndPassword(auth, data.email, data.password).then(() => {})
-    );
-  }
+export const useLogin = (data: LoginRequest): Promise<UserCredential> => {
+  return signInWithEmailAndPassword(auth, data.email, data.password);
+};
 
-  public static logout(): AuthResult {
-    return new AuthResult(signOut(auth));
-  }
+export const useLogout = (): Promise<void> => {
+  return signOut(auth);
+};
 
-  public static async isLoggedIn(): Promise<boolean> {
-    return !!auth.currentUser;
-  }
+export const isLoggedIn = (): boolean => {
+  return !!auth.currentUser;
+};
 
-  public static getUserID(): string | null {
-    return auth.currentUser?.uid || null;
-  }
+export const getUserID = (): string | null => {
+  return auth.currentUser?.uid || null;
+};
 
-  public static async isAdministrator(): Promise<boolean> {
-    new Error("Not implemented");
-    return false;
-  }
-}
-
-export default AuthService;
+export const isAdministrator = (): boolean => {
+  new Error("Not implemented");
+  return false;
+};

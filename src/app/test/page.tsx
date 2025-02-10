@@ -22,8 +22,8 @@ const SignIn: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     AuthService.signup(formData)
-      .onSuccess(() => console.log("Success"))
-      .onFailure(() => console.log("Failure"))
+      .then(() => console.log("Success"))
+      .catch(error => console.log(error))
       .finally(() => console.log("Finally"));
   };
 
