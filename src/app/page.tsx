@@ -14,7 +14,7 @@ export default function Home() {
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(user => {
       if (!user) {
-        router.push("/login");
+        router.push("/signin");
       } else {
         setLoading(false);
       }
