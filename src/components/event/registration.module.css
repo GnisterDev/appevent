@@ -1,0 +1,81 @@
+.module {
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  position: sticky;
+  box-shadow: var(--box-shadow);
+  border: 1px solid var(--secondary);
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  font-weight: 600;
+  font-size: 1.5rem;
+  line-height: 1;
+  letter-spacing: 0;
+}
+
+.info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 1rem 0;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+/**
+ *  BUTTON STYLING
+*/
+
+.button {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  white-space: nowrap;
+  border-radius: var(--radius);
+  padding: 0.5rem 1rem;
+  border: 0;
+  height: 2.5rem;
+  width: 100%;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.registerButton {
+  color: var(--foreground);
+  background-color: var(--primary);
+
+  &:hover {
+    background-color: color-mix(in srgb, var(--primary) 85%, white);
+  }
+}
+
+.shareButton {
+  color: var(--text-primary);
+  background-color: var(--accent);
+
+  &:hover {
+    background-color: color-mix(in srgb, var(--accent) 85%, white);
+  }
+}
+
+.svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+.registerSVG {
+  filter: invert(92%) sepia(72%) saturate(4975%) hue-rotate(181deg)
+    brightness(107%) contrast(108%);
+}
