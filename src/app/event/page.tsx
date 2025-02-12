@@ -39,17 +39,26 @@ const CreateEventForm: React.FC = () => {
   };
 
   const handleAddTag = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key !== "Enter") return;
     e.preventDefault(); // Hindrer skjemaet fra å sende seg selv, currentTag.trim tilsvarer skriften i tagen
-    if (e.key !== "Enter" || !currentTag.trim()) {
-      return; // Hvis key er enter og det er tekst, så går vi videre til koden under
-    }
-    console.log("enter");
-    if (!formData.tags.includes(currentTag.trim())) {
-      setFormData({
-        ...formData,
-        tags: [...formData.tags, currentTag.trim()],
-      }); // Legger til en ny tag i formData sin tag-oversikt, og beholder dne gamle oversikten
-    }
+    if (!currentTag.trim()) return; // Hvis key er enter og det er tekst, så går vi videre til koden under
+    if (formData.tags.includes(currentTag.trim())) return;
+
+    setFormData({
+      ...formData,
+      tags: [...formData.tags, currentTag.trim()],
+    }); // Legger til en ny tag i formData sin tag-oversikt, og beholder dne gamle oversikten
+    console.log(formData.tags);
+  };
+
+  const handleTagChane = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >
+  ) => {
+    const value = e.target.value;
+    console.log(value);
+    setCurrentTag(value);
   };
 
   return (
@@ -160,8 +169,9 @@ const CreateEventForm: React.FC = () => {
 
             <div className="form-group">
               <h3>TAGS: </h3>
-              <EventTag text={"testTag"} />
-              <p>{formData.tags}</p>
+              {formData.tags.map((value, key) => (
+                <EventTag key={key} text={value} />
+              ))}
             </div>
 
             <div className="form-group">
@@ -169,9 +179,10 @@ const CreateEventForm: React.FC = () => {
               <input
                 id="tags"
                 name="tags"
-                onKeyUp={handleAddTag}
-                placeholder="Description"
-                required
+                value={currentTag}
+                onChange={handleTagChane}
+                onKeyDown={handleAddTag}
+                placeholder="Add tag"
               />
             </div>
 
