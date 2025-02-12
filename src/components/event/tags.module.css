@@ -10,12 +10,8 @@
   border-radius: 15px;
   cursor: pointer;
   color: var(--foreground);
-}
 
-.tag:hover {
-  background-color: color-mix(
-    in srgb,
-    var(--primary) 85%,
-    white
-  ); /* Endrer farge ved hover */
+  &:hover {
+    background-color: color-mix(in srgb, var(--primary) 85%, white);
+  }
 }
