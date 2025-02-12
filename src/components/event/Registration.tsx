@@ -49,9 +49,7 @@ const Registration = () => {
           className={`${styles.button} ${styles.deleteButton}`}
           icon={<Trash size={"1.25rem"} />}
         />
-      ) : (
-        ""
-      )}
+      ) : null}
     </div>
   );
 };
