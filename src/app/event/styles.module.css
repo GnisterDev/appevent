@@ -83,41 +83,5 @@
     border-color: #6200ea;
 }
 
-.tags-input-container {
-  border: 1px solid var(--border);
-  padding: 5px;
-  border-radius: 5px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 5px;
-  background-color: var(--foreground);
-}
 
-.tag {
-  background-color: #6200ea;
-  color: white;
-  padding: 5px 10px;
-  border-radius: 15px;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
-
-.tag-remove {
-  background: none;
-  border: none;
-  color: white;
-  cursor: pointer;
-  font-size: 16px;
-  padding: 0 2px;
-}
-
-.tags-input-container input {
-  border: none;
-  outline: none;
-  padding: 5px;
-  flex-grow: 1;
-  background: none;
-  color: var(--text);
-}
   
