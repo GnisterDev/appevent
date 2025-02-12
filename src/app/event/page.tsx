@@ -76,20 +76,20 @@ const CreateEventForm: React.FC = () => {
             <h2> Create Event</h2>
 
             <div className="form-group">
-              <label htmlFor="eventName">Event name: </label>
+              <label htmlFor="eventName">Navn på arrangement: </label>
               <input
                 type="text"
                 id="eventName"
                 name="eventName"
                 value={formData.eventName}
                 onChange={handleChange}
-                placeholder="Event name"
+                placeholder="Skriv her"
                 required
               />
             </div>
 
             <div className="form-group">
-              <label htmlFor="startDateTime">Start time: </label>
+              <label htmlFor="startDateTime">Starttid: </label>
 
               <input
                 type="date"
@@ -111,7 +111,7 @@ const CreateEventForm: React.FC = () => {
             </div>
 
             <div className="form-group">
-              <label htmlFor="endDateTime">End time: </label>
+              <label htmlFor="endDateTime">Sluttid: </label>
               <input
                 type="date"
                 id="endDateTime"
@@ -132,20 +132,20 @@ const CreateEventForm: React.FC = () => {
             </div>
 
             <div className="form-group">
-              <label htmlFor="place">Place: </label>
+              <label htmlFor="place">Sted: </label>
               <input
                 type="text"
                 id="place"
                 name="place"
                 value={formData.place}
                 onChange={handleChange}
-                placeholder="Adress"
+                placeholder="Adresse"
                 required
               />
             </div>
 
             <div className="form-group">
-              <label htmlFor="type">Type: </label>
+              <label htmlFor="type">Type arrangement: </label>
               <select
                 id="type"
                 name="type"
@@ -153,23 +153,23 @@ const CreateEventForm: React.FC = () => {
                 onChange={handleChange}
                 required
               >
-                <option value="">Select type</option>
-                <option value="party">Party</option>
-                <option value="familyGathering">Family Gathering</option>
+                <option value="">Velg type</option>
+                <option value="party">Fest</option>
+                <option value="familyGathering">Familie samling</option>
                 <option value="festival">Festival</option>
-                <option value="charity">Charity</option>
-                <option value="sportEvent">Sports Event</option>
+                <option value="charity">Veldidighet</option>
+                <option value="sportEvent">Sportsarrangement</option>
               </select>
             </div>
 
             <div className="form-group">
-              <label htmlFor="description">Description: </label>
+              <label htmlFor="description">Beskrivelse: </label>
               <textarea
                 id="description"
                 name="description"
                 value={formData.description}
                 onChange={handleChange}
-                placeholder="Description"
+                placeholder="Skriv her"
                 required
               />
             </div>
@@ -195,6 +195,13 @@ const CreateEventForm: React.FC = () => {
                 onKeyDown={handleAddTag}
                 placeholder="Add tag"
               />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="place">Vil du ha privat arrangement?: </label>
+              <button type="submit" className="privat-arrangement-button">
+                Privat
+              </button>
             </div>
 
             <button type="submit" className="create-event-button">
