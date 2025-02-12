@@ -1,5 +1,6 @@
 import React from "react";
 import styles from "./eventinfo.module.css";
+import { Calendar, MapPin, Users } from "lucide-react";
 
 const EventInfo = () => {
   return (
@@ -8,19 +9,27 @@ const EventInfo = () => {
         <h1 className={styles.title}>TITLE</h1>
         <div className={styles.quickinfo}>
           <div className={styles.quickinfoElement}>
-            <img
-              src="/event/calendar.svg"
-              alt="calendar"
-              className={styles.svg}
+            <Calendar
+              size={"1.25rem"}
+              color={"var(--text-secondary)"}
+              strokeWidth={2.25}
             />
             <span>DATE, TIME</span>
           </div>
           <div className={styles.quickinfoElement}>
-            <img src="/event/pin.svg" alt="place" className={styles.svg} />
+            <MapPin
+              size={"1.25rem"}
+              color={"var(--text-secondary)"}
+              strokeWidth={2.25}
+            />
             <span>PLACE, CITY</span>
           </div>
           <div className={styles.quickinfoElement}>
-            <img src="/event/people.svg" alt="people" className={styles.svg} />
+            <Users
+              size={"1.25rem"}
+              color={"var(--text-secondary)"}
+              strokeWidth={2.25}
+            />
             <span>NUMBER påmeldte</span>
           </div>
         </div>
