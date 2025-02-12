@@ -6,9 +6,6 @@ cache:
     - node_modules/
     - .next/cache/
 
-variables:
-  NODE_ENV: production
-
 stages:
   - setup
   - quality
