@@ -5,6 +5,7 @@ import React from "react";
 import styles from "./registration.module.css";
 import Button from "./Button";
 import { Share2, Ticket, Trash } from "lucide-react";
+import { isAdministrator } from "@/firebase/AuthService";
 
 const info = {
   Påmeldingsfirst: "{date}",
@@ -13,7 +14,7 @@ const info = {
 
 const Registration = () => {
   return (
-    <>
+    <div>
       <div className={styles.module}>
         <div className={styles.header}>
           <h3 className={styles.title}>Påmelding</h3>
@@ -42,12 +43,16 @@ const Registration = () => {
           />
         </div>
       </div>
-      <Button
-        text="slett"
-        className={`${styles.button} ${styles.deleteButton}`}
-        icon={<Trash size={"1.25rem"} />}
-      />
-    </>
+      {isAdministrator() ? (
+        <Button
+          text="Slett arrangement"
+          className={`${styles.button} ${styles.deleteButton}`}
+          icon={<Trash size={"1.25rem"} />}
+        />
+      ) : (
+        ""
+      )}
+    </div>
   );
 };
 
