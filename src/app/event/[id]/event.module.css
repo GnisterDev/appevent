@@ -10,6 +10,12 @@
   gap: 2rem;
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
+@media (max-width: 1024px) {
+  .eventGrid {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    column-gap: 0;
+  }
+}
 
 .eventInfo {
   grid-column: span 2 / span 2;
