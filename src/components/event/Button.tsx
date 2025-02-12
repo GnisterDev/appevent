@@ -2,17 +2,16 @@ import React from "react";
 
 interface ButtonProps {
   className?: string | string[];
-  svgStyle?: string;
-  icon: string;
-  text: React.ReactNode;
+  icon?: React.ReactElement;
+  text: string;
 }
 
-const Button: React.FC<ButtonProps> = ({ className, icon, text, svgStyle }) => {
+const Button: React.FC<ButtonProps> = ({ className, icon, text }) => {
   return (
     <button
       className={Array.isArray(className) ? className.join(" ") : className}
     >
-      <img src={icon} alt="icon" className={svgStyle} />
+      {icon}
       {text}
     </button>
   );

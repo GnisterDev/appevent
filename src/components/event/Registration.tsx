@@ -4,6 +4,7 @@
 import React from "react";
 import styles from "./registration.module.css";
 import Button from "./Button";
+import { Share2, Ticket } from "lucide-react";
 
 const info = {
   Påmeldingsfirst: "{date}",
@@ -28,15 +29,13 @@ const Registration = () => {
       <div className={styles.buttons}>
         <Button
           text="Meld meg på"
-          icon="/event/ticket.svg"
           className={`${styles.button} ${styles.registerButton}`}
-          svgStyle={`${styles.svg} ${styles.registerSVG}`}
+          icon={<Ticket size={"1.25rem"} />}
         />
         <Button
           text="Del arrangement"
-          icon="/event/share.svg"
           className={`${styles.button} ${styles.shareButton}`}
-          svgStyle={styles.svg}
+          icon={<Share2 size={"1.25rem"} />}
         />
       </div>
     </div>
