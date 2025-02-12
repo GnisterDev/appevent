@@ -14,11 +14,6 @@
   --text-primary: #111827;
   --text-secondary: #4b5563;
 
-  --svg-primary-filter: invert(7%) sepia(16%) saturate(2247%) hue-rotate(182deg)
-    brightness(94%) contrast(94%);
-  --svg-secondary-filter: invert(30%) sepia(17%) saturate(486%)
-    hue-rotate(175deg) brightness(98%) contrast(89%);
-
   --primary: #9b87f5;
   --secondary: #d5e5fd;
   --accent: #e8e3ff;
