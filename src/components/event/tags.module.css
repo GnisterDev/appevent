@@ -1,17 +1,21 @@
 .tagsContainer {
-    margin-top: 20px;
-    display: flex;
-    gap: 6px;
+  margin-top: 20px;
+  display: flex;
+  gap: 6px;
 }
 
-.tag{
-    background-color: var(--primary); /* Prøve farge*/
-    padding: 5px 10px; 
-    border-radius: 15px;
-    cursor: pointer;
-    color: var(--foreground);
+.tag {
+  background-color: var(--primary); /* Prøve farge*/
+  padding: 5px 10px;
+  border-radius: 15px;
+  cursor: pointer;
+  color: var(--foreground);
 }
 
 .tag:hover {
-    background-color: color-mix(in srgb, var(--primary) 85%, white); /* Endrer farge ved hover */
-  }
+  background-color: color-mix(
+    in srgb,
+    var(--primary) 85%,
+    white
+  ); /* Endrer farge ved hover */
+}
