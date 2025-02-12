@@ -70,3 +70,12 @@
     background-color: color-mix(in srgb, var(--accent) 85%, white);
   }
 }
+
+.deleteButton {
+  color: var(--foreground);
+  background-color: var(--error);
+
+  &:hover {
+    background-color: color-mix(in srgb, var(--error) 85%, white);
+  }
+}
