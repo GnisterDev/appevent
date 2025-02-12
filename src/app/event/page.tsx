@@ -61,6 +61,13 @@ const CreateEventForm: React.FC = () => {
     setCurrentTag(value);
   };
 
+  const removeTag = (tagToRemove: string) => {
+    setFormData({
+      ...formData,
+      tags: formData.tags.filter(tag => tag !== tagToRemove),
+    }); // Beholder alle andre tags som ikke er lik tagen vi vil fjerne
+  };
+
   return (
     <div>
       <div className={styles.wrapper}>
@@ -170,7 +177,11 @@ const CreateEventForm: React.FC = () => {
             <div className="form-group">
               <h3>TAGS: </h3>
               {formData.tags.map((value, key) => (
-                <EventTag key={key} text={value} />
+                <EventTag
+                  key={key}
+                  text={value}
+                  tagToRemove={() => removeTag(value)}
+                />
               ))}
             </div>
 
