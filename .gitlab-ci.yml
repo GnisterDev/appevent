@@ -1,0 +1,43 @@
+image: node:18
+
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+    - node_modules/
+    - .next/cache/
+
+stages:
+  - setup
+  - quality
+  - build
+
+setup:
+  stage: setup
+  script:
+    - npm ci
+
+lint:
+  stage: quality
+  script:
+    - npm run lint
+  dependencies:
+    - setup
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH # Runs on main branch
+    - if: $CI_COMMIT_BRANCH == "development" # Runs on development branch
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event" # Runs when an MR is created
+
+build:
+  stage: build
+  script:
+    - npm run build
+  artifacts:
+    paths:
+      - .next/
+    expire_in: 1 week
+  dependencies:
+    - setup
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH # Runs on main branch
+    - if: $CI_COMMIT_BRANCH == "development" # Runs on development branch
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event" # Runs when an MR is created
