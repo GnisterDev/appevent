@@ -1,6 +1,9 @@
 import React from "react";
 import styles from "./eventinfo.module.css";
 import { Calendar, MapPin, Users } from "lucide-react";
+import EventTags from "./Tags";
+
+const tags = ["Rumpeldunk", "Fotball", "Indøk"]; //Dummy
 
 const EventInfo = () => {
   return (
@@ -33,6 +36,9 @@ const EventInfo = () => {
             <span>NUMBER påmeldte</span>
           </div>
         </div>
+      </div>
+      <div>
+        <EventTags tags={tags} />
       </div>
       <div className={styles.textArea}>
         <h2 className={styles.title}>Om arrangemanget</h2>
