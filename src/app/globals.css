@@ -1,17 +1,34 @@
 :root {
-  --background: #eef5f7;
+  /* --background: #eef5f7;
   --foreground: #ffffff;
   --highlight: #b4b5b9;
 
   --text: #0d1112;
   --primary: #215f6e;
   --secondary: #75d3ea;
-  --accent: #08abd4;
+  --accent: #08abd4; */
+
+  --background: #f6f4ff;
+  --foreground: #f2efff;
+
+  --text-primary: #111827;
+  --text-secondary: #4b5563;
+
+  --primary: #9b87f5;
+  --secondary: #d5e5fd;
+  --accent: #e8e3ff;
 
   --border: #dddddd;
-  --shadow: rgba(0, 0, 0, 0.2);
+  --shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --box-shadow: 0 0 #0000, 0 0 #0000, var(--shadow);
 
   --error: #c1554d;
+  --success: #23a34a;
+  --blue: #d6e1fa;
+  --navbar: #ffffffcc;
+  --highlight: #fde1d3;
+
+  --radius: 0.5rem;
 }
 
 .dark {
