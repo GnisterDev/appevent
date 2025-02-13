@@ -45,31 +45,6 @@ const ProfilePage = () => {
     "Kunst",
   ];
 
-  // Vent til Firebase har satt opp auth-tilstanden
-  // useEffect(() => {
-  //   const unsubscribe = onAuthStateChanged(auth, async (user) => {
-  //     if (!user) {
-  //       console.log("Ingen bruker er logget inn.");
-  //       return;
-  //     }
-  //     try {
-  //       const [fetchedName, fetchedEmail, fetchedType] = await getUser(user.uid);
-  //       console.log("Hentet data:", fetchedName, fetchedEmail, fetchedType);
-  //       if (!fetchedName) {
-  //         console.log("Brukerdokumentet finnes ikke for bruker-ID:", user.uid);
-  //       }
-  //       setProfileData(prev => ({
-  //         ...prev,
-  //         name: fetchedName || "",
-  //         email: fetchedEmail || ""
-  //       }));
-  //     } catch (error) {
-  //       console.error("Feil ved henting av brukerdata:", error);
-  //     }
-  //   });
-  //   return () => unsubscribe();
-  // }, []);
-
   const { userID } = useAuth();
   useEffect(() => {
     if (!userID) return;
