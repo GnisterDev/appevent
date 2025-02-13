@@ -6,9 +6,9 @@ import styles from "./signIn.module.css";
 
 const signIn = () => {
   return (
-    <div className={styles.page}>
+    <main className={styles.page}>
       <SignIn />
-    </div>
+    </main>
   );
 };
 export default signIn;

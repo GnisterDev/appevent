@@ -7,21 +7,19 @@ import EventInfo from "@/components/event/EventInfo";
 
 const EventView = () => {
   return (
-    <>
-      <main className={styles.main}>
-        <div className={styles.eventGrid}>
-          <div className={styles.eventInfo}>
-            <div className={styles.pictureframe}>
-              <div className={styles.picture}></div>
-            </div>
-            <EventInfo />
+    <main className={styles.main}>
+      <div className={styles.eventGrid}>
+        <div className={styles.eventInfo}>
+          <div className={styles.pictureframe}>
+            <div className={styles.picture}></div>
           </div>
-          <div className={styles.eventActions}>
-            <Registration />
-          </div>
+          <EventInfo />
         </div>
-      </main>
-    </>
+        <div className={styles.eventActions}>
+          <Registration />
+        </div>
+      </div>
+    </main>
   );
 };
 

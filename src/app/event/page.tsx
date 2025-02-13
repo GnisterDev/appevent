@@ -95,7 +95,7 @@ const CreateEventForm: React.FC = () => {
   };
 
   return (
-    <div>
+    <main>
       <div className={styles.wrapper}>
         <div className={styles.container}>
           <form className="create-event-form" onSubmit={handleSubmit}>
@@ -246,7 +246,7 @@ const CreateEventForm: React.FC = () => {
           </form>
         </div>
       </div>
-    </div>
+    </main>
   );
 };
 

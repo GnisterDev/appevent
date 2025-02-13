@@ -87,7 +87,7 @@ const ProfilePage = () => {
   };
 
   return (
-    <div className={styles.profileContainer}>
+    <main className={styles.profileContainer}>
       <h1>Min Profil</h1>
       <div>
         <label>Navn:</label>
@@ -151,7 +151,7 @@ const ProfilePage = () => {
           <button onClick={() => setEditing(true)}>Rediger profil</button>
         )}
       </div>
-    </div>
+    </main>
   );
 };
 
