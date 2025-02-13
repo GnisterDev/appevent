@@ -1,0 +1,19 @@
+
+.container{
+    background-color: var(--foreground);
+    width: 50vw;
+    height: 40vh;
+
+    display: flex;
+    justify-content: center;  /* Sentrerer innholdet horisontalt */
+
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Gir en liten skygge */
+    border-radius: 20px; /* Gjør hjørnene litt avrundet */
+
+    flex-direction: column;  /*Lager en kolonne nedover*/
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+  }
