@@ -20,7 +20,7 @@ const EventView = () => {
 
     getEvent(eventID).then(data => {
       if (data) setEvent(data);
-      else router.push("/");
+      else router.push("/404");
     });
   }, [eventID]);
 
