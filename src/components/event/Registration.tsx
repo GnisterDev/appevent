@@ -1,9 +1,8 @@
 "use client";
-// @refresh reset
 
 import React from "react";
 import styles from "./registration.module.css";
-import Button from "./Button";
+import Button from "../Button";
 import { Share2, Ticket, Trash } from "lucide-react";
 import { isAdministrator } from "@/firebase/AuthService";
 
@@ -30,18 +29,18 @@ const Registration = () => {
       <div className={styles.buttons}>
         <Button
           text="Meld meg på"
-          className={`${styles.button} ${styles.registerButton}`}
+          className={styles.registerButton}
           icon={<Ticket size={"1.25rem"} />}
         />
         <Button
           text="Del arrangement"
-          className={`${styles.button} ${styles.shareButton}`}
+          className={styles.shareButton}
           icon={<Share2 size={"1.25rem"} />}
         />
         {isAdministrator() && (
           <Button
             text="Slett arrangement"
-            className={`${styles.button} ${styles.deleteButton}`}
+            className={styles.deleteButton}
             icon={<Trash size={"1.25rem"} />}
           />
         )}

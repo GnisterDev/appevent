@@ -2,7 +2,7 @@ import { Calendar, Plus, User } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 import styles from "./Navbar.module.css";
-import Button from "../event/Button";
+import Button from "../Button";
 
 const Navbar = () => {
   return (
@@ -28,7 +28,7 @@ const Navbar = () => {
             <Button
               text="Opprett Arrangement"
               icon={<Plus />}
-              className={`${styles.button} ${styles.addEventButton}`}
+              className={styles.addEventButton}
             />
             <Link className={styles.profile} href="/">
               <User />
