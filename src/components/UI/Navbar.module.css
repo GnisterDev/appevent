@@ -1,0 +1,96 @@
+.navigationBar {
+  background-color: var(--navbar);
+  border-bottom: 1px solid var(--foreground);
+  z-index: 100;
+  top: 0;
+  right: 0;
+  left: 0;
+  position: fixed;
+}
+
+.container {
+  padding: 0 1rem;
+  margin: 0 auto;
+}
+
+.contentContainer {
+  height: 4rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.flex_center {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.logoText {
+  font-weight: 600;
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+}
+
+.link {
+  color: var(--text-secondary);
+  font-size: 1rem;
+  letter-spacing: 0.025rem;
+
+  &:hover {
+    color: color-mix(in srgb, var(--text-secondary) 50%, black);
+  }
+}
+
+.button {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  white-space: nowrap;
+  border-radius: var(--radius);
+  padding: 0.5rem 1rem;
+  border: 0;
+  height: 2.5rem;
+  width: 100%;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.addEventButton {
+  background-color: var(--primary);
+  color: var(--foreground);
+  font-weight: 600;
+
+  &:hover {
+    background-color: color-mix(in srgb, var(--primary) 85%, white);
+  }
+}
+
+.profile {
+  border-radius: var(--radius);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+
+  width: 2.5rem;
+  height: 2.5rem;
+
+  &:hover {
+    background-color: color-mix(in srgb, var(--navbar) 85%, black);
+  }
+}
+
+@media (min-width: 1400px) {
+  .container {
+    max-width: 1400px;
+  }
+}
+
+@media (max-width: 768px) {
+  .links {
+    display: none;
+  }
+}
