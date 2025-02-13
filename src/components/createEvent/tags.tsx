@@ -1,8 +1,13 @@
 "use client";
 
-import React from "react";
+import React, { MouseEventHandler } from "react";
 
-const EventTag = ({ text, tagToRemove }) => {
+interface EventTagInterface {
+  text: string;
+  tagToRemove: MouseEventHandler;
+}
+
+const EventTag: React.FC<EventTagInterface> = ({ text, tagToRemove }) => {
   return (
     <div>
       {text}

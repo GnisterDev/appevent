@@ -1,8 +1,6 @@
 "use client";
 
 import React, { useState } from "react";
-import { auth } from "@/firebase/config";
-import { signInWithEmailAndPassword } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import styles from "./styles.module.css";
 import EventTag from "@/components/createEvent/tags";
@@ -21,7 +19,6 @@ const CreateEventForm: React.FC = () => {
     tags: [] as string[], // Endre fra string til string[], så vi kan lagre et array av strenger
   });
 
-  const [error, setError] = useState<string | null>(null);
   const router = useRouter(); // For å komme mellom sider
   const [currentTag, setCurrentTag] = useState("");
   const [isPrivate, setIsPrivate] = useState(false); // Boolean for om det er trykket på privat-knappen, altså at arrangementet er privat
@@ -41,7 +38,7 @@ const CreateEventForm: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError(null); // Clear previous errors
+    router.push("/");
   };
 
   const handleAddTag = (e: React.KeyboardEvent<HTMLInputElement>) => {
