@@ -52,7 +52,7 @@ const EventInfo: React.FC<EventInfoProps> = ({
       </div>
       <div className={styles.textArea}>
         <h2 className={styles.title}>Om arrangemanget</h2>
-        <p className={styles.text}>{description}</p>
+        <div className={styles.text}>{description}</div>
       </div>
     </div>
   );

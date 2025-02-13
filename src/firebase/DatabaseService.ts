@@ -34,12 +34,8 @@ export const getUser = async (
   const userDoc = await getDoc(doc(db, "users", userID));
   if (!userDoc.exists()) throw new Error("User document does not exist");
 
-  const userData = userDoc.data();
-  return {
-    name: userData.name,
-    email: userData.email,
-    type: userData.type,
-  } as const;
+  const { name, email, type } = userDoc.data();
+  return { name, email, type } as const;
 };
 
 export const createEvent = async (
@@ -52,21 +48,18 @@ export const createEvent = async (
     new Date(`${data.endDate}T${data.endTime}`)
   );
 
-  const eventID = doc(collection(db, "events")).id;
   const userID = getUserID();
   if (!userID) throw new Error("User ID is null");
+  const eventID = doc(collection(db, "events")).id;
   const organizerRef = doc(db, "users", userID);
 
   const eventData: EventData = {
-    title: data.title,
-    description: data.description,
+    ...data,
     startTime: startTimestamp,
     endTime: endTimestamp,
-    tags: data.tags,
     organizer: organizerRef,
     participants: [organizerRef], // Initialize with organizer as first participant
     private: false, // Default to public event
-    type: data.type,
   };
 
   await setDoc(doc(db, "events", eventID), eventData);
@@ -90,22 +83,16 @@ export const getEvent = async (eventId: string): Promise<EventData | null> => {
     const eventRef = doc(db, "events", eventId);
     const eventSnap = await getDoc(eventRef);
 
-    if (!eventSnap.exists()) {
-      return null;
-    }
+    if (!eventSnap.exists()) return null;
 
     const eventData = eventSnap.data() as EventData;
 
     return {
-      title: eventData.title,
-      description: eventData.description,
+      ...eventData,
       startTime: eventData.startTime as Timestamp,
       endTime: eventData.endTime as Timestamp,
-      tags: eventData.tags,
       organizer: eventData.organizer as DocumentReference,
       participants: eventData.participants as DocumentReference[],
-      private: eventData.private,
-      type: eventData.type,
     };
   } catch (error) {
     console.error("Error fetching event:", error);

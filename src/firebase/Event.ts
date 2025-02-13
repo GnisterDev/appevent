@@ -18,6 +18,7 @@ export type EventData = {
   startTime: Timestamp;
   endTime: Timestamp;
   tags: string[];
+  place: string;
   organizer: DocumentReference;
   participants: DocumentReference[];
   private: boolean;
