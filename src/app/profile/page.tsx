@@ -49,11 +49,11 @@ const ProfilePage = () => {
   useEffect(() => {
     if (!userID) return;
     const fetchUserData = async () => {
-      const [fetchName, fetchEmail] = await getUser(userID);
+      const { name, email } = await getUser(userID);
       setProfileData(prev => ({
         ...prev,
-        name: fetchName,
-        email: fetchEmail,
+        name: name,
+        email: email,
       }));
     };
     fetchUserData();

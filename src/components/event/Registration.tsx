@@ -5,13 +5,21 @@ import styles from "./registration.module.css";
 import Button from "../Button";
 import { Share2, Ticket, Trash } from "lucide-react";
 import { isAdministrator } from "@/firebase/AuthService";
+import { deleteEvent } from "@/firebase/DatabaseService";
+import { useRouter } from "next/navigation";
 
 const info = {
   Påmeldingsfirst: "{date}",
   "Ledige plasser": "{reg} av {total}",
 };
 
-const Registration = () => {
+interface RegistrationProps {
+  eventID: string;
+}
+
+const Registration: React.FC<RegistrationProps> = ({ eventID }) => {
+  const router = useRouter();
+
   return (
     <div className={styles.module}>
       <div className={styles.header}>
@@ -39,6 +47,10 @@ const Registration = () => {
         />
         {isAdministrator() && (
           <Button
+            onClick={() => {
+              deleteEvent(eventID);
+              router.push("/");
+            }}
             text="Slett arrangement"
             className={styles.deleteButton}
             icon={<Trash size={"1.25rem"} />}

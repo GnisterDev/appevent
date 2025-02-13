@@ -28,12 +28,18 @@ export const deleteUser = (userID: string): Promise<void> => {
   return deleteDoc(doc(db, "users", userID));
 };
 
-export const getUser = async (userID: string) => {
+export const getUser = async (
+  userID: string
+): Promise<{ name: string; email: string; type: string }> => {
   const userDoc = await getDoc(doc(db, "users", userID));
-  if (!userDoc.exists()) return [null, null, null] as const;
+  if (!userDoc.exists()) throw new Error("User document does not exist");
 
   const userData = userDoc.data();
-  return [userData.name, userData.email, userData.type] as const;
+  return {
+    name: userData.name,
+    email: userData.email,
+    type: userData.type,
+  } as const;
 };
 
 export const createEvent = async (
@@ -90,7 +96,6 @@ export const getEvent = async (eventId: string): Promise<EventData | null> => {
 
     const eventData = eventSnap.data() as EventData;
 
-    // Ensure all fields match the EventData type
     return {
       title: eventData.title,
       description: eventData.description,
