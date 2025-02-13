@@ -74,8 +74,6 @@
 .deleteButton {
   color: var(--foreground);
   background-color: var(--error);
-  width: calc(100% - 3rem);
-  margin: 1rem 1.5rem;
 
   &:hover {
     background-color: color-mix(in srgb, var(--error) 85%, white);
