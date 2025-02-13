@@ -3,13 +3,23 @@ import styles from "./eventinfo.module.css";
 import { Calendar, MapPin, Users } from "lucide-react";
 import EventTags from "./Tags";
 
-const tags = ["Rumpeldunk", "Fotball", "Indøk"]; //Dummy
+interface EventInfoProps {
+  title: string;
+  description: string;
+  date: string;
+  tags: string[];
+}
 
-const EventInfo = () => {
+const EventInfo: React.FC<EventInfoProps> = ({
+  title,
+  description,
+  date,
+  tags,
+}) => {
   return (
     <div>
       <div>
-        <h1 className={styles.title}>TITLE</h1>
+        <h1 className={styles.title}>{title}</h1>
         <div className={styles.quickinfo}>
           <div className={styles.quickinfoElement}>
             <Calendar
@@ -17,7 +27,7 @@ const EventInfo = () => {
               color={"var(--text-secondary)"}
               strokeWidth={2.25}
             />
-            <span>DATE, TIME</span>
+            <span>{date}</span>
           </div>
           <div className={styles.quickinfoElement}>
             <MapPin
@@ -42,20 +52,7 @@ const EventInfo = () => {
       </div>
       <div className={styles.textArea}>
         <h2 className={styles.title}>Om arrangemanget</h2>
-        <p className={styles.text}>
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Facere
-          veniam, odit qui sit iste necessitatibus quidem tempore eos dolorem
-          ducimus. Sequi maxime sint illo corrupti atque dolor accusantium. Nam
-          distinctio itaque molestiae officia dignissimos a blanditiis
-          voluptatum dolores voluptates. Voluptatum adipisci, possimus
-          consectetur enim atque pariatur ullam! Velit deleniti aliquid tempora
-          nisi quo sint totam vitae repudiandae animi, alias voluptatum
-          consectetur fugit facilis iusto aliquam tempore aspernatur culpa
-          praesentium qui est hic nihil, repellat enim possimus. Itaque mollitia
-          quisquam ipsa quibusdam accusamus tempora inventore, sapiente aliquid
-          repellendus explicabo illo corrupti commodi quidem aut laborum sit qui
-          odio nostrum animi doloremque.
-        </p>
+        <p className={styles.text}>{description}</p>
       </div>
     </div>
   );

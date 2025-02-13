@@ -2,6 +2,7 @@ import {
   collection,
   deleteDoc,
   doc,
+  DocumentReference,
   getDoc,
   setDoc,
   Timestamp,
@@ -76,4 +77,33 @@ export const changeEvent = (
 
 export const deleteEvent = (eventID: string): Promise<void> => {
   return deleteDoc(doc(db, "events", eventID));
+};
+
+export const getEvent = async (eventId: string): Promise<EventData | null> => {
+  try {
+    const eventRef = doc(db, "events", eventId);
+    const eventSnap = await getDoc(eventRef);
+
+    if (!eventSnap.exists()) {
+      return null;
+    }
+
+    const eventData = eventSnap.data() as EventData;
+
+    // Ensure all fields match the EventData type
+    return {
+      title: eventData.title,
+      description: eventData.description,
+      startTime: eventData.startTime as Timestamp,
+      endTime: eventData.endTime as Timestamp,
+      tags: eventData.tags,
+      organizer: eventData.organizer as DocumentReference,
+      participants: eventData.participants as DocumentReference[],
+      private: eventData.private,
+      type: eventData.type,
+    };
+  } catch (error) {
+    console.error("Error fetching event:", error);
+    throw error;
+  }
 };

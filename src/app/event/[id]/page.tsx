@@ -1,11 +1,26 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./event.module.css";
 import Registration from "@/components/event/Registration";
 import EventInfo from "@/components/event/EventInfo";
+import { useParams } from "next/navigation";
+import { getEvent } from "@/firebase/DatabaseService";
+import { EventData } from "@/firebase/Event";
 
 const EventView = () => {
+  const { id } = useParams();
+  const eventID = Array.isArray(id) ? id[0] : id;
+  const [event, setEvent] = useState<EventData | null>(null);
+
+  useEffect(() => {
+    if (!eventID) return;
+
+    getEvent(eventID).then(data => {
+      if (data) setEvent(data);
+    });
+  }, [eventID]);
+
   return (
     <main className={styles.main}>
       <div className={styles.eventGrid}>
@@ -13,7 +28,16 @@ const EventView = () => {
           <div className={styles.pictureframe}>
             <div className={styles.picture}></div>
           </div>
-          <EventInfo />
+          <EventInfo
+            title={event?.title ? event.title : ""}
+            description={event?.description ? event.description : ""}
+            date={
+              event?.startTime
+                ? event.startTime.toDate().toLocaleDateString()
+                : "No date available"
+            }
+            tags={event?.tags ? event.tags : []}
+          />
         </div>
         <div className={styles.eventActions}>
           <Registration />
