@@ -29,7 +29,7 @@ export default function Home() {
 
   const signOut = async () => {
     useLogout()
-      .then(() => router.push("/login"))
+      .then(() => router.push("/signin"))
       .catch(() => console.log("Failed to sign out"));
   };
 
