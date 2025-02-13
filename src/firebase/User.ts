@@ -14,3 +14,9 @@ export type User = {
   userID: string;
   type: "admin" | "user";
 };
+
+export type UserData = {
+  name: string | null;
+  email: string | null;
+  type: string | null;
+};
