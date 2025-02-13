@@ -6,7 +6,7 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import styles from "./styles.module.css";
 import EventTag from "@/components/createEvent/tags";
-import InviteDropDown from "@/components/createEvent/inviteDropDown";
+import SelectedUsers from "@/components/createEvent/selectedUsers";
 
 const CreateEventForm: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -25,7 +25,7 @@ const CreateEventForm: React.FC = () => {
   const router = useRouter(); // For å komme mellom sider
   const [currentTag, setCurrentTag] = useState("");
   const [isPrivate, setIsPrivate] = useState(false); // Boolean for om det er trykket på privat-knappen, altså at arrangementet er privat
-  const [showInviteMenu, setShowInviteMenu] = useState(false); // Boolean for om menyen skal vises
+  // const [showInviteMenu, setShowInviteMenu] = useState(false); // Boolean for om menyen skal vises
   const [selectedUsers, setSelectedUsers] = useState<string[]>([]); // Array med navn på brukerne
 
   const availableUsers = ["Sindre", "Elin", "Patrick", "Oskar", "Ingrid"]; // Liste for å teste rullmeny-funksjonen
@@ -76,13 +76,16 @@ const CreateEventForm: React.FC = () => {
 
   const togglePrivate = () => {
     setIsPrivate(!isPrivate);
-    setShowInviteMenu(false);
-    setSelectedUsers([]); // toggle betyr å bytte mellom true og false, hvis vi endrer fra privat til offentlig så fjernes menyen og listen over inviterte
+    if (!isPrivate) {
+      setSelectedUsers([]); // toggle betyr å bytte mellom true og false, hvis vi endrer fra privat til offentlig så fjernes menyen og listen over inviterte
+    }
   };
 
-  const toggleInviteMenu = () => {
+  {
+    /** const toggleInviteMenu = () => {
     setShowInviteMenu(!showInviteMenu); // Får opp "inviter"-knappen når man velger privat arrangement
-  };
+  };*/
+  }
 
   const handleSelectUser = (user: string) => {
     if (!selectedUsers.includes(user)) {
@@ -90,7 +93,7 @@ const CreateEventForm: React.FC = () => {
     }
   };
 
-  const removeUser = (user: string) => {
+  const handleRemoveUser = (user: string) => {
     setSelectedUsers(selectedUsers.filter(u => u !== user)); // Fjerner en bruker fra selectedUsers-listen, lager ny liste der alle utenom user beholdes
   };
 
@@ -224,27 +227,18 @@ const CreateEventForm: React.FC = () => {
             </div>
 
             <div className="form-group">
+              {/** Privat-knappen styres her */}
               <button onClick={togglePrivate} className="gjor-privat-knapp">
                 {isPrivate ? "Offentlig" : "Privat"}
               </button>
 
+              {/** Viser kun menyen om arrangementet er privat */}
               {isPrivate && (
-                <button onClick={toggleInviteMenu} className="inviter-knapp">
-                  {showInviteMenu ? "Lukk invitasjoner" : "Inviter"}
-                </button>
-              )}
-
-              {showInviteMenu && (
-                <InviteDropDown
-                  availableUsers={availableUsers}
-                  onSelectUser={handleSelectUser}
-                />
-              )}
-
-              {selectedUsers.length > 0 && (
                 <SelectedUsers
+                  availableUsers={availableUsers}
                   selectedUsers={selectedUsers}
-                  onRemoveUser={removeUser}
+                  onSelectUser={handleSelectUser}
+                  onRemoveUser={handleRemoveUser}
                 />
               )}
             </div>
