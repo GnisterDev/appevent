@@ -1,0 +1,55 @@
+.main {
+  padding: 0 1rem;
+  padding-top: 5rem;
+  margin: 0 auto;
+  max-width: 1400px;
+}
+
+.eventGrid {
+  display: grid;
+  gap: 2rem;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+@media (max-width: 1024px) {
+  .eventGrid {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    column-gap: 0;
+  }
+}
+
+.eventInfo {
+  grid-column: span 2 / span 2;
+}
+
+.eventActions {
+  grid-column: span 1 / span 1;
+}
+
+.pictureframe {
+  border-radius: var(--radius);
+  overflow: hidden;
+  width: 100%;
+  height: 400px;
+  margin-bottom: 2rem;
+  position: relative;
+}
+
+.picture {
+  background-color: var(--blue);
+  opacity: 1;
+  animation: pulse-opacity 2s cubic-bezier(0.4, 0, 0.6, 1) infinite alternate;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  position: absolute;
+}
+
+@keyframes pulse-opacity {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.5;
+  }
+}

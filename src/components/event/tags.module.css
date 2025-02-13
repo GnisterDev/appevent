@@ -1,0 +1,17 @@
+.tagsContainer {
+  margin-top: 1rem;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.tag {
+  background-color: var(--primary);
+  padding: 0.3rem 0.75rem;
+  border-radius: calc(var(--radius) * 2);
+  cursor: pointer;
+  color: var(--foreground);
+
+  &:hover {
+    background-color: color-mix(in srgb, var(--primary) 85%, white);
+  }
+}
