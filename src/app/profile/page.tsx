@@ -90,11 +90,11 @@ const ProfilePage = () => {
     <main className={styles.profileContainer}>
       <h1>Min Profil</h1>
       <div>
-        <label>Navn:</label>
+        <label>Navn: </label>
         <span>{profileData.name || " ..."}</span>
       </div>
       <div>
-        <label>E-post:</label>
+        <label>E-post: </label>
         <span>{profileData.email || " ..."}</span>
       </div>
       <div>
