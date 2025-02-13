@@ -68,7 +68,7 @@ const SignInForm = () => {
           Registrer
         </button>
 
-        <button type="button" onClick={() => router.push("/signIn")}>
+        <button type="button" onClick={() => router.push("/signin")}>
           Har allerede bruker
         </button>
       </form>
