@@ -31,7 +31,7 @@ const Navbar = () => {
           </div>
           <div className={styles.flex_center}>
             <Button
-              onClick={() => router.push("/event")}
+              onClick={() => router.push("/event/create")}
               text="Opprett Arrangement"
               icon={<Plus />}
               className={styles.addEventButton}
