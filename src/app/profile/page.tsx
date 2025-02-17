@@ -21,6 +21,7 @@ const ProfilePage = () => {
   });
 
   const [editing, setEditing] = useState(false);
+  const [backupData, setBackupData] = useState<ProfileData | null>(null);
 
   const areaOptions = [
     "Oslo",
@@ -44,6 +45,14 @@ const ProfilePage = () => {
     "Musikk",
     "Kunst",
   ];
+
+  const handleDeleteInfo = () => {
+    setProfileData(prev => ({
+      ...prev,
+      area: "",
+      interests: [],
+    }));
+  };
 
   const { userID } = useAuth();
   useEffect(() => {
@@ -77,12 +86,14 @@ const ProfilePage = () => {
   };
 
   const handleSaveChanges = () => {
-    // Her kan du sende oppdaterte data til backend
     console.log("Lagret profil:", profileData);
     setEditing(false);
   };
 
   const handleCancelEditing = () => {
+    if (backupData) {
+      setProfileData(backupData);
+    }
     setEditing(false);
   };
 
@@ -148,8 +159,20 @@ const ProfilePage = () => {
             <button onClick={handleCancelEditing}>Avbryt</button>
           </>
         ) : (
-          <button onClick={() => setEditing(true)}>Rediger profil</button>
+          <button
+            onClick={() => {
+              setBackupData(profileData);
+              setEditing(true);
+            }}
+          >
+            Rediger profil
+          </button>
         )}
+        <div className={styles.deleteButtonContainer}>
+          <button onClick={handleDeleteInfo} className={styles.deleteButton}>
+            Slett informasjon
+          </button>
+        </div>
       </div>
     </div>
   );
