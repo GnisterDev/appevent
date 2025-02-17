@@ -1,18 +1,25 @@
 "use client";
-// @refresh reset
 
 import React from "react";
 import styles from "./registration.module.css";
-import Button from "./Button";
+import Button from "../Button";
 import { Share2, Ticket, Trash } from "lucide-react";
 import { isAdministrator } from "@/firebase/AuthService";
+import { deleteEvent } from "@/firebase/DatabaseService";
+import { useRouter } from "next/navigation";
 
 const info = {
   Påmeldingsfirst: "{date}",
   "Ledige plasser": "{reg} av {total}",
 };
 
-const Registration = () => {
+interface RegistrationProps {
+  eventID: string;
+}
+
+const Registration: React.FC<RegistrationProps> = ({ eventID }) => {
+  const router = useRouter();
+
   return (
     <div className={styles.module}>
       <div className={styles.header}>
@@ -30,18 +37,22 @@ const Registration = () => {
       <div className={styles.buttons}>
         <Button
           text="Meld meg på"
-          className={`${styles.button} ${styles.registerButton}`}
+          className={styles.registerButton}
           icon={<Ticket size={"1.25rem"} />}
         />
         <Button
           text="Del arrangement"
-          className={`${styles.button} ${styles.shareButton}`}
+          className={styles.shareButton}
           icon={<Share2 size={"1.25rem"} />}
         />
         {isAdministrator() && (
           <Button
+            onClick={() => {
+              deleteEvent(eventID);
+              router.push("/");
+            }}
             text="Slett arrangement"
-            className={`${styles.button} ${styles.deleteButton}`}
+            className={styles.deleteButton}
             icon={<Trash size={"1.25rem"} />}
           />
         )}

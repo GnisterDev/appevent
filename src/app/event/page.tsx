@@ -5,16 +5,18 @@ import { useRouter } from "next/navigation";
 import styles from "./styles.module.css";
 import EventTag from "@/components/createEvent/tags";
 import SelectedUsers from "@/components/createEvent/selectedUsers";
+import { CreateEventRequest } from "@/firebase/Event";
+import { createEvent } from "@/firebase/DatabaseService";
 
 const CreateEventForm: React.FC = () => {
-  const [formData, setFormData] = useState({
-    eventName: "",
-    startDateTime: "",
-    startTimeTime: "",
-    endDateTime: "",
-    endTimeTime: "",
+  const [formData, setFormData] = useState<CreateEventRequest>({
+    title: "",
+    startDate: "",
+    startTime: "",
+    endDate: "",
+    endTime: "",
     place: "",
-    type: "",
+    type: "undefined",
     description: "",
     tags: [] as string[], // Endre fra string til string[], så vi kan lagre et array av strenger
   });
@@ -22,7 +24,6 @@ const CreateEventForm: React.FC = () => {
   const router = useRouter(); // For å komme mellom sider
   const [currentTag, setCurrentTag] = useState("");
   const [isPrivate, setIsPrivate] = useState(false); // Boolean for om det er trykket på privat-knappen, altså at arrangementet er privat
-  // const [showInviteMenu, setShowInviteMenu] = useState(false); // Boolean for om menyen skal vises
   const [selectedUsers, setSelectedUsers] = useState<string[]>([]); // Array med navn på brukerne
 
   const availableUsers = ["Sindre", "Elin", "Patrick", "Oskar", "Ingrid"]; // Liste for å teste rullmeny-funksjonen
@@ -38,7 +39,11 @@ const CreateEventForm: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    router.push("/");
+
+    createEvent(formData)
+      .then(eventID => router.push(`/event/${eventID}`))
+      .catch()
+      .finally();
   };
 
   const handleAddTag = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -51,7 +56,6 @@ const CreateEventForm: React.FC = () => {
       ...formData,
       tags: [...formData.tags, currentTag.trim()],
     }); // Legger til en ny tag i formData sin tag-oversikt, og beholder dne gamle oversikten
-    console.log(formData.tags);
   };
 
   const handleTagChange = (
@@ -60,7 +64,6 @@ const CreateEventForm: React.FC = () => {
     >
   ) => {
     const value = e.target.value;
-    console.log(value);
     setCurrentTag(value);
   };
 
@@ -95,19 +98,19 @@ const CreateEventForm: React.FC = () => {
   };
 
   return (
-    <div>
+    <main>
       <div className={styles.wrapper}>
         <div className={styles.container}>
           <form className="create-event-form" onSubmit={handleSubmit}>
             <h2> Create Event</h2>
 
             <div className="form-group">
-              <label htmlFor="eventName">Navn på arrangement: </label>
+              <label htmlFor="title">Navn på arrangement: </label>
               <input
                 type="text"
-                id="eventName"
-                name="eventName"
-                value={formData.eventName}
+                id="title"
+                name="title"
+                value={formData.title}
                 onChange={handleChange}
                 placeholder="Skriv her"
                 required
@@ -115,43 +118,43 @@ const CreateEventForm: React.FC = () => {
             </div>
 
             <div className="form-group">
-              <label htmlFor="startDateTime">Starttid: </label>
+              <label htmlFor="startDate">Starttid: </label>
 
               <input
                 type="date"
-                id="startDateTime"
-                name="startDateTime"
-                value={formData.startDateTime}
+                id="startDate"
+                name="startDate"
+                value={formData.startDate}
                 onChange={handleChange}
                 required
               />
 
               <input
                 type="time"
-                id="startTimeTime"
-                name="startTimeTime"
-                value={formData.startTimeTime}
+                id="startTime"
+                name="startTime"
+                value={formData.startTime}
                 onChange={handleChange}
                 required
               />
             </div>
 
             <div className="form-group">
-              <label htmlFor="endDateTime">Sluttid: </label>
+              <label htmlFor="endDate">Sluttid: </label>
               <input
                 type="date"
-                id="endDateTime"
-                name="endDateTime"
-                value={formData.endDateTime}
+                id="endDate"
+                name="endDate"
+                value={formData.endDate}
                 onChange={handleChange}
                 required
               />
 
               <input
                 type="time"
-                id="endTimeTime"
-                name="endTimeTime"
-                value={formData.endTimeTime}
+                id="endTime"
+                name="endTime"
+                value={formData.endTime}
                 onChange={handleChange}
                 required
               />
@@ -246,7 +249,7 @@ const CreateEventForm: React.FC = () => {
           </form>
         </div>
       </div>
-    </div>
+    </main>
   );
 };
 

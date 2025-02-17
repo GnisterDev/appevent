@@ -58,11 +58,11 @@ const ProfilePage = () => {
   useEffect(() => {
     if (!userID) return;
     const fetchUserData = async () => {
-      const [fetchName, fetchEmail] = await getUser(userID);
+      const { name, email } = await getUser(userID);
       setProfileData(prev => ({
         ...prev,
-        name: fetchName,
-        email: fetchEmail,
+        name: name,
+        email: email,
       }));
     };
     fetchUserData();
@@ -98,14 +98,14 @@ const ProfilePage = () => {
   };
 
   return (
-    <div className={styles.profileContainer}>
+    <main className={styles.profileContainer}>
       <h1>Min Profil</h1>
       <div>
-        <label>Navn:</label>
+        <label>Navn: </label>
         <span>{profileData.name || " ..."}</span>
       </div>
       <div>
-        <label>E-post:</label>
+        <label>E-post: </label>
         <span>{profileData.email || " ..."}</span>
       </div>
       <div>
@@ -174,7 +174,7 @@ const ProfilePage = () => {
           </button>
         </div>
       </div>
-    </div>
+    </main>
   );
 };
 

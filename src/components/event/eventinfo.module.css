@@ -21,4 +21,5 @@
 
 .text {
   color: var(--text-secondary);
+  white-space: pre-wrap;
 }
