@@ -8,7 +8,7 @@ import {
 } from "firebase/auth";
 import { auth } from "./config";
 import { LoginRequest, SignupRequest } from "./User";
-import { createUser, getUser } from "./DatabaseService";
+import { createUser, deleteUser, getUser } from "./DatabaseService";
 import { useEffect, useState } from "react";
 
 export const useAuth = () => {
@@ -28,7 +28,7 @@ export const useAuth = () => {
     user,
     loading,
     isLoggedIn: !!user,
-    userID: user?.uid || null,
+    userID: user?.uid,
   };
 };
 
@@ -76,4 +76,13 @@ export const isAdministrator = () => {
   }, [user]);
 
   return isAdmin;
+};
+
+export const deleteAccount = () => {
+  const { user, userID } = useAuth();
+  if (!user || !userID) return;
+
+  return user.delete().then(() => {
+    return deleteUser(userID);
+  });
 };

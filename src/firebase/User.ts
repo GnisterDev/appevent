@@ -11,8 +11,8 @@ export type SignupRequest = Required<BaseCredentials>;
 export type User = {
   name: string;
   email: string;
-  userID: string;
   type: "admin" | "user";
+  userID: string;
 };
 
 export type UserData = {

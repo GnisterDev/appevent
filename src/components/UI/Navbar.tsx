@@ -36,7 +36,7 @@ const Navbar = () => {
               icon={<Plus />}
               className={styles.addEventButton}
             />
-            <Link className={styles.profile} href="/profile">
+            <Link className={styles.profile} href={`/profile`}>
               <User />
             </Link>
           </div>

@@ -2,11 +2,8 @@
 
 import React, { useState, useEffect } from "react";
 import styles from "./profile.module.css";
-import { deleteUser, getUser } from "@/firebase/DatabaseService";
-import { useParams, useRouter } from "next/navigation";
-import Button from "@/components/Button";
-import { Trash } from "lucide-react";
-import { isAdministrator } from "@/firebase/AuthService";
+import { useAuth } from "@/firebase/AuthService";
+import { useRouter } from "next/navigation";
 
 interface ProfileData {
   name: string;
@@ -16,20 +13,12 @@ interface ProfileData {
 }
 
 const ProfilePage = () => {
-  const router = useRouter();
-
-  const { id } = useParams();
-  const userID = Array.isArray(id) ? id[0] : id;
-  const [profileData, setProfileData] = useState<ProfileData | null>(null);
-
-  useEffect(() => {
-    if (!userID) return;
-
-    getUser(userID).then(data => {
-      if (data) setProfileData({ ...data, interests: [], area: "" });
-      else router.push("/404");
-    });
-  }, [userID]);
+  const [profileData, setProfileData] = useState<ProfileData>({
+    name: "",
+    email: "",
+    area: "",
+    interests: [],
+  });
 
   const [editing, setEditing] = useState(false);
   const [backupData, setBackupData] = useState<ProfileData | null>(null);
@@ -62,32 +51,44 @@ const ProfilePage = () => {
       ...prev,
       area: "",
       interests: [],
-      name: prev?.name || "",
-      email: prev?.email || "",
     }));
   };
+
+  const { userID } = useAuth();
+  const router = useRouter();
+  useEffect(() => {
+    // if (!userID) return;
+    // const fetchUserData = async () => {
+    //   const { name, email } = await getUser(userID);
+    //   setProfileData(prev => ({
+    //     ...prev,
+    //     name: name,
+    //     email: email,
+    //   }));
+    // };
+    // fetchUserData();
+    const fetchUser = async () => {
+      const { userID } = await useAuth();
+      router.push(`/profile/${userID}`);
+    };
+    fetchUser();
+  }, [userID]);
 
   const handleAreaChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setProfileData(prev => ({
       ...prev,
       area: e.target.value,
-      interests: [],
-      name: prev?.name || "",
-      email: prev?.email || "",
     }));
   };
 
   const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value, checked } = e.target;
-    setProfileData(prev => {
-      if (!prev) return prev;
-      return {
-        ...prev,
-        interests: checked
-          ? [...prev.interests, value]
-          : prev.interests.filter(item => item !== value),
-      };
-    });
+    setProfileData(prev => ({
+      ...prev,
+      interests: checked
+        ? [...prev.interests, value]
+        : prev.interests.filter(item => item !== value),
+    }));
   };
 
   const handleSaveChanges = () => {
@@ -103,22 +104,22 @@ const ProfilePage = () => {
   };
 
   return (
-    <div className={styles.profileContainer}>
+    <main className={styles.profileContainer}>
       <h1>Min Profil</h1>
       <div>
-        <label>Navn:</label>
-        <span>{profileData?.name || " ..."}</span>
+        <label>Navn: </label>
+        <span>{profileData.name || " ..."}</span>
       </div>
       <div>
-        <label>E-post:</label>
-        <span>{profileData?.email || " ..."}</span>
+        <label>E-post: </label>
+        <span>{profileData.email || " ..."}</span>
       </div>
       <div>
         <label>Område (fylke):</label>
         {editing ? (
           <select
             name="area"
-            value={profileData?.area}
+            value={profileData.area}
             onChange={handleAreaChange}
             required
           >
@@ -130,7 +131,7 @@ const ProfilePage = () => {
             ))}
           </select>
         ) : (
-          <span>{profileData?.area || "Ikke angitt"}</span>
+          <span>{profileData.area || "Ikke angitt"}</span>
         )}
       </div>
       <div>
@@ -142,7 +143,7 @@ const ProfilePage = () => {
                 <input
                   type="checkbox"
                   value={option}
-                  checked={profileData?.interests.includes(option)}
+                  checked={profileData.interests.includes(option)}
                   onChange={handleCheckboxChange}
                 />
                 {option}
@@ -151,9 +152,7 @@ const ProfilePage = () => {
           ))
         ) : (
           <span>
-            {profileData &&
-            profileData.interests &&
-            profileData.interests.length > 0
+            {profileData.interests.length > 0
               ? profileData.interests.join(", ")
               : "Ikke angitt"}
           </span>
@@ -175,24 +174,13 @@ const ProfilePage = () => {
             Rediger profil
           </button>
         )}
-        <div className={styles.deleteInfoButtonContainer}>
-          <button
-            onClick={handleDeleteInfo}
-            className={styles.deleteInfoButton}
-          >
+        <div className={styles.deleteButtonContainer}>
+          <button onClick={handleDeleteInfo} className={styles.deleteButton}>
             Slett informasjon
           </button>
         </div>
       </div>
-      {isAdministrator() && (
-        <Button
-          text="Slett Bruker"
-          icon={<Trash />}
-          onClick={() => deleteUser(userID || "")}
-          className={styles.deleteButton}
-        />
-      )}
-    </div>
+    </main>
   );
 };
 
