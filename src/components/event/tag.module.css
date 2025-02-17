@@ -1,0 +1,20 @@
+.tag {
+  background-color: var(--primary);
+  padding: 0.3rem 0.75rem;
+  border-radius: calc(var(--radius) * 2);
+  cursor: pointer;
+  color: var(--foreground);
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  width: fit-content;
+}
+
+.delete {
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+}

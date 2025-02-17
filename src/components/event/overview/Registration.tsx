@@ -43,14 +43,15 @@ const Registration: React.FC<RegistrationProps> = ({ eventID }) => {
       {isOrg && <h3>Du er organisator</h3>}
       <div className={styles.buttons}>
         <br />
-        {isOrg ? (
+        {isOrg && (
           <Button
             text="Rediger"
             className={styles.editButton}
             icon={<Pencil size={"1.25rem"} />}
             onClick={() => router.push(`/event/${eventID}/edit`)}
           />
-        ) : (
+        )}
+        {!isOrg && (
           <Button
             text="Meld meg på"
             className={styles.registerButton}

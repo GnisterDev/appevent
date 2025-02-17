@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./eventinfo.module.css";
 import { Calendar, MapPin, Users } from "lucide-react";
-import EventTags from "./Tags";
+import Tag from "@/components/event/Tag";
 
 interface EventInfoProps {
   title: string;
@@ -51,8 +51,10 @@ const EventInfo: React.FC<EventInfoProps> = ({
           </div>
         </div>
       </div>
-      <div>
-        <EventTags tags={tags} />
+      <div className={styles.tags}>
+        {tags.map((tag, index) => (
+          <Tag key={index} text={tag} />
+        ))}
       </div>
       <div className={styles.textArea}>
         <h2 className={styles.title}>Om arrangemanget</h2>

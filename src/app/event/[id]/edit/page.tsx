@@ -4,11 +4,13 @@ import React, { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { getEvent, changeEvent } from "@/firebase/DatabaseService";
 import styles from "./edit.module.css";
+import Tag from "@/components/event/Tag";
 
 const EventEdit = () => {
   const router = useRouter();
   const { id } = useParams();
   const eventID = Array.isArray(id) ? id[0] : id;
+  const [tagInput, setTagInput] = useState("");
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -58,6 +60,18 @@ const EventEdit = () => {
     }));
   };
 
+  const handleAddTag = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key !== "Enter") return;
+    e.preventDefault();
+    if (tagInput.trim()) {
+      setFormData(prev => ({
+        ...prev,
+        tags: [...new Set([...prev.tags, tagInput.trim()])],
+      }));
+      setTagInput("");
+    }
+  };
+
   return (
     <main className={styles.main}>
       <form onSubmit={handleSubmit} className={styles.editForm}>
@@ -78,6 +92,7 @@ const EventEdit = () => {
         <div className={styles.formGroup}>
           <label htmlFor="description">Beskrivelse</label>
           <textarea
+            className={styles.textarea}
             id="description"
             name="description"
             value={formData.description}
@@ -108,6 +123,33 @@ const EventEdit = () => {
             onChange={handleChange}
             required
           />
+        </div>
+
+        <div className={styles.formGroup}>
+          <label htmlFor="tags">Tags</label>
+          <input
+            type="text"
+            id="tags"
+            name="tags"
+            value={tagInput}
+            onChange={e => setTagInput(e.target.value)}
+            onKeyDown={e => handleAddTag(e)}
+            placeholder="Press Enter to add tag"
+          />
+        </div>
+        <div className={styles.tagGroup}>
+          {formData.tags.map((tag, index) => (
+            <Tag
+              key={index}
+              text={tag}
+              onDelete={() =>
+                setFormData(prev => ({
+                  ...prev,
+                  tags: prev.tags.filter(t => t !== tag),
+                }))
+              }
+            />
+          ))}
         </div>
 
         <div className={styles.buttonGroup}>
