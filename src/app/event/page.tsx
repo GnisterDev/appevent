@@ -3,8 +3,8 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import styles from "./styles.module.css";
-import EventTag from "@/components/createEvent/tags";
-import SelectedUsers from "@/components/createEvent/selectedUsers";
+import EventTag from "@/components/event/create/tags";
+import SelectedUsers from "@/components/event/create/selectedUsers";
 import { CreateEventRequest } from "@/firebase/Event";
 import { createEvent } from "@/firebase/DatabaseService";
 

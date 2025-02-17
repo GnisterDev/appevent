@@ -63,3 +63,12 @@
     background-color: color-mix(in srgb, var(--error) 85%, white);
   }
 }
+
+.editButton {
+  color: var(--foreground);
+  background-color: var(--primary);
+
+  &:hover {
+    background-color: color-mix(in srgb, var(--primary) 85%, white);
+  }
+}
