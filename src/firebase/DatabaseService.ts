@@ -17,12 +17,14 @@ export const deleteUser = (userID: string): Promise<void> => {
   return deleteDoc(doc(db, "users", userID));
 };
 
-export const getUser = async (userID: string) => {
+export const getUser = async (
+  userID: string
+): Promise<{ name: string; email: string; type: string }> => {
   const userDoc = await getDoc(doc(db, "users", userID));
-  if (!userDoc.exists()) return [null, null, null] as const;
+  if (!userDoc.exists()) throw new Error("User document does not exist");
 
-  const userData = userDoc.data();
-  return [userData.name, userData.email, userData.type] as const;
+  const { name, email, type } = userDoc.data();
+  return { name, email, type } as const;
 };
 
 export const createEvent = (
