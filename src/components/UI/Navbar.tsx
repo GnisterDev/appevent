@@ -1,10 +1,15 @@
+"use client";
+
 import { Calendar, Plus, User } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 import styles from "./Navbar.module.css";
-import Button from "../event/Button";
+import Button from "../Button";
+import { useRouter } from "next/navigation";
 
 const Navbar = () => {
+  const router = useRouter();
+
   return (
     <nav className={styles.navigationBar}>
       <div className={styles.container}>
@@ -26,11 +31,12 @@ const Navbar = () => {
           </div>
           <div className={styles.flex_center}>
             <Button
+              onClick={() => router.push("/event")}
               text="Opprett Arrangement"
               icon={<Plus />}
-              className={`${styles.button} ${styles.addEventButton}`}
+              className={styles.addEventButton}
             />
-            <Link className={styles.profile} href="/">
+            <Link className={styles.profile} href={`/profile`}>
               <User />
             </Link>
           </div>

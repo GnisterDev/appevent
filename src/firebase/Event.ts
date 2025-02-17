@@ -1,10 +1,27 @@
-import { DocumentReference } from "firebase/firestore";
+import { DocumentReference, Timestamp } from "firebase/firestore";
 
-export type Event = {
+export type CreateEventRequest = {
   title: string;
   description: string;
-  eventID: string;
+  startDate: string;
+  startTime: string;
+  endDate: string;
+  endTime: string;
+  place: string;
+  type: string;
   tags: string[];
+};
+
+export type EventData = {
+  title: string;
+  description: string;
+  startTime: Timestamp;
+  endTime: Timestamp;
+  tags: string[];
+  place: string;
   organizer: DocumentReference;
   participants: DocumentReference[];
+  private: boolean;
+
+  type: string;
 };

@@ -8,7 +8,7 @@ import {
 } from "firebase/auth";
 import { auth } from "./config";
 import { LoginRequest, SignupRequest } from "./User";
-import { createUser } from "./DatabaseService";
+import { createUser, deleteUser, getUser } from "./DatabaseService";
 import { useEffect, useState } from "react";
 
 export const useAuth = () => {
@@ -28,7 +28,7 @@ export const useAuth = () => {
     user,
     loading,
     isLoggedIn: !!user,
-    userID: user?.uid || null,
+    userID: user?.uid,
   };
 };
 
@@ -61,7 +61,28 @@ export const getUserID = (): string | null => {
   return auth.currentUser?.uid || null;
 };
 
-export const isAdministrator = (): boolean => {
-  new Error("Not implemented");
-  return false;
+export const isAdministrator = () => {
+  const { user } = useAuth();
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  useEffect(() => {
+    if (user) {
+      getUser(user.uid)
+        .then(({ type: userType }) => setIsAdmin(userType === "admin"))
+        .catch(() => setIsAdmin(false));
+    } else {
+      setIsAdmin(false);
+    }
+  }, [user]);
+
+  return isAdmin;
+};
+
+export const deleteAccount = () => {
+  const { user, userID } = useAuth();
+  if (!user || !userID) return;
+
+  return user.delete().then(() => {
+    return deleteUser(userID);
+  });
 };

@@ -54,7 +54,7 @@ const SignIn = () => {
           Logg inn
         </button>
 
-        <button type="button" onClick={() => router.push("/signUp")}>
+        <button type="button" onClick={() => router.push("/signup")}>
           Har ikke bruker
         </button>
       </form>

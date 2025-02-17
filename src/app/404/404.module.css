@@ -1,0 +1,18 @@
+.container {
+  text-align: center;
+  padding: 50px;
+  margin-top: 5rem;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.button {
+  width: 20rem;
+  background-color: var(--primary);
+
+  &:hover {
+    background-color: color-mix(in srgb, var(--primary) 85%, white);
+  }
+}
