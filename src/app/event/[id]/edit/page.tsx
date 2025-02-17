@@ -5,6 +5,7 @@ import { useParams, useRouter } from "next/navigation";
 import { getEvent, changeEvent } from "@/firebase/DatabaseService";
 import styles from "./edit.module.css";
 import Tag from "@/components/event/Tag";
+import { EVENT_GROUPS } from "@/firebase/Event";
 
 const EventEdit = () => {
   const router = useRouter();
@@ -16,6 +17,7 @@ const EventEdit = () => {
     description: "",
     location: "",
     startTime: "",
+    type: "",
     tags: [] as string[],
   });
 
@@ -31,6 +33,7 @@ const EventEdit = () => {
             ? data.startTime.toDate().toISOString().split("T")[0]
             : "",
           tags: data.tags || [],
+          type: data.type || "",
         });
       } else router.push("/404");
     });
@@ -52,7 +55,9 @@ const EventEdit = () => {
   };
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
   ) => {
     setFormData(prev => ({
       ...prev,
@@ -126,6 +131,37 @@ const EventEdit = () => {
         </div>
 
         <div className={styles.formGroup}>
+          <label htmlFor="type">Type</label>
+          <select
+            id="type"
+            name="type"
+            value={formData.type}
+            onChange={handleChange}
+            className={styles.select}
+            required
+          >
+            <option value="">Velg type arrangement</option>
+            {Object.entries(EVENT_GROUPS).map(([groupName, events]) => (
+              <optgroup
+                key={groupName}
+                label={groupName}
+                className={styles.group}
+              >
+                {events.map(eventType => (
+                  <option
+                    key={eventType}
+                    value={eventType}
+                    className={styles.option}
+                  >
+                    {eventType}
+                  </option>
+                ))}
+              </optgroup>
+            ))}
+          </select>
+        </div>
+
+        <div className={styles.formGroup}>
           <label htmlFor="tags">Tags</label>
           <input
             type="text"
@@ -134,7 +170,7 @@ const EventEdit = () => {
             value={tagInput}
             onChange={e => setTagInput(e.target.value)}
             onKeyDown={e => handleAddTag(e)}
-            placeholder="Press Enter to add tag"
+            placeholder="Press Enter for å legge til en tag"
           />
         </div>
         <div className={styles.tagGroup}>
