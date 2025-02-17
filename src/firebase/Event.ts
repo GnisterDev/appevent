@@ -7,7 +7,7 @@ export type CreateEventRequest = {
   startTime: string;
   endDate: string;
   endTime: string;
-  place: string;
+  location: string;
   type: string;
   tags: string[];
 };
@@ -18,7 +18,7 @@ export type EventData = {
   startTime: Timestamp;
   endTime: Timestamp;
   tags: string[];
-  place: string;
+  location: string;
   organizer: DocumentReference;
   participants: DocumentReference[];
   private: boolean;

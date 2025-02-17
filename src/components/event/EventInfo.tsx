@@ -8,6 +8,8 @@ interface EventInfoProps {
   description: string;
   date: string;
   tags: string[];
+  location: string;
+  participants: number;
 }
 
 const EventInfo: React.FC<EventInfoProps> = ({
@@ -15,6 +17,8 @@ const EventInfo: React.FC<EventInfoProps> = ({
   description,
   date,
   tags,
+  location,
+  participants,
 }) => {
   return (
     <div>
@@ -35,7 +39,7 @@ const EventInfo: React.FC<EventInfoProps> = ({
               color={"var(--text-secondary)"}
               strokeWidth={2.25}
             />
-            <span>PLACE, CITY</span>
+            <span>{location}</span>
           </div>
           <div className={styles.quickinfoElement}>
             <Users
@@ -43,7 +47,7 @@ const EventInfo: React.FC<EventInfoProps> = ({
               color={"var(--text-secondary)"}
               strokeWidth={2.25}
             />
-            <span>NUMBER påmeldte</span>
+            <span>{participants}</span>
           </div>
         </div>
       </div>

@@ -4,7 +4,7 @@ import React from "react";
 import styles from "./registration.module.css";
 import Button from "../Button";
 import { Share2, Ticket, Trash } from "lucide-react";
-import { isAdministrator } from "@/firebase/AuthService";
+import { isAdministrator, isOrganizer } from "@/firebase/AuthService";
 import { deleteEvent } from "@/firebase/DatabaseService";
 import { useRouter } from "next/navigation";
 
@@ -19,6 +19,8 @@ interface RegistrationProps {
 
 const Registration: React.FC<RegistrationProps> = ({ eventID }) => {
   const router = useRouter();
+  const isAdmin = isAdministrator();
+  const isOrg = isOrganizer(eventID);
 
   return (
     <div className={styles.module}>
@@ -45,7 +47,7 @@ const Registration: React.FC<RegistrationProps> = ({ eventID }) => {
           className={styles.shareButton}
           icon={<Share2 size={"1.25rem"} />}
         />
-        {isAdministrator() && (
+        {(isAdmin || isOrg) && (
           <Button
             onClick={() => {
               deleteEvent(eventID);

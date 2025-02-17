@@ -15,7 +15,7 @@ const CreateEventForm: React.FC = () => {
     startTime: "",
     endDate: "",
     endTime: "",
-    place: "",
+    location: "",
     type: "undefined",
     description: "",
     tags: [] as string[], // Endre fra string til string[], så vi kan lagre et array av strenger
@@ -161,12 +161,12 @@ const CreateEventForm: React.FC = () => {
             </div>
 
             <div className="form-group">
-              <label htmlFor="place">Sted: </label>
+              <label htmlFor="location">Sted: </label>
               <input
                 type="text"
-                id="place"
-                name="place"
-                value={formData.place}
+                id="location"
+                name="location"
+                value={formData.location}
                 onChange={handleChange}
                 placeholder="Adresse"
                 required

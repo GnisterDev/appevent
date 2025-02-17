@@ -42,6 +42,10 @@ const EventView = () => {
                 : "No date available"
             }
             tags={event?.tags ? event.tags : []}
+            location={
+              event?.location ? event.location : "No location available"
+            }
+            participants={event?.participants ? event.participants.length : 0}
           />
         </div>
         <div className={styles.eventActions}>
