@@ -8,7 +8,7 @@ import {
 } from "firebase/auth";
 import { auth } from "./config";
 import { LoginRequest, SignupRequest } from "./User";
-import { createUser, deleteUser, getUser } from "./DatabaseService";
+import { createUser, getEvent, deleteUser, getUser } from "./DatabaseService";
 import { useEffect, useState } from "react";
 
 export const useAuth = () => {
@@ -61,7 +61,7 @@ export const getUserID = (): string | null => {
   return auth.currentUser?.uid || null;
 };
 
-export const isAdministrator = () => {
+export const isAdministrator = (): boolean => {
   const { user } = useAuth();
   const [isAdmin, setIsAdmin] = useState(false);
 
@@ -76,6 +76,23 @@ export const isAdministrator = () => {
   }, [user]);
 
   return isAdmin;
+};
+
+export const isOrganizer = (eventID: string): boolean => {
+  const { user } = useAuth();
+  const [isOrg, setIsOrg] = useState(false);
+
+  useEffect(() => {
+    if (user) {
+      getEvent(eventID).then(({ organizer }) =>
+        setIsOrg(organizer.id === user.uid)
+      );
+    } else {
+      setIsOrg(false);
+    }
+  }, [eventID, user]); // Added eventID to dependencies
+
+  return isOrg;
 };
 
 export const deleteAccount = () => {

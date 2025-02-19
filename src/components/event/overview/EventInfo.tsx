@@ -1,13 +1,15 @@
 import React from "react";
 import styles from "./eventinfo.module.css";
 import { Calendar, MapPin, Users } from "lucide-react";
-import EventTags from "./Tags";
+import Tag from "@/components/event/Tag";
 
 interface EventInfoProps {
   title: string;
   description: string;
   date: string;
   tags: string[];
+  location: string;
+  participants: number;
 }
 
 const EventInfo: React.FC<EventInfoProps> = ({
@@ -15,6 +17,8 @@ const EventInfo: React.FC<EventInfoProps> = ({
   description,
   date,
   tags,
+  location,
+  participants,
 }) => {
   return (
     <div>
@@ -35,7 +39,7 @@ const EventInfo: React.FC<EventInfoProps> = ({
               color={"var(--text-secondary)"}
               strokeWidth={2.25}
             />
-            <span>PLACE, CITY</span>
+            <span>{location}</span>
           </div>
           <div className={styles.quickinfoElement}>
             <Users
@@ -43,12 +47,14 @@ const EventInfo: React.FC<EventInfoProps> = ({
               color={"var(--text-secondary)"}
               strokeWidth={2.25}
             />
-            <span>NUMBER påmeldte</span>
+            <span>{participants}</span>
           </div>
         </div>
       </div>
-      <div>
-        <EventTags tags={tags} />
+      <div className={styles.tags}>
+        {tags.map((tag, index) => (
+          <Tag key={index} text={tag} />
+        ))}
       </div>
       <div className={styles.textArea}>
         <h2 className={styles.title}>Om arrangemanget</h2>

@@ -2,11 +2,18 @@
 
 import React, { useEffect, useState } from "react";
 import styles from "./event.module.css";
-import Registration from "@/components/event/Registration";
-import EventInfo from "@/components/event/EventInfo";
+import Registration from "@/components/event/overview/Registration";
+import EventInfo from "@/components/event/overview/EventInfo";
 import { useParams, useRouter } from "next/navigation";
 import { getEvent } from "@/firebase/DatabaseService";
 import { EventData } from "@/firebase/Event";
+
+const defaultText = {
+  title: "Ingen tittel",
+  description: "Ingen beskrivelse",
+  date: "Ingen dato oppgitt",
+  location: "Ingen lokasjon oppgitt",
+};
 
 const EventView = () => {
   const router = useRouter();
@@ -32,16 +39,18 @@ const EventView = () => {
             <div className={styles.picture}></div>
           </div>
           <EventInfo
-            title={event?.title ? event.title : "Ingen tittel"}
+            title={event?.title ? event.title : defaultText.title}
             description={
-              event?.description ? event.description : "Ingen beskrivelse"
+              event?.description ? event.description : defaultText.description
             }
             date={
               event?.startTime
                 ? event.startTime.toDate().toLocaleDateString()
-                : "No date available"
+                : defaultText.date
             }
             tags={event?.tags ? event.tags : []}
+            location={event?.location ? event.location : defaultText.location}
+            participants={event?.participants ? event.participants.length : 0}
           />
         </div>
         <div className={styles.eventActions}>

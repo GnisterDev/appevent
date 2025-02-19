@@ -78,12 +78,12 @@ export const deleteEvent = (eventID: string): Promise<void> => {
   return deleteDoc(doc(db, "events", eventID));
 };
 
-export const getEvent = async (eventId: string): Promise<EventData | null> => {
+export const getEvent = async (eventId: string): Promise<EventData> => {
   try {
     const eventRef = doc(db, "events", eventId);
     const eventSnap = await getDoc(eventRef);
 
-    if (!eventSnap.exists()) return null;
+    if (!eventSnap.exists()) return {} as EventData;
 
     const eventData = eventSnap.data() as EventData;
 
