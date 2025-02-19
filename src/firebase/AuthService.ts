@@ -8,7 +8,7 @@ import {
 } from "firebase/auth";
 import { auth } from "./config";
 import { LoginRequest, SignupRequest } from "./User";
-import { createUser, getEvent, deleteUser, getUser } from "./DatabaseService";
+import { createUser, getEvent, getUser } from "./DatabaseService";
 import { useEffect, useState } from "react";
 
 export const useAuth = () => {
