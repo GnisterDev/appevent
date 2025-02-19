@@ -1,14 +1,14 @@
 "use client";
 
-import SignUp from "@/components/auth/SignUp";
+import SignIn from "@/components/auth/SignIn";
 import React from "react";
 import styles from "./signIn.module.css";
 
-const signUp = () => {
+const signIn = () => {
   return (
     <main className={styles.page}>
-      <SignUp />
+      <SignIn />
     </main>
   );
 };
-export default signUp;
+export default signIn;

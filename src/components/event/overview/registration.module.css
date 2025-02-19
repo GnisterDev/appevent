@@ -1,0 +1,74 @@
+.module {
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  position: sticky;
+  top: 5rem;
+  box-shadow: var(--box-shadow);
+  border: 1px solid var(--secondary);
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  font-weight: 600;
+  font-size: 1.5rem;
+  line-height: 1;
+  letter-spacing: 0;
+}
+
+.info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 1rem 0;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+/**
+ *  BUTTON STYLING
+*/
+
+.registerButton {
+  color: var(--foreground);
+  background-color: var(--primary);
+
+  &:hover {
+    background-color: color-mix(in srgb, var(--primary) 85%, white);
+  }
+}
+
+.shareButton {
+  color: var(--text-primary);
+  background-color: var(--accent);
+
+  &:hover {
+    background-color: color-mix(in srgb, var(--accent) 85%, white);
+  }
+}
+
+.deleteButton {
+  color: var(--foreground);
+  background-color: var(--error);
+
+  &:hover {
+    background-color: color-mix(in srgb, var(--error) 85%, white);
+  }
+}
+
+.editButton {
+  color: var(--foreground);
+  background-color: var(--primary);
+
+  &:hover {
+    background-color: color-mix(in srgb, var(--primary) 85%, white);
+  }
+}

@@ -1,0 +1,10 @@
+.profileContainer {
+  margin-top: 5rem;
+}
+.profileContainer label {
+  font-weight: 800;
+}
+
+.title {
+  color: var(--text);
+}
