@@ -4,33 +4,31 @@ import Image from "next/image";
 import styles from "./page.module.css";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
+import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../firebase/config";
-import { useLogout } from "../firebase/AuthService";
 
 export default function Home() {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged(user => {
+    const unsubscribe = onAuthStateChanged(auth, user => {
       if (!user) {
-        router.push("/signin");
-      } else {
-        setLoading(false);
+        router.push("/login");
       }
+      setLoading(false);
     });
 
     return () => unsubscribe();
-  }, []);
+  }, [router]);
 
   if (loading) {
     return <div>Loading...</div>;
   }
 
   const signOut = async () => {
-    useLogout()
-      .then(() => router.push("/signin"))
-      .catch(() => console.log("Failed to sign out"));
+    await auth.signOut();
+    router.push("/login");
   };
 
   return (
