@@ -94,12 +94,3 @@ export const isOrganizer = (eventID: string): boolean => {
 
   return isOrg;
 };
-
-export const deleteAccount = () => {
-  const { user, userID } = useAuth();
-  if (!user || !userID) return;
-
-  return user.delete().then(() => {
-    return deleteUser(userID);
-  });
-};
