@@ -88,68 +88,70 @@ const ProfilePage = () => {
 
   return (
     <main className={styles.profileContainer}>
-      <h1>Min Profil</h1>
       <div>
-        <label>Navn: </label>
-        <span>{profileData.name || " ..."}</span>
-      </div>
-      <div>
-        <label>E-post: </label>
-        <span>{profileData.email || " ..."}</span>
-      </div>
-      <div>
-        <label>Område (fylke):</label>
-        {editing ? (
-          <select
-            name="area"
-            value={profileData.area}
-            onChange={handleAreaChange}
-            required
-          >
-            <option value="">Velg fylke</option>
-            {areaOptions.map(area => (
-              <option key={area} value={area}>
-                {area}
-              </option>
-            ))}
-          </select>
-        ) : (
-          <span>{profileData.area || "Ikke angitt"}</span>
-        )}
-      </div>
-      <div>
-        <label>Interesser:</label>
-        {editing ? (
-          interestOptions.map(option => (
-            <div key={option}>
-              <label>
-                <input
-                  type="checkbox"
-                  value={option}
-                  checked={profileData.interests.includes(option)}
-                  onChange={handleCheckboxChange}
-                />
-                {option}
-              </label>
-            </div>
-          ))
-        ) : (
-          <span>
-            {profileData.interests.length > 0
-              ? profileData.interests.join(", ")
-              : "Ikke angitt"}
-          </span>
-        )}
-      </div>
-      <div className={styles.buttonContainer}>
-        {editing ? (
-          <>
-            <button onClick={handleSaveChanges}>Lagre endringer</button>
-            <button onClick={handleCancelEditing}>Avbryt</button>
-          </>
-        ) : (
-          <button onClick={() => setEditing(true)}>Rediger profil</button>
-        )}
+        <h1>Min Profil</h1>
+        <div>
+          <label>Navn: </label>
+          <span>{profileData.name || " ..."}</span>
+        </div>
+        <div>
+          <label>E-post: </label>
+          <span>{profileData.email || " ..."}</span>
+        </div>
+        <div>
+          <label>Område (fylke): </label>
+          {editing ? (
+            <select
+              name="area"
+              value={profileData.area}
+              onChange={handleAreaChange}
+              required
+            >
+              <option value="">Velg fylke</option>
+              {areaOptions.map(area => (
+                <option key={area} value={area}>
+                  {area}
+                </option>
+              ))}
+            </select>
+          ) : (
+            <span>{profileData.area || "Ikke angitt"}</span>
+          )}
+        </div>
+        <div>
+          <label>Interesser: </label>
+          {editing ? (
+            interestOptions.map(option => (
+              <div key={option}>
+                <label>
+                  <input
+                    type="checkbox"
+                    value={option}
+                    checked={profileData.interests.includes(option)}
+                    onChange={handleCheckboxChange}
+                  />
+                  {option}
+                </label>
+              </div>
+            ))
+          ) : (
+            <span>
+              {profileData.interests.length > 0
+                ? profileData.interests.join(", ")
+                : "Ikke angitt"}
+            </span>
+          )}
+        </div>
+        <div className={styles.buttonContainer}>
+          {editing ? (
+            <>
+              <button onClick={handleSaveChanges}>Lagre endringer</button>
+              <button onClick={handleCancelEditing}>Avbryt</button>
+            </>
+          ) : (
+            <button onClick={() => setEditing(true)}>Rediger profil</button>
+          )}
+        </div>
       </div>
     </main>
   );
