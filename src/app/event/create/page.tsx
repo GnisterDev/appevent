@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import styles from "./styles.module.css";
 import EventTag from "@/components/event/create/tags";
 import SelectedUsers from "@/components/event/create/selectedUsers";
-import { CreateEventRequest } from "@/firebase/Event";
+import { CreateEventRequest, EVENT_GROUPS } from "@/firebase/Event";
 import { createEvent } from "@/firebase/DatabaseService";
 
 const CreateEventForm: React.FC = () => {
@@ -180,14 +180,27 @@ const CreateEventForm: React.FC = () => {
                 name="type"
                 value={formData.type}
                 onChange={handleChange}
+                className={styles.select}
                 required
               >
-                <option value="">Velg type</option>
-                <option value="party">Fest</option>
-                <option value="familyGathering">Familie samling</option>
-                <option value="festival">Festival</option>
-                <option value="charity">Veldidighet</option>
-                <option value="sportEvent">Sportsarrangement</option>
+                <option value="">Velg type arrangement</option>
+                {Object.entries(EVENT_GROUPS).map(([groupName, events]) => (
+                  <optgroup
+                    key={groupName}
+                    label={groupName}
+                    className={styles.group}
+                  >
+                    {events.map(eventType => (
+                      <option
+                        key={eventType}
+                        value={eventType}
+                        className={styles.option}
+                      >
+                        {eventType}
+                      </option>
+                    ))}
+                  </optgroup>
+                ))}
               </select>
             </div>
 
