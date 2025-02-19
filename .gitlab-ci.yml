@@ -1,4 +1,4 @@
-image: node:18
+image: node:18-slim
 
 cache:
   key: ${CI_COMMIT_REF_SLUG}
@@ -14,6 +14,7 @@ stages:
 setup:
   stage: setup
   script:
+    - docker system prune -af || true
     - npm ci
 
 lint:
@@ -23,9 +24,9 @@ lint:
   dependencies:
     - setup
   rules:
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH  # Runs on main branch
-    - if: $CI_COMMIT_BRANCH == "development"       # Runs on development branch
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event"  # Runs when an MR is created
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH # Runs on main branch
+    - if: $CI_COMMIT_BRANCH == "development" # Runs on development branch
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event" # Runs when an MR is created
 
 build:
   stage: build
@@ -38,6 +39,6 @@ build:
   dependencies:
     - setup
   rules:
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH  # Runs on main branch
-    - if: $CI_COMMIT_BRANCH == "development"       # Runs on development branch
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event"  # Runs when an MR is created
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH # Runs on main branch
+    - if: $CI_COMMIT_BRANCH == "development" # Runs on development branch
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event" # Runs when an MR is created
