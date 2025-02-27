@@ -21,9 +21,6 @@ install_dependencies:
   script:
     - echo "Installing dependencies..."
     - npm ci
-  artifacts:
-    paths:
-      - node_modules/
 
 # Quality Stage - Code formatting check
 prettier:
@@ -33,7 +30,7 @@ prettier:
     - install_dependencies
   script:
     - echo "Checking code formatting with Prettier..."
-    - npx prettier --yes --check "src/**/*.{ts,tsx,js,jsx,json,css,scss,md}"
+    - npx prettier --check "src/**/*.{ts,tsx,js,jsx,json,css,scss,md}"
 
 # Quality Stage - Linting
 lint:
@@ -89,3 +86,4 @@ build:
       - public/
       - package.json
       - next.config.js
+    expire_in: 1 week
