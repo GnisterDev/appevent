@@ -2,20 +2,7 @@ import React from "react";
 import styles from "./participantsInfo.module.css";
 import Participant from "./Participant";
 
-const participants = [
-  "navn1",
-  "navn2",
-  "navn3",
-  "navn1",
-  "navn2",
-  "navn1",
-  "navn2",
-  "navn1",
-  "navn2",
-  "navn1",
-  "navn2",
-  "navn3",
-];
+const participants = ["navn1"];
 
 const ParticipantsInfo = () => {
   return (
