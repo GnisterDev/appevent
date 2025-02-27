@@ -42,11 +42,6 @@ tests:
     - echo "Running Jest tests..."
     - npm test
   coverage: /All files[^|]*\|[^|]*\s+([\d\.]+)/
-  artifacts:
-    reports:
-      junit: junit.xml
-    paths:
-      - coverage/
 
 # Build Stage - Build the Next.js application
 build:
@@ -58,10 +53,3 @@ build:
   script:
     - echo "Building Next.js application..."
     - npm run build
-  artifacts:
-    paths:
-      - .next/
-      - public/
-      - package.json
-      - next.config.js
-    expire_in: 1 week
