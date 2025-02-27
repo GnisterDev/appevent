@@ -7,6 +7,9 @@ import EventInfo from "@/components/event/overview/EventInfo";
 import { useParams, useRouter } from "next/navigation";
 import { getEvent } from "@/firebase/DatabaseService";
 import { EventData } from "@/firebase/Event";
+import Participants from "@/components/event/overview/partcipant/ParticipantsInfo";
+import AddParticipant from "@/components/event/overview/partcipant/AddParticipant";
+import { isOrganizer } from "@/firebase/AuthService";
 
 const defaultText = {
   title: "Ingen tittel",
@@ -31,6 +34,8 @@ const EventView = () => {
     });
   }, [eventID]);
 
+  const isOrg = eventID ? isOrganizer(eventID) : false;
+
   return (
     <main className={styles.main}>
       <div className={styles.eventGrid}>
@@ -54,7 +59,11 @@ const EventView = () => {
           />
         </div>
         <div className={styles.eventActions}>
-          <Registration eventID={eventID || ""} />
+          <div className={styles.eventActionsInner}>
+            <Registration eventID={eventID || ""} />
+            {isOrg && <AddParticipant />}
+            <Participants />
+          </div>
         </div>
       </div>
     </main>

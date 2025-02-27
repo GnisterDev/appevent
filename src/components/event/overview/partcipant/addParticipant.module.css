@@ -1,0 +1,33 @@
+.module {
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  /* position: sticky; */
+  top: 5rem;
+  box-shadow: var(--box-shadow);
+  border: 1px solid var(--secondary);
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  font-weight: 600;
+  font-size: 1.5rem;
+  line-height: 1;
+  letter-spacing: 0;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.addButton {
+  background-color: var(--navbar);
+  box-shadow: var(--box-shadow);
+}
