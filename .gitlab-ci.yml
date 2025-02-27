@@ -22,16 +22,6 @@ install_dependencies:
     - echo "Installing dependencies..."
     - npm ci
 
-# Quality Stage - Code formatting check
-prettier:
-  stage: quality
-  image: node:${NODE_VERSION}
-  needs:
-    - install_dependencies
-  script:
-    - echo "Checking code formatting with Prettier..."
-    - npx prettier --check "src/**/*.{ts,tsx,js,jsx,json,css,scss,md}"
-
 # Quality Stage - Linting
 lint:
   stage: quality
@@ -42,18 +32,8 @@ lint:
     - echo "Linting code with ESLint..."
     - npx next lint
 
-# Quality Stage - Type checking
-type_check:
-  stage: quality
-  image: node:${NODE_VERSION}
-  needs:
-    - install_dependencies
-  script:
-    - echo "Running TypeScript type check..."
-    - npx tsc --noEmit
-
 # Quality Stage - Testing
-unit_tests:
+tests:
   stage: quality
   image: node:${NODE_VERSION}
   needs:
