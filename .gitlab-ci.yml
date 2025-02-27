@@ -1,54 +1,91 @@
-image: node:18
+stages:
+  - setup
+  - quality
+  - build
 
+variables:
+  NODE_VERSION: "22"
+  NPM_REGISTRY: "https://registry.npmjs.org"
+
+# Cache dependencies across jobs
 cache:
   key: ${CI_COMMIT_REF_SLUG}
   paths:
     - node_modules/
     - .next/cache/
 
-stages:
-  - setup
-  - quality
-  - build
-
-setup:
+# Setup Stage - Install dependencies
+install_dependencies:
   stage: setup
+  image: node:${NODE_VERSION}
   script:
+    - echo "Installing dependencies..."
     - npm ci
+  artifacts:
+    paths:
+      - node_modules/
 
+# Quality Stage - Code formatting check
+prettier:
+  stage: quality
+  image: node:${NODE_VERSION}
+  needs:
+    - install_dependencies
+  script:
+    - echo "Checking code formatting with Prettier..."
+    - npx prettier --yes --check "src/**/*.{ts,tsx,js,jsx,json,css,scss,md}"
+
+# Quality Stage - Linting
 lint:
   stage: quality
+  image: node:${NODE_VERSION}
+  needs:
+    - install_dependencies
   script:
-    - npm run lint
-  dependencies:
-    - setup
-  rules:
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH # Runs on main branch
-    - if: $CI_COMMIT_BRANCH == "development" # Runs on development branch
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event" # Runs when an MR is created
+    - echo "Linting code with ESLint..."
+    - npx next lint
 
-test:
+# Quality Stage - Type checking
+type_check:
   stage: quality
+  image: node:${NODE_VERSION}
+  needs:
+    - install_dependencies
   script:
-    - npm run test
-  dependencies:
-    - setup
-  rules:
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH # Runs on main branch
-    - if: $CI_COMMIT_BRANCH == "development" # Runs on development branch
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event" # Runs when an MR is created
+    - echo "Running TypeScript type check..."
+    - npx tsc --noEmit
 
+# Quality Stage - Testing
+unit_tests:
+  stage: quality
+  image: node:${NODE_VERSION}
+  needs:
+    - install_dependencies
+  script:
+    - echo "Running Jest tests..."
+    - npm test
+  coverage: /All files[^|]*\|[^|]*\s+([\d\.]+)/
+  artifacts:
+    reports:
+      junit: junit.xml
+    paths:
+      - coverage/
+
+# Build Stage - Build the Next.js application
 build:
   stage: build
+  image: node:${NODE_VERSION}
+  needs:
+    - lint
+    - prettier
+    - type_check
+    - unit_tests
   script:
+    - echo "Building Next.js application..."
     - npm run build
   artifacts:
     paths:
       - .next/
-    expire_in: 1 week
-  dependencies:
-    - setup
-  rules:
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH # Runs on main branch
-    - if: $CI_COMMIT_BRANCH == "development" # Runs on development branch
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event" # Runs when an MR is created
+      - public/
+      - package.json
+      - next.config.js
