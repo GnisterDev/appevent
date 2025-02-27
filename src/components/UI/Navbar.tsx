@@ -25,7 +25,7 @@ const Navbar = () => {
             <Link href="/" className={styles.link}>
               Mine Arrangement
             </Link>
-            <Link href="/" className={styles.link}>
+            <Link href="/calendar" className={styles.link}>
               Kalender
             </Link>
           </div>
