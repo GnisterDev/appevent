@@ -54,9 +54,7 @@ build:
   image: node:${NODE_VERSION}
   needs:
     - lint
-    - prettier
-    - type_check
-    - unit_tests
+    - tests
   script:
     - echo "Building Next.js application..."
     - npm run build
