@@ -15,7 +15,7 @@ cache:
     - .next/cache/
 
 # Setup Stage - Install dependencies
-install_dependencies:
+dependencies:
   stage: setup
   image: node:${NODE_VERSION}
   script:
@@ -27,7 +27,7 @@ lint:
   stage: quality
   image: node:${NODE_VERSION}
   needs:
-    - install_dependencies
+    - dependencies
   script:
     - echo "Linting code with ESLint..."
     - npx next lint
@@ -37,7 +37,7 @@ tests:
   stage: quality
   image: node:${NODE_VERSION}
   needs:
-    - install_dependencies
+    - dependencies
   script:
     - echo "Running Jest tests..."
     - npm test
@@ -47,7 +47,7 @@ tests:
 #   stage: quality
 #   image: node:${NODE_VERSION}
 #   needs:
-#     - install_dependencies
+#     - dependencies
 #   script:
 #     - echo "Running Prettier..."
 #     - npx prettier --check .
