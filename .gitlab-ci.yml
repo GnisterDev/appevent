@@ -43,6 +43,15 @@ tests:
     - npm test
   coverage: /All files[^|]*\|[^|]*\s+([\d\.]+)/
 
+# prettier:
+#   stage: quality
+#   image: node:${NODE_VERSION}
+#   needs:
+#     - install_dependencies
+#   script:
+#     - echo "Running Prettier..."
+#     - npx prettier --check .
+
 # Build Stage - Build the Next.js application
 build:
   stage: build
