@@ -2,7 +2,6 @@ import {
   collection,
   deleteDoc,
   doc,
-  DocumentReference,
   getDoc,
   setDoc,
   Timestamp,
@@ -44,9 +43,6 @@ export const createEvent = async (
   const startTimestamp = Timestamp.fromDate(
     new Date(`${data.startDate}T${data.startTime}`)
   );
-  const endTimestamp = Timestamp.fromDate(
-    new Date(`${data.endDate}T${data.endTime}`)
-  );
 
   const userID = getUserID();
   if (!userID) throw new Error("User ID is null");
@@ -56,7 +52,6 @@ export const createEvent = async (
   const eventData: EventData = {
     ...data,
     startTime: startTimestamp,
-    endTime: endTimestamp,
     organizer: organizerRef,
     participants: [organizerRef], // Initialize with organizer as first participant
     private: false, // Default to public event
@@ -78,22 +73,37 @@ export const deleteEvent = (eventID: string): Promise<void> => {
   return deleteDoc(doc(db, "events", eventID));
 };
 
+// export const getEvent = async (eventId: string): Promise<EventData> => {
+//   try {
+//     const eventRef = doc(db, "events", eventId);
+//     const eventSnap = await getDoc(eventRef);
+
+//     if (!eventSnap.exists()) return {} as EventData;
+
+//     const eventData = eventSnap.data() as EventData;
+
+//     console.log("Event data:", eventData);
+
+//     return {
+//       ...eventData,
+//       startTime: eventData.startTime,
+//       endTime: eventData.endTime as Timestamp,
+//       organizer: eventData.organizer as DocumentReference,
+//       participants: eventData.participants as DocumentReference[],
+//     };
+//   } catch (error) {
+//     console.error("Error fetching event:", error);
+//     throw error;
+//   }
+// };
+
 export const getEvent = async (eventId: string): Promise<EventData> => {
   try {
-    const eventRef = doc(db, "events", eventId);
-    const eventSnap = await getDoc(eventRef);
+    const eventDoc = await getDoc(doc(db, "events", eventId));
+    if (!eventDoc.exists()) throw new Error("Event not found");
 
-    if (!eventSnap.exists()) return {} as EventData;
-
-    const eventData = eventSnap.data() as EventData;
-
-    return {
-      ...eventData,
-      startTime: eventData.startTime as Timestamp,
-      endTime: eventData.endTime as Timestamp,
-      organizer: eventData.organizer as DocumentReference,
-      participants: eventData.participants as DocumentReference[],
-    };
+    const data = eventDoc.data() as EventData;
+    return data;
   } catch (error) {
     console.error("Error fetching event:", error);
     throw error;

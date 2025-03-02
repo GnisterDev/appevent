@@ -1,23 +1,38 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./participantsInfo.module.css";
 import Participant from "./Participant";
+import { ChevronDown } from "lucide-react";
 
-const participants = ["navn1"];
+interface ParticipantsInfoProps {
+  participants: string[];
+}
 
-const ParticipantsInfo = () => {
+const ParticipantsInfo: React.FC<ParticipantsInfoProps> = ({
+  participants,
+}) => {
+  const [show, setShow] = useState(true);
+
   return (
     <div className={styles.module}>
       <div className={styles.header}>
-        <h3 className={styles.title}>Påmeldte deltagere</h3>
+        <div className={styles.titleContainer}>
+          <ChevronDown
+            onClick={() => setShow(!show)}
+            className={`${styles.icon} ${show ? styles.open : ""}`}
+          />
+          <h3 className={styles.title}>Påmeldte deltagere</h3>
+        </div>
         <div className={styles.tag}>
-          <p>n total</p>
+          <p>{participants.length} total</p>
         </div>
       </div>
-      <div className={styles.participants}>
-        {participants.map((name, index) => (
-          <Participant key={index} name={name} />
-        ))}
-      </div>
+      {show && (
+        <div className={styles.participants}>
+          {participants.map((name, index) => (
+            <Participant key={index} name={name} />
+          ))}
+        </div>
+      )}
     </div>
   );
 };

@@ -13,17 +13,15 @@ export type CreateEventRequest = {
 };
 
 export type EventData = {
-  title: string;
-  description: string;
-  startTime: Timestamp;
-  endTime: Timestamp;
-  tags: string[];
-  location: string;
+  title: string; // Title of the event
+  description: string; // Description of the event
+  startTime: Timestamp; // Start time of the event
+  tags: string[]; // Tags for the event
+  location: string; // Location of the event
   organizer: DocumentReference;
   participants: DocumentReference[];
-  private: boolean;
-
-  type: string;
+  private: boolean; // If the event is private
+  type: string; // Type of the event
 };
 
 export const EVENT_GROUPS = {

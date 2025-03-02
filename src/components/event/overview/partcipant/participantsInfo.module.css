@@ -11,8 +11,29 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid var(--secondary);
+  align-items: center;
+}
+
+.titleContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.icon {
+  cursor: pointer;
+  transition: transform 0.3s;
+  border-radius: var(--radius);
+  width: 2rem;
+  height: 2rem;
+
+  &:hover {
+    background-color: var(--accent);
+  }
+}
+
+.open {
+  transform: rotate(180deg);
 }
 
 .title {
@@ -23,6 +44,8 @@
 }
 
 .participants {
+  margin-top: 1rem;
+  border-top: 1px solid var(--secondary);
   max-height: 20rem;
   overflow-y: scroll;
 }
@@ -37,6 +60,6 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-
-  width: fit-content;
+  min-width: max-content;
+  height: fit-content;
 }

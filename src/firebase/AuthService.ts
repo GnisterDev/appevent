@@ -84,9 +84,10 @@ export const isOrganizer = (eventID: string): boolean => {
 
   useEffect(() => {
     if (user) {
-      getEvent(eventID).then(({ organizer }) =>
-        setIsOrg(organizer.id === user.uid)
-      );
+      getEvent(eventID)
+        // .then(data => console.log(data))
+        .then(({ organizer }) => setIsOrg(organizer.id === user.uid))
+        .catch(() => setIsOrg(false));
     } else {
       setIsOrg(false);
     }
