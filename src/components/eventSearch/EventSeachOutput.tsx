@@ -1,10 +1,16 @@
 "use client";
 import styles from "./EventSearchOutput.module.css";
 import React from "react";
+import { useRouter } from "next/navigation";
 
 const EventSearchOutput = () => {
+  const router = useRouter();
+
   const handleItemClick = (e: React.MouseEvent<HTMLLIElement>) => {
     console.log("Trykket på:", e.currentTarget.textContent);
+
+    //DUMMY arrangement man blir kastet til
+    router.push("/event/9f38PGPK9RsyuCexqtFG");
   };
 
   return (
