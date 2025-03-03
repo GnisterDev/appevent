@@ -3,26 +3,33 @@
 import React, { useState } from "react";
 import styles from "./eventSearch.module.css";
 import { EVENT_GROUPS } from "@/firebase/Event";
+import { eventSearch } from "@/firebase/DatabaseService";
 
 const EventSearch = () => {
-  const [arrType, setArrType] = useState("");
-  const [dato, setDato] = useState("");
-  const [nøkkelord, setNøkkelord] = useState("");
-  const [sted, setSted] = useState("");
+  const [filter, setFilter] = useState({
+    arrType: "",
+    title: "",
+    location: "",
+    date: "",
+  });
 
-  const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setArrType(e.target.value);
-    console.log(e.target.value);
-    //const { name, value } = e.target;
-    //funksjon (e.target.value);
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    setFilter(prevFilter => ({
+      ...prevFilter,
+      [e.target.name]: e.target.value,
+    }));
+
+    eventSearch();
   };
 
   return (
     <div className={styles.søkefelt}>
       <h1> Søk etter et arrangement </h1>
 
-    {/*/ DROPDOWN FOR Å VELGE TYPE ARR */}
-      <select name="typeArr" value={arrType} onChange={handleChange} required>
+      {/*/ DROPDOWN FOR Å VELGE TYPE ARR */}
+      <select name="arrType" onChange={handleChange} required>
         <option value="">Velg type arrangement</option>
         {Object.entries(EVENT_GROUPS).map(([groupName, events]) => (
           <optgroup key={groupName} label={groupName} className={styles.group}>
@@ -35,11 +42,37 @@ const EventSearch = () => {
         ))}
       </select>
 
-      <input type="text" name="title" placeholder="Nøkkelord" />
-      <input type="text" name="location" placeholder="Sted" />
-      <input type="date" name="date" />
+      {/*/ NAVN PÅ ARRANGEMENT*/}
+      <input
+        type="text"
+        name="title"
+        placeholder="Nøkkelord"
+        value={filter.title}
+        onChange={handleChange}
+      />
 
-      <p>Valgt arrangementstype: {arrType || "Ingen valgt"}</p>
+      {/*/ LOKASJON*/}
+      <input
+        type="text"
+        name="location"
+        placeholder="Sted"
+        value={filter.location}
+        onChange={handleChange}
+      />
+
+      {/*/ DATO*/}
+      <input
+        type="date"
+        name="date"
+        value={filter.date}
+        onChange={handleChange}
+      />
+
+      {/* VISER VALGTE FILTER TESTING */}
+      <p>Valgt type: {filter.arrType || "Ingen valgt"}</p>
+      <p>Nøkkelord: {filter.title || "Ingen valgt"}</p>
+      <p>Sted: {filter.location || "Ingen valgt"}</p>
+      <p>Dato: {filter.date || "Ingen valgt"}</p>
     </div>
   );
 };

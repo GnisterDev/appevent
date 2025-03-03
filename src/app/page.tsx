@@ -36,8 +36,20 @@ export default function Home() {
   return (
     <div className={styles.page}>
       <main className={styles.main}>
-      <EventSearch/>
-      <button onClick={signOut}>Sign Out</button>
+        <button onClick={signOut}>Sign Out</button>
+
+        {/*SØKEFELT FOR ARRANGEMENTER*/}
+        <EventSearch />
+
+        {/*/LISTER OPP ARRANGEMENTER */}
+        <div>
+          <h3>Arrangementer</h3>
+          <ul>
+            <li>1</li>
+            <li>2</li>
+            <li>3</li>
+          </ul>
+        </div>
       </main>
     </div>
   );
