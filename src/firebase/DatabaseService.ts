@@ -99,3 +99,8 @@ export const getEvent = async (eventId: string): Promise<EventData> => {
     throw error;
   }
 };
+
+export const eventSearch = async () => {
+  //TODO
+  return [];
+};
