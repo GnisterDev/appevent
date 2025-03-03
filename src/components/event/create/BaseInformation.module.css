@@ -1,0 +1,47 @@
+.module {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--box-shadow);
+}
+
+.title {
+  font-size: 1rem;
+  line-height: 2.25rem;
+}
+
+.singleInputGroup {
+  margin-top: 1rem;
+  flex-grow: 1;
+}
+
+.doubleInputGroup {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+}
+
+.input {
+  width: 100%;
+  border: 0;
+  padding: 0.5rem;
+  border-radius: var(--radius);
+  color: var(--text-primary);
+  outline: 1px solid var(--border);
+
+  &:focus {
+    outline: 2px solid var(--primary);
+  }
+
+  &::placeholder {
+    color: var(--text-secondary);
+  }
+}
+
+.visibilityToggle {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+}
