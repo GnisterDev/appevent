@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import styles from "./event.module.css";
 import Registration from "@/components/event/overview/Registration";
 import EventInfo from "@/components/event/overview/EventInfo";
+// import CommentSection from "@/components/event/overview/comments/CommentSection";
 import { useParams, useRouter } from "next/navigation";
 import { getEvent } from "@/firebase/DatabaseService";
 import { EventData } from "@/firebase/Event";
