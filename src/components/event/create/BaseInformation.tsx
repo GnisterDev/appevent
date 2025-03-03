@@ -2,6 +2,7 @@ import React from "react";
 import styles from "./BaseInformation.module.css";
 import { Globe } from "lucide-react";
 import Switch from "@/components/Switch";
+import { EVENT_GROUPS } from "@/firebase/Event";
 
 const BaseInformation = () => {
   return (
@@ -27,7 +28,25 @@ const BaseInformation = () => {
       </div>
       <div className={styles.singleInputGroup}>
         <h3 className={styles.title}>Type</h3>
-        <input type="text" className={styles.input} />
+        <select className={styles.input} required>
+          {Object.entries(EVENT_GROUPS).map(([groupName, events]) => (
+            <optgroup
+              key={groupName}
+              label={groupName}
+              className={styles.group}
+            >
+              {events.map(eventType => (
+                <option
+                  key={eventType}
+                  value={eventType}
+                  className={styles.option}
+                >
+                  {eventType}
+                </option>
+              ))}
+            </optgroup>
+          ))}
+        </select>
       </div>
       <div className={styles.visibilityToggle}>
         <Switch on={true} onClick={() => {}} />
