@@ -101,7 +101,7 @@ export const getEvent = async (eventId: string): Promise<EventData> => {
 };
 
 export const eventSearch = async () => {
-  console.log("TEST#321");
+  console.log("BACKENDFUNKSJON KJØRER SUIIIII!!!");
   //TODO
   return [];
 };
