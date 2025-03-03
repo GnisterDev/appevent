@@ -1,4 +1,5 @@
 
+import React from "react";
 
   const EVENTS = [
     
@@ -13,19 +14,19 @@
   function EventList({events}) {
     return (
       <div>
-        <h1>"Liste over dine arrangementer</h1>
-        <EventListByRolle events={events} />
-        <EventListByRolle events={events}/>
-        <EventListByRolle events={events}/>
+        <h1>Liste over dine arrangementer</h1>
+        <EventListByRolle events={events}  rolle={'arrangør'} />
+        <EventListByRolle events={events}  rolle={'påmeldt'}/>
+        <EventListByRolle events={events}  rolle={'invitert'}/>
       </div>
     );
   }
 
-  function EventListByRolle({events}) {
+  function EventListByRolle({events ,rolle}) {
    
     return (
       <div>
-        <h3>"På disse arrangementene er du... "</h3>
+        <h3>På disse arrangementene er du {rolle} :</h3>
         <div>
           <EventRow/>
         </div>
@@ -35,7 +36,7 @@
   function EventRow( ) {
     return (
      <div>
-      "test"
+      test
      </div>
     );
   }
