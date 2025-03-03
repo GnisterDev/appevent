@@ -6,6 +6,7 @@ import { auth } from "../firebase/config";
 import { useLogout } from "../firebase/AuthService";
 
 import EventSearch from "@/components/eventSearch/EventSearch";
+import EventSearchOutput from "@/components/eventSearch/EventSeachOutput";
 
 export default function Home() {
   const router = useRouter();
@@ -41,15 +42,8 @@ export default function Home() {
         {/*SØKEFELT FOR ARRANGEMENTER*/}
         <EventSearch />
 
-        {/*/LISTER OPP ARRANGEMENTER */}
-        <div>
-          <h3>Arrangementer</h3>
-          <ul>
-            <li>1</li>
-            <li>2</li>
-            <li>3</li>
-          </ul>
-        </div>
+        {/*OUTPUT FOR ARR */}
+        <EventSearchOutput />
       </main>
     </div>
   );
