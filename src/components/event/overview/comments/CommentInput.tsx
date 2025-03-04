@@ -2,9 +2,7 @@
 
 import React from "react";
 import styles from "./commentInput.module.css";
-import Button from "@/components/Button";
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
 
 const CommentInput = ({
   onAddComment,
@@ -37,6 +35,7 @@ const CommentInput = ({
       <textarea
         value={text}
         onChange={e => setText(e.target.value)}
+        onKeyDown={handleKeyDown}
         placeholder="..."
       />
       <button onClick={handleSubmit}>Send</button>
