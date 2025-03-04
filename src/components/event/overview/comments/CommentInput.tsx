@@ -11,7 +11,6 @@ const CommentInput = ({
 }: {
   onAddComment: (comment: string, userID: string) => void;
 }) => {
-  const [comment, setComment] = useState("");
   const [userID, setUserID] = useState<string | null>(null);
   const [text, setText] = useState("");
 
@@ -21,17 +20,20 @@ const CommentInput = ({
   });
 
   const handleSubmit = () => {
-    if (!userID) {
-      alert("Du må være logget inn for å kommentere!");
-      return;
-    }
     if (text.trim() == "") return;
     onAddComment(text, userID);
     setText(""); // Nullstiller etter kommentaren er sendt
   };
 
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (event.key === "Enter" && !event.shiftKey) {
+      event.preventDefault();
+      handleSubmit();
+    }
+  };
+
   return (
-    <div>
+    <div className={styles.commentInput}>
       <textarea
         value={text}
         onChange={e => setText(e.target.value)}

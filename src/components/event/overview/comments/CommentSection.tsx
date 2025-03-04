@@ -7,32 +7,29 @@ import CommentInput from "./CommentInput";
 import CommentItem from "./CommentItem";
 
 interface Comment {
-  id: number;
   text: string;
-  userID: string;
+  user: string;
 }
 
 const CommentSection = () => {
   const [comments, setComments] = useState<Comment[]>([]);
 
   const handleAddComment = (text: string, userID: string) => {
-    const newComment = { id: comments.length + 1, text, userID };
-    setComments([...comments, newComment]);
+    if (!text.trim()) return;
+
+    const newComment = { user: userID, text: text };
+    setComments(prevComments => [...prevComments, newComment]);
   };
 
   return (
-    <div>
-      <CommentInput onAddComment={handleAddComment} />
+    <div className={styles.commentContainer}>
       <h3>Kommentarer</h3>
-      <div>
+      <div className={styles.commentWrapper}>
         {comments.map((comment, index) => (
-          <CommentItem
-            key={index}
-            text={comment.text}
-            userID={comment.userID}
-          />
+          <CommentItem key={index} text={comment.text} user={comment.user} />
         ))}
       </div>
+      <CommentInput onAddComment={handleAddComment} />
     </div>
   );
 };
