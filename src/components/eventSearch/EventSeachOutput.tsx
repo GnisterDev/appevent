@@ -21,6 +21,11 @@ const EventSearchOutput = () => {
         <li onClick={handleItemClick}> Frokost Hos Oscar</li>
         <li onClick={handleItemClick}> 17.mai</li>
         <li onClick={handleItemClick}> BEDPRESS </li>
+        {/*events.map(event => (
+            <li key={event.id} onClick={() => handleItemClick(event.id)}>
+              {event.title} - {event.location} ({event.date})
+          )</li>
+        */}
       </ul>
     </div>
   );
