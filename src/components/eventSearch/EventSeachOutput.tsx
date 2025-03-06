@@ -10,7 +10,7 @@ const EventSearchOutput = () => {
     console.log("Trykket på:", e.currentTarget.textContent);
 
     //DUMMY arrangement man blir kastet til
-    router.push("/event/9f38PGPK9RsyuCexqtFG");
+    router.push("/event/IvlQqr4hoYrGBBew2VR5");
   };
 
   return (
@@ -18,9 +18,9 @@ const EventSearchOutput = () => {
       {/*LISTER OPP ARRANGEMENTER */}
       <h3>Arrangementer</h3>
       <ul className={styles.arrangementOutput}>
-        <li onClick={handleItemClick}> FOTBALLFEST</li>
-        <li onClick={handleItemClick}>VINUNTZDAG</li>
-        <li onClick={handleItemClick}>BEDPRESS MED BURGERKING</li>
+        <li onClick={handleItemClick}> Frokost Hos Oscar</li>
+        <li onClick={handleItemClick}> 17.mai</li>
+        <li onClick={handleItemClick}> BEDPRESS </li>
       </ul>
     </div>
   );
