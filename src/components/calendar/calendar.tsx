@@ -16,8 +16,8 @@ import React from "react";
       <div>
         <h1>Liste over dine arrangementer</h1>
         <EventListByRolle events={events}  rolle={"arrangør"} />
-        <EventListByRolle events={events}  rolle={'påmeldt'}/>
-        <EventListByRolle events={events}  rolle={'invitert'}/>
+        <EventListByRolle events={events}  rolle={"påmeldt"}/>
+        <EventListByRolle events={events}  rolle={"invitert"}/>
       </div>
     );
   }
@@ -26,13 +26,12 @@ import React from "react";
     const rows = [];
    
     for (const event of events) {
-      
+      if(event.rolle == rolle){
         rows.push(
         <EventRow
         event={event}/>
       );
-      
-      
+      }
     }  
     
     return (
