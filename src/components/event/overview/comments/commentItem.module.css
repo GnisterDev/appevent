@@ -2,6 +2,9 @@
   padding: 1rem;
   border-bottom: 1px solid #ddd; /* Skiller kommentarer */
   margin-bottom: 10px; /* Mellomrom mellom kommentarer */
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
 }
 
 .commentUser {

@@ -7,19 +7,30 @@ import { useState, useEffect } from "react";
 const CommentInput = ({
   onAddComment,
 }: {
-  onAddComment: (comment: string, userID: string) => void;
+  onAddComment: (comment: string, userID: string, userName: string) => void;
 }) => {
   const [userID, setUserID] = useState<string | null>(null);
   const [text, setText] = useState("");
+  const [userName, setUserName] = useState<string | null>(null);
 
   useEffect(() => {
     const storedUserID = localStorage.getItem("userID");
+    const storedUserName = localStorage.getItem("userName");
     setUserID(storedUserID);
-  });
+    setUserName(storedUserName);
+  }, []);
 
   const handleSubmit = () => {
-    if (text.trim() == "") return;
-    onAddComment(text, userID);
+    if (text.trim() === "") return;
+
+    if (!userID || !userName) {
+      console.error("Feil: userID eller userName er ikke satt!");
+      return;
+    }
+
+    console.log("Sender kommentar:", text, "fra bruker:", userName);
+
+    onAddComment(text, userID, userName);
     setText(""); // Nullstiller etter kommentaren er sendt
   };
 

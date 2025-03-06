@@ -9,16 +9,20 @@ import CommentItem from "./CommentItem";
 interface Comment {
   text: string;
   user: string;
+  name: string;
 }
 
 const CommentSection = () => {
   const [comments, setComments] = useState<Comment[]>([]);
 
-  const handleAddComment = (text: string, userID: string) => {
+  const handleAddComment = (text: string, userID: string, userName: string) => {
     if (!text.trim()) return;
 
-    const newComment = { user: userID, text: text };
-    setComments(prevComments => [...prevComments, newComment]);
+    const newComment = { text, user: userID, name: userName };
+    setComments(prevComments => [
+      ...prevComments,
+      { text, user: userID, name: userName },
+    ]);
   };
 
   return (
@@ -26,7 +30,12 @@ const CommentSection = () => {
       <h3>Kommentarer</h3>
       <div className={styles.commentWrapper}>
         {comments.map((comment, index) => (
-          <CommentItem key={index} text={comment.text} user={comment.user} />
+          <CommentItem
+            key={index}
+            text={comment.text}
+            name={comment.name}
+            user={comment.user}
+          />
         ))}
       </div>
       <CommentInput onAddComment={handleAddComment} />
