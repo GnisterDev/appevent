@@ -1,34 +1,89 @@
-import React from "react";
-import styles from "./BaseInformation.module.css";
-import { Globe } from "lucide-react";
+import React, { useContext } from "react";
+import styles from "./CreateEventComponents.module.css";
+import { Globe, Lock } from "lucide-react";
 import Switch from "@/components/Switch";
-import { EVENT_GROUPS } from "@/firebase/Event";
+import { EVENT_GROUPS, EventContextInterface } from "@/firebase/Event";
+import { Timestamp } from "firebase/firestore";
 
-const BaseInformation = () => {
+const BaseInformation: React.FC<EventContextInterface> = ({ context }) => {
+  const { formData, updateFormData } = useContext(context);
+
+  const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newDate = new Date(e.target.value);
+    const currentTime = formData.startTime.toDate();
+
+    newDate.setHours(currentTime.getHours(), currentTime.getMinutes(), 0, 0);
+
+    updateFormData("startTime", Timestamp.fromDate(newDate));
+  };
+
+  const handleTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const [hours, minutes] = e.target.value.split(":").map(Number);
+    const currentDate = formData.startTime.toDate();
+
+    currentDate.setHours(hours, minutes, 0, 0);
+
+    updateFormData("startTime", Timestamp.fromDate(currentDate));
+  };
+
   return (
     <div className={styles.module}>
       <h2>Grunnleggende informasjon</h2>
       <div className={styles.singleInputGroup}>
         <h3 className={styles.title}>Arrangementstittel</h3>
-        <input type="text" className={styles.input} />
+        <input
+          type="text"
+          name="title"
+          className={styles.input}
+          value={formData.title}
+          onChange={e => updateFormData(e.target.name, e.target.value)}
+          required
+        />
       </div>
       <div className={styles.doubleInputGroup}>
         <div className={styles.singleInputGroup}>
           <h3 className={styles.title}>Dato</h3>
-          <input type="date" className={styles.input} />
+          <input
+            type="date"
+            name="date"
+            className={styles.input}
+            value={formData.startTime.toDate().toISOString().split("T")[0]}
+            onChange={handleDateChange}
+            required
+          />
         </div>
         <div className={styles.singleInputGroup}>
           <h3 className={styles.title}>Tidspunkt</h3>
-          <input type="time" className={styles.input} />
+          <input
+            type="time"
+            name="time"
+            className={styles.input}
+            value={formData.startTime.toDate().toTimeString().slice(0, 5)}
+            onChange={handleTimeChange}
+            required
+          />
         </div>
       </div>
       <div className={styles.singleInputGroup}>
         <h3 className={styles.title}>Sted</h3>
-        <input type="text" className={styles.input} />
+        <input
+          type="text"
+          name="location"
+          className={styles.input}
+          value={formData.location}
+          onChange={e => updateFormData(e.target.name, e.target.value)}
+          required
+        />
       </div>
       <div className={styles.singleInputGroup}>
         <h3 className={styles.title}>Type</h3>
-        <select className={styles.input} required>
+        <select
+          className={styles.input}
+          name="type"
+          value={formData.type}
+          onChange={e => updateFormData(e.target.name, e.target.value)}
+          required
+        >
           {Object.entries(EVENT_GROUPS).map(([groupName, events]) => (
             <optgroup
               key={groupName}
@@ -49,9 +104,22 @@ const BaseInformation = () => {
         </select>
       </div>
       <div className={styles.visibilityToggle}>
-        <Switch on={true} onClick={() => {}} />
-        <Globe size={"1.5rem"} />
-        <h3>Offentlig arrangement</h3>
+        <Switch
+          on={formData.private}
+          onClick={() => updateFormData("private", !formData.private)}
+        />
+        {!formData.private && (
+          <>
+            <Globe size={"1.5rem"} />
+            <h3>Offentlig arrangement</h3>
+          </>
+        )}
+        {formData.private && (
+          <>
+            <Lock size={"1.5rem"} />
+            <h3>Privat arrangement</h3>
+          </>
+        )}
       </div>
     </div>
   );

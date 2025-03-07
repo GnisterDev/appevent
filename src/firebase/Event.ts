@@ -5,11 +5,12 @@ export type CreateEventRequest = {
   description: string;
   startDate: string;
   startTime: string;
-  endDate: string;
-  endTime: string;
+  // endDate: string;
+  // endTime: string;
   location: string;
   type: string;
   tags: string[];
+  participants: DocumentReference[];
 };
 
 export type EventData = {
@@ -23,6 +24,15 @@ export type EventData = {
   private: boolean; // If the event is private
   type: string; // Type of the event
 };
+
+export type EventContext = React.Context<{
+  formData: EventData;
+  updateFormData: (field: string, value: unknown) => void;
+}>;
+
+export interface EventContextInterface {
+  context: EventContext;
+}
 
 export const EVENT_GROUPS = {
   "Faglige arrangementer": [

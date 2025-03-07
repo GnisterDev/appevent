@@ -7,6 +7,10 @@
 }
 
 .title {
+  display: flex;
+  flex-direction: row;
+  align-items: ce;
+  gap: 0.5rem;
   font-size: 1rem;
   line-height: 2.25rem;
 }
@@ -27,6 +31,7 @@
   border: 0;
   padding: 0.5rem;
   border-radius: var(--radius);
+  background-color: var(--navbar);
   color: var(--text-primary);
   outline: 1px solid var(--border);
 
@@ -44,4 +49,17 @@
   flex-direction: row;
   gap: 0.5rem;
   margin-top: 1.5rem;
+}
+
+.textarea {
+  resize: vertical;
+  min-height: 8rem;
+  font-family: inherit;
+  font-size: 0.8rem;
+}
+
+.tagGroup {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
 }
