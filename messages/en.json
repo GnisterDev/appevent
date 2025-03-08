@@ -1,0 +1,16 @@
+{
+  "HomePage": {
+    "subtext": "This is the",
+    "subtext-bold": "HOMEPAGE"
+  },
+  "Navbar": {
+    "appName": "Appevent",
+    "explore": "Explore",
+    "yourEvents": "Your Events",
+    "calendar": "Calendar",
+    "create": "Create Event"
+  },
+  "Global": {
+    "language": "English"
+  }
+}

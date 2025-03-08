@@ -6,10 +6,12 @@ import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { auth } from "../firebase/config";
 import { useLogout } from "../firebase/AuthService";
+import { useTranslations } from "next-intl";
 
 export default function Home() {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
+  const t = useTranslations("HomePage");
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(user => {
@@ -45,7 +47,8 @@ export default function Home() {
           priority
         />
         <div>
-          This is the <code>HOMEPAGE</code>
+          {t("subtext")}
+          <code>{t("subtext-bold")}</code>
         </div>
         <button onClick={signOut}>Sign Out</button>
       </main>

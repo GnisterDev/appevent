@@ -1,0 +1,16 @@
+{
+  "HomePage": {
+    "subtext": "Dette er",
+    "subtext-bold": "HJEMMESIDEN"
+  },
+  "Navbar": {
+    "appName": "Appevent",
+    "explore": "Utforsk",
+    "yourEvents": "Dine Arranement",
+    "calendar": "Kalender",
+    "create": "Opprett arrangement"
+  },
+  "Global": {
+    "language": "Norsk"
+  }
+}
