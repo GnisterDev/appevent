@@ -7,6 +7,7 @@ import React, { useEffect, useState } from "react";
 import { auth } from "../firebase/config";
 import { useLogout } from "../firebase/AuthService";
 import { useTranslations } from "next-intl";
+import Loading from "@/components/Loading";
 
 export default function Home() {
   const router = useRouter();
@@ -26,7 +27,7 @@ export default function Home() {
   }, []);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
 
   const signOut = async () => {
@@ -50,7 +51,7 @@ export default function Home() {
           {t("subtext")}
           <code>{t("subtext-bold")}</code>
         </div>
-        <button onClick={signOut}>Sign Out</button>
+        <button onClick={signOut}>{t("signOut")}</button>
       </main>
     </div>
   );

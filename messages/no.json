@@ -1,7 +1,8 @@
 {
   "HomePage": {
     "subtext": "Dette er",
-    "subtext-bold": "HJEMMESIDEN"
+    "subtext-bold": "HJEMMESIDEN",
+    "signOut": "Logg Ut"
   },
   "Navbar": {
     "appName": "Appevent",
