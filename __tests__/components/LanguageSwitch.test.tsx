@@ -64,11 +64,11 @@ describe("LanguageSwitch", () => {
   });
 
   it("defaults to no when no cookie", () => {
-    (Cookies.get as jest.Mock).mockReturnValue(undefined); // Simulate no cookie set
+    (Cookies.get as jest.Mock).mockReturnValue(undefined);
 
     const { getByText } = render(<LanguageSwitch />);
 
-    expect(Cookies.get).toHaveBeenCalledWith("locale"); // Ensure it's checking the cookie
-    expect(getByText("Language")).toBeInTheDocument(); // Ensure component still renders
+    expect(Cookies.get).toHaveBeenCalledWith("locale");
+    expect(getByText("Language")).toBeInTheDocument();
   });
 });
