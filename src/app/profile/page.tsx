@@ -3,8 +3,7 @@ import React from "react";
 import { useAuth } from "@/firebase/AuthService";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
-import { LoaderCircle } from "lucide-react";
-import styles from "./profile.module.css";
+import Loading from "@/components/Loading";
 
 const ForwardToProfile = () => {
   const { userID } = useAuth();
@@ -16,11 +15,7 @@ const ForwardToProfile = () => {
     }
   }, [userID, router]);
 
-  return (
-    <div className={styles.container}>
-      <LoaderCircle size={"5rem"} />
-    </div>
-  );
+  return <Loading />;
 };
 
 export default ForwardToProfile;
