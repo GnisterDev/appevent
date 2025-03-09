@@ -18,5 +18,23 @@
     "title": "404 - Resource not found",
     "description": "Sorry, the event you are looking for does not exist.",
     "backButton": "Back to homepage"
+  },
+  "Auth": {
+    "SignIn": {
+      "loginButton": "Login",
+      "noAccount": "Don't have a user",
+      "title": "Login!"
+    },
+    "SignUp": {
+      "alreadyHaveAccount": "Already a user",
+      "choosePassword": "Select Password",
+      "fullName": "Full Name",
+      "registerButton": "Register",
+      "repeatPassword": "Repeat password",
+      "title": "Sign up!"
+    },
+    "email": "Email",
+    "name": "Name",
+    "password": "Password"
   }
 }
