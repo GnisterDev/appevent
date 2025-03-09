@@ -12,5 +12,10 @@
   },
   "Global": {
     "language": "Norsk"
+  },
+  "NotFound": {
+    "title": "404 - Fant ikke ressursen",
+    "description": "Beklager, arrangementet du leter etter eksisterer ikke.",
+    "backButton": "Tilbake til hjemmeside"
   }
 }

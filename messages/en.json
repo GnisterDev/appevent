@@ -12,5 +12,10 @@
   },
   "Global": {
     "language": "English"
+  },
+  "NotFound": {
+    "title": "404 - Resource not found",
+    "description": "Sorry, the event you are looking for does not exist.",
+    "backButton": "Back to homepage"
   }
 }
