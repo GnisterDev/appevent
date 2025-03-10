@@ -100,16 +100,15 @@ const EventSearch = () => {
         value={filter.date}
         onChange={handleChange}
       />
-      
+
       <br></br>
       {/*Søkeknapp*/}
-      <button onClick={handleSearch} className={styles.søkeknapp}>
+      <button onClick={handleSearch} className={styles.button}>
         Søk
       </button>
 
       {/*Nullstille filter*/}
-      <button onClick={handleClearFilter} className={styles.søkeknapp}>
-        {" "}
+      <button onClick={handleClearFilter} className={styles.button}>
         Fjern filter
       </button>
 
@@ -143,6 +142,7 @@ const EventSearch = () => {
         ))}
       </ul>
     </div>
+    
   );
 };
 

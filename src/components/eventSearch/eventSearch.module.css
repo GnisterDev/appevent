@@ -2,15 +2,16 @@
   background-color: beige;
 }
 
-.søkeknapp {
-  padding-left: 30px;
-  padding-right: 30px;
+.button {
+  margin: 10px 5px 0px 0px;
+  padding: 10px 40px 10px 40px;
+
   border-radius: 5px;
   border: solid black 0.5px;
   cursor: pointer;
 }
 
-.søkeknapp:hover {
+.button:hover {
   background-color: gray;
 }
 /*Hele output listen*/
