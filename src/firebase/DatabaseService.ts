@@ -2,6 +2,7 @@ import {
   collection,
   deleteDoc,
   doc,
+  DocumentReference,
   getDoc,
   setDoc,
   Timestamp,
@@ -106,6 +107,33 @@ export const getEvent = async (eventId: string): Promise<EventData> => {
     return data;
   } catch (error) {
     console.error("Error fetching event:", error);
+    throw error;
+  }
+};
+
+export const getAllParticipants = async (eventID: string): Promise<User[]> => {
+  try {
+    const eventSnap = await getDoc(doc(db, "events", eventID));
+    if (!eventSnap.exists())
+      throw new Error(`Event with ID ${eventID} not found`);
+
+    const participantsRef: DocumentReference[] =
+      eventSnap.data().participants || [];
+
+    if (!participantsRef.length) return [];
+
+    const participantsPromises = participantsRef.map(
+      async (userRef: DocumentReference) => {
+        const userSnap = await getDoc(userRef);
+        if (!userSnap.exists()) return null;
+        return { ...userSnap.data(), userID: userSnap.id } as User;
+      }
+    );
+
+    const participants = await Promise.all(participantsPromises);
+    return participants.filter(participant => participant !== null);
+  } catch (error) {
+    console.log(`Error fetching participants ${error}`);
     throw error;
   }
 };

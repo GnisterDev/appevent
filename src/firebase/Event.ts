@@ -25,13 +25,13 @@ export type EventData = {
   type: string; // Type of the event
 };
 
-export type EventContext = React.Context<{
+export type EventContext = {
   formData: EventData;
   updateFormData: (field: string, value: unknown) => void;
-}>;
+};
 
 export interface EventContextInterface {
-  context: EventContext;
+  context: React.Context<EventContext>;
 }
 
 export const EVENT_GROUPS = {

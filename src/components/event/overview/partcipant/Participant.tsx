@@ -2,12 +2,15 @@ import { UserMinus } from "lucide-react";
 import React from "react";
 import styles from "./participant.module.css";
 import { useEventContext } from "@/app/event/[id]/page";
+import { useRouter } from "next/navigation";
 interface ParticipantProps {
   name: string;
+  userID: string;
 }
 
-const Participant: React.FC<ParticipantProps> = ({ name }) => {
+const Participant: React.FC<ParticipantProps> = ({ name, userID }) => {
   const { eventID } = useEventContext();
+  const router = useRouter();
 
   const handleRemoveParticipant = () => {
     if (!eventID) return;
@@ -16,7 +19,12 @@ const Participant: React.FC<ParticipantProps> = ({ name }) => {
 
   return (
     <div className={styles.participant}>
-      <p className={styles.name}>{name}</p>
+      <p
+        className={styles.name}
+        onClick={() => router.push(`/profile/${userID}`)}
+      >
+        {name}
+      </p>
       <div
         className={styles.icon}
         onClick={handleRemoveParticipant}

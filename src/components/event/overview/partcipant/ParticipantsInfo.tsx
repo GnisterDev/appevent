@@ -2,9 +2,10 @@ import React, { useState } from "react";
 import styles from "./participantsInfo.module.css";
 import Participant from "./Participant";
 import { ChevronDown } from "lucide-react";
+import { User } from "@/firebase/User";
 
 interface ParticipantsInfoProps {
-  participants: string[];
+  participants: User[];
 }
 
 const ParticipantsInfo: React.FC<ParticipantsInfoProps> = ({
@@ -28,8 +29,8 @@ const ParticipantsInfo: React.FC<ParticipantsInfoProps> = ({
       </div>
       {show && (
         <div className={styles.participants}>
-          {participants.map((name, index) => (
-            <Participant key={index} name={name} />
+          {participants.map((user, index) => (
+            <Participant key={index} name={user.name} userID={user.userID} />
           ))}
         </div>
       )}

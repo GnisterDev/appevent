@@ -1,26 +1,25 @@
 "use client";
 
-import React from "react";
+import React, { useContext } from "react";
 import styles from "./registration.module.css";
 import Button from "@/components/Button";
 import { Pencil, Share2, Ticket, Trash } from "lucide-react";
-import { isAdministrator, isOrganizer } from "@/firebase/AuthService";
+import { isAdministrator } from "@/firebase/AuthService";
 import { deleteEvent } from "@/firebase/DatabaseService";
 import { useRouter } from "next/navigation";
+import { EventContext } from "@/app/event/[id]/page";
 
 const info = {
   Påmeldingsfirst: "{date}",
   "Ledige plasser": "{reg} av {total}",
 };
 
-interface RegistrationProps {
-  eventID: string;
-}
-
-const Registration: React.FC<RegistrationProps> = ({ eventID }) => {
+const Registration: React.FC = () => {
   const router = useRouter();
   const isAdmin = isAdministrator();
-  const isOrg = isOrganizer(eventID);
+  const { eventID, isOrg } = useContext(EventContext);
+
+  if (!eventID) return;
 
   return (
     <div className={styles.module}>
