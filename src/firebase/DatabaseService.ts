@@ -11,7 +11,7 @@ import {
 import { db } from "./config";
 import { User } from "./User";
 import { CreateEventRequest, EventData } from "./Event";
-import { getUserID } from "./AuthService";
+import { getUserID, useAuth } from "./AuthService";
 
 export const createUser = (user: User): Promise<void> => {
   return setDoc(doc(db, "users", user.userID), user);
@@ -107,6 +107,42 @@ export const getEvent = async (eventId: string): Promise<EventData> => {
     return data;
   } catch (error) {
     console.error("Error fetching event:", error);
+    throw error;
+  }
+};
+
+export const isUserParticipant = async (
+  eventID: string,
+  userID: string
+): Promise<boolean> => {
+  try {
+    const eventRef = doc(db, "events", eventID);
+    const eventSnap = await getDoc(eventRef);
+
+    if (!eventSnap.exists())
+      throw new Error(`Event with ID ${eventID} not found`);
+
+    const eventData = eventSnap.data();
+    const participantRefs = eventData.participants || [];
+
+    return participantRefs.some((userRef: DocumentReference) => {
+      return userRef.id === userID || userRef.path.endsWith(`/users/${userID}`);
+    });
+  } catch (error) {
+    console.error("Error checking participant status:", error);
+    throw error;
+  }
+};
+
+export const isCurrentUserParticipant = async (
+  eventID: string
+): Promise<boolean> => {
+  try {
+    const { userID } = useAuth();
+    if (!userID) return false;
+    return await isUserParticipant(eventID, userID);
+  } catch (error) {
+    console.error("Error checking if current user is participant:", error);
     throw error;
   }
 };

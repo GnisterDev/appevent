@@ -4,7 +4,11 @@ import styles from "./event.module.css";
 import Registration from "@/components/event/overview/Registration";
 import EventInfo from "@/components/event/overview/EventInfo";
 import { useParams, useRouter } from "next/navigation";
-import { getAllParticipants, getEvent } from "@/firebase/DatabaseService";
+import {
+  getAllParticipants,
+  getEvent,
+  isCurrentUserParticipant,
+} from "@/firebase/DatabaseService";
 import { EventData } from "@/firebase/Event";
 import Participants from "@/components/event/overview/partcipant/ParticipantsInfo";
 import { createContext, useContext } from "react";
@@ -67,6 +71,8 @@ const EventView = () => {
     );
   if (error) router.push("/404");
   if (!eventData) return;
+  if (eventData.private && !isCurrentUserParticipant(eventID))
+    router.push("/404");
 
   return (
     <EventContext.Provider value={{ eventID, eventData, isOrg }}>
