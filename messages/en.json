@@ -12,7 +12,7 @@
     "create": "Create Event"
   },
   "Global": {
-    "language": "English"
+    "otherLanguage": "Norsk"
   },
   "NotFound": {
     "title": "404 - Resource not found",

@@ -12,7 +12,7 @@
     "create": "Opprett arrangement"
   },
   "Global": {
-    "language": "Norsk"
+    "otherLanguage": "English"
   },
   "NotFound": {
     "title": "404 - Fant ikke ressursen",

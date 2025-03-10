@@ -25,7 +25,7 @@ const LanguageSwitch = () => {
   return (
     <div className={styles.module} onClick={handleLanguageSwitch}>
       <Globe size={"1.25rem"} />
-      {t("language")}
+      {t("otherLanguage")}
     </div>
   );
 };
