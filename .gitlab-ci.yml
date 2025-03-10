@@ -40,7 +40,7 @@ tests:
     - install_dependencies
   script:
     - echo "Running Jest tests..."
-    - npm test
+    - npm run test
   coverage: /All files[^|]*\|[^|]*\s+([\d\.]+)/
 
 # prettier:
