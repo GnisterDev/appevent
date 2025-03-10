@@ -53,10 +53,10 @@ const EventView = () => {
             location={event?.location ? event.location : defaultText.location}
             participants={event?.participants ? event.participants.length : 0}
           />
+          <CommentSection />
         </div>
         <div className={styles.eventActions}>
           <Registration eventID={eventID || ""} />
-          <CommentSection />
         </div>
       </div>
     </main>
