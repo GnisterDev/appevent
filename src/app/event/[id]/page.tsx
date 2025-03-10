@@ -8,7 +8,6 @@ import CommentSection from "@/components/event/overview/comments/CommentSection"
 import { useParams, useRouter } from "next/navigation";
 import { getEvent } from "@/firebase/DatabaseService";
 import { EventData } from "@/firebase/Event";
-import { Comme } from "next/font/google";
 
 const defaultText = {
   title: "Ingen tittel",

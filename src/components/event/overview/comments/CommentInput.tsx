@@ -3,22 +3,29 @@
 import React from "react";
 import styles from "./commentInput.module.css";
 import { useState, useEffect } from "react";
+import { useAuth } from "@/firebase/AuthService";
+import { getUser } from "@/firebase/DatabaseService";
 
 const CommentInput = ({
   onAddComment,
 }: {
   onAddComment: (comment: string, userID: string, userName: string) => void;
 }) => {
-  const [userID, setUserID] = useState<string | null>(null);
   const [text, setText] = useState("");
   const [userName, setUserName] = useState<string | null>(null);
 
+  const { userID } = useAuth();
+
   useEffect(() => {
-    const storedUserID = localStorage.getItem("userID");
-    const storedUserName = localStorage.getItem("userName");
-    setUserID(storedUserID);
-    setUserName(storedUserName);
-  }, []);
+    if (!userID) return;
+    getUser(userID)
+      .then(user => {
+        setUserName(user.name);
+      })
+      .catch(error => {
+        console.error("Failed to fetch user:", error);
+      });
+  }, [userID]);
 
   const handleSubmit = () => {
     if (text.trim() === "") return;
