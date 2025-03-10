@@ -1,28 +1,41 @@
-.søkefelt{
-    background-color: beige;
-    
+.søkefelt {
+  background-color: beige;
 }
 
-.søkeknapp{
-    padding-left: 30px;
-    padding-right: 30px;
-    border-radius: 5px;
-    border: solid black 0.5px;
-    cursor: pointer;
+.søkeknapp {
+  padding-left: 30px;
+  padding-right: 30px;
+  border-radius: 5px;
+  border: solid black 0.5px;
+  cursor: pointer;
 }
 
-.søkeknapp:hover{
-    background-color: gray;
-  }
-
-.outputEvent{
-    border: solid black 1px;
-    background-color: aqua;
-    margin-top: 10px;
+.søkeknapp:hover {
+  background-color: gray;
+}
+/*Hele output listen*/
+.outputListe {
+  list-style: none;
+  border-top: solid black 1px;
+  margin-top: 20px;
 }
 
-.outputListe{
-    list-style: none;
-    border-top: solid black 1px;
-    margin-top: 20px;
+/*Et liste element (et arrangement) */
+.outputEvent {
+  border: solid black 1px;
+  border-radius: 8px;
+  background-color: aqua;
+  margin-top: 10px;
+  overflow: auto;
+  padding: 0px 10px 20px 5px;
+}
+
+/*Hver enkelt tag*/
+.outputTag {
+  margin-right: 10px;
+  padding: 2px 10px 2px 10px;
+
+  border: solid black 1px;
+  background-color: gray;
+  border-radius: 5px;
 }

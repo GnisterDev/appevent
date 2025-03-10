@@ -6,7 +6,7 @@ import { auth } from "../firebase/config";
 import { useLogout } from "../firebase/AuthService";
 
 import EventSearch from "@/components/eventSearch/EventSearch";
-import EventSearchOutput from "@/components/eventSearch/EventSeachOutput";
+
 
 export default function Home() {
   const router = useRouter();

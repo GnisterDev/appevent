@@ -6,14 +6,20 @@ import { EVENT_GROUPS } from "@/firebase/Event";
 import { eventSearch } from "@/firebase/DatabaseService";
 import { Search } from "@/firebase/Search";
 import { EventData } from "@/firebase/Event";
+import { useRouter } from "next/navigation";
 
 const EventSearch = () => {
+  const router = useRouter();
+
+  //Filter fra start
   const [filter, setFilter] = useState<Search>({
     type: "",
     name: "",
     location: "",
     date: "",
   });
+
+  //Nullstille filter
 
   //Oppdaterer feltet som endres. Dynamisk state oppdatering
   const handleChange = (
@@ -34,6 +40,14 @@ const EventSearch = () => {
     const searchResults = await eventSearch(filter);
     setResults(searchResults);
     console.log(searchResults);
+  };
+
+  //Når et output arrangement trykkes på, kan være undefined
+  const handleClick = (clickedEventId: string | undefined) => {
+    console.log(clickedEventId);
+    if (clickedEventId) {
+      router.push(`/event/${encodeURIComponent(clickedEventId)}`);
+    }
   };
 
   return (
@@ -88,13 +102,29 @@ const EventSearch = () => {
       {/*OUTPUT FOR ARR */}
       <ul className={styles.outputListe}>
         {results.map(event => (
-          <li key={event.id} className={styles.outputEvent}>
+          //Hvert enkelt arrangement
+          <li
+            key={event.id}
+            className={styles.outputEvent}
+            onClick={() => handleClick(event.id)}
+          >
             {/*Tittel på arr og dato for start */}
             <h2>
-              {event.title}{" "}
-              {new Date(event.startTime.toDate()).toLocaleDateString()}{" "}
+              {event.title}
+              {" ("}
+              {new Date(event.startTime.toDate()).toLocaleDateString()}
+              {")"}
             </h2>
-            <p> {event.tags}</p>
+
+            {/*Mapper hver enkelt tag fra eventtag (array)*/}
+            {event.tags.map((tag, index) => (
+              <span key={index} className={styles.outputTag}>
+                {tag}
+              </span>
+            ))}
+
+            {/*Beskrivelse*/}
+            <p>{event.location}</p>
           </li>
         ))}
       </ul>
