@@ -1,0 +1,40 @@
+{
+  "HomePage": {
+    "subtext": "Dette er",
+    "subtext-bold": "HJEMMESIDEN",
+    "signOut": "Logg Ut"
+  },
+  "Navbar": {
+    "appName": "Appevent",
+    "explore": "Utforsk",
+    "yourEvents": "Dine Arranement",
+    "calendar": "Kalender",
+    "create": "Opprett arrangement"
+  },
+  "Global": {
+    "otherLanguage": "English"
+  },
+  "NotFound": {
+    "title": "404 - Fant ikke ressursen",
+    "description": "Beklager, arrangementet du leter etter eksisterer ikke.",
+    "backButton": "Tilbake til hjemmeside"
+  },
+  "Auth": {
+    "SignIn": {
+      "title": "Logg inn!",
+      "loginButton": "Logg inn",
+      "noAccount": "Har ikke bruker"
+    },
+    "SignUp": {
+      "title": "Registrer deg!",
+      "fullName": "Fult navn",
+      "choosePassword": "Velg passord",
+      "repeatPassword": "Gjenta passord",
+      "registerButton": "Registrer",
+      "alreadyHaveAccount": "Har allerede bruker"
+    },
+    "name": "Name",
+    "email": "Email",
+    "password": "Passord"
+  }
+}

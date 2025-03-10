@@ -5,9 +5,11 @@ import styles from "./signIn.module.css";
 import { useRouter } from "next/navigation";
 import { useLogin } from "@/firebase/AuthService";
 import { LoginRequest } from "@/firebase/User";
+import { useTranslations } from "next-intl";
 
 const SignIn = () => {
   const router = useRouter();
+  const t = useTranslations("Auth");
 
   //Brukernavn og passord
   const [formData, setFormData] = useState<LoginRequest>({
@@ -30,9 +32,9 @@ const SignIn = () => {
   return (
     <div className={styles.container}>
       <form className={styles.form} onSubmit={handleSubmit}>
-        <h1> Logg inn! </h1>
+        <h1>{t("SignIn.title")}</h1>
         <br></br>
-        <label> Email </label>
+        <label>{t("email")}</label>
         <input
           type="email"
           name="email"
@@ -41,7 +43,7 @@ const SignIn = () => {
           placeholder="Email"
         />
         <br></br>
-        <label> Passord </label>
+        <label>{t("password")}</label>
         <input
           type="password"
           name="password"
@@ -51,11 +53,11 @@ const SignIn = () => {
         />
 
         <button type="submit" className="registrerButton">
-          Logg inn
+          {t("SignIn.loginButton")}
         </button>
 
         <button type="button" onClick={() => router.push("/signup")}>
-          Har ikke bruker
+          {t("SignIn.noAccount")}
         </button>
       </form>
     </div>

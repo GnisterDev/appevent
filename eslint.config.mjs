@@ -13,6 +13,13 @@ export default [
   {
     rules: {
       "react/prop-types": "off",
+      "react/jsx-no-literals": "error",
+    },
+  },
+  {
+    files: ["**/__tests__/**/*.{js,mjs,cjs,ts,jsx,tsx}"],
+    rules: {
+      "react/jsx-no-literals": "off",
     },
   },
 ];

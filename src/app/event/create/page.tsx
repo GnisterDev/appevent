@@ -102,7 +102,7 @@ const CreateEventForm: React.FC = () => {
       <div className={styles.wrapper}>
         <div className={styles.container}>
           <form className="create-event-form" onSubmit={handleSubmit}>
-            <h2> Create Event</h2>
+            <h2>Lag Arrangement</h2>
 
             <div className="form-group">
               <label htmlFor="title">Navn på arrangement: </label>
