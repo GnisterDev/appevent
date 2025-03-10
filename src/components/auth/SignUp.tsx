@@ -5,9 +5,11 @@ import styles from "./signIn.module.css";
 import { useRouter } from "next/navigation";
 import { useSignup } from "@/firebase/AuthService";
 import { SignupRequest } from "@/firebase/User";
+import { useTranslations } from "next-intl";
 
 const SignInForm = () => {
   const router = useRouter();
+  const t = useTranslations("Auth");
 
   //Brukernavn og passord
   const [formData, setFormData] = useState<SignupRequest>({
@@ -31,9 +33,9 @@ const SignInForm = () => {
   return (
     <div className={styles.container}>
       <form className={styles.form} onSubmit={handleSubmit}>
-        <h1> Registrer deg! </h1>
+        <h1>{t("SignUp.title")}</h1>
         <br></br>
-        <label>Fult navn</label>
+        <label>{t("SignUp.fullName")}</label>
         <input
           type="text"
           name="name"
@@ -44,7 +46,7 @@ const SignInForm = () => {
 
         <br></br>
 
-        <label> Email </label>
+        <label>{t("email")}</label>
         <input
           type="email"
           name="email"
@@ -53,7 +55,7 @@ const SignInForm = () => {
           placeholder="Email"
         />
         <br></br>
-        <label> Velg passord </label>
+        <label>{t("SignUp.choosePassword")}</label>
         <input
           type="password"
           name="password"
@@ -62,14 +64,14 @@ const SignInForm = () => {
           placeholder="Passord"
         />
         <br></br>
-        <label> Gjenta passord </label>
+        <label>{t("SignUp.repeatPassword")}</label>
         <input type="password" placeholder="Passord" />
         <button type="submit" className="registrerButton">
-          Registrer
+          {t("SignUp.registerButton")}
         </button>
 
         <button type="button" onClick={() => router.push("/signin")}>
-          Har allerede bruker
+          {t("SignUp.alreadyHaveAccount")}
         </button>
       </form>
     </div>
