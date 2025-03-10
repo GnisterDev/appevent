@@ -5,6 +5,7 @@ import styles from "./eventSearch.module.css";
 import { EVENT_GROUPS } from "@/firebase/Event";
 import { eventSearch } from "@/firebase/DatabaseService";
 import { Search } from "@/firebase/Search";
+import { EventData } from "@/firebase/Event";
 
 const EventSearch = () => {
   const [filter, setFilter] = useState<Search>({
@@ -14,6 +15,7 @@ const EventSearch = () => {
     date: "",
   });
 
+  //Oppdaterer feltet som endres. Dynamisk state oppdatering
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
@@ -24,9 +26,14 @@ const EventSearch = () => {
     }));
   };
 
+  //Lagrer resultat fra funksjonskall
+  const [results, setResults] = useState<EventData[]>([]);
+
+  //Når søkknapp trykkes på
   const handleSearch = async () => {
-    const results = await eventSearch(filter);
-    console.log(results);
+    const searchResults = await eventSearch(filter);
+    setResults(searchResults);
+    console.log(searchResults);
   };
 
   return (
@@ -73,16 +80,24 @@ const EventSearch = () => {
         onChange={handleChange}
       />
 
-      {/* VISER VALGTE FILTER TESTING */}
-      <p>Valgt type: {filter.type || "Ingen valgt"}</p>
-      <p>Nøkkelord: {filter.name || "Ingen valgt"}</p>
-      <p>Sted: {filter.location || "Ingen valgt"}</p>
-      <p>Dato: {filter.date || "Ingen valgt"}</p>
-
       {/*Søkeknaoo*/}
       <button onClick={handleSearch} className={styles.søkeknapp}>
         Søk
       </button>
+
+      {/*OUTPUT FOR ARR */}
+      <ul className={styles.outputListe}>
+        {results.map(event => (
+          <li key={event.id} className={styles.outputEvent}>
+            {/*Tittel på arr og dato for start */}
+            <h2>
+              {event.title}{" "}
+              {new Date(event.startTime.toDate()).toLocaleDateString()}{" "}
+            </h2>
+            <p> {event.tags}</p>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 };

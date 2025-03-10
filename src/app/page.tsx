@@ -40,11 +40,6 @@ export default function Home() {
       <main className={styles.main}>
         {/*SØKEFELT FOR ARRANGEMENTER*/}
         <EventSearch />
-
-        {/*OUTPUT FOR ARR */}
-        {["FEGFEGFEFEF"].map((value, key) => {
-          return <div key={key}>{value}</div>;
-        })}
       </main>
     </div>
   );
