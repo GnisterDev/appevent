@@ -1,3 +1,28 @@
 .søkefelt{
     background-color: beige;
+    
+}
+
+.søkeknapp{
+    padding-left: 30px;
+    padding-right: 30px;
+    border-radius: 5px;
+    border: solid black 0.5px;
+    cursor: pointer;
+}
+
+.søkeknapp:hover{
+    background-color: gray;
+  }
+
+.outputEvent{
+    border: solid black 1px;
+    background-color: aqua;
+    margin-top: 10px;
+}
+
+.outputListe{
+    list-style: none;
+    border-top: solid black 1px;
+    margin-top: 20px;
 }
