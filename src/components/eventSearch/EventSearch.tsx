@@ -22,8 +22,11 @@ const EventSearch = () => {
       ...prevFilter,
       [name]: value,
     }));
+  };
 
-    eventSearch(filter).then(console.log);
+  const handleSearch = async () => {
+    const results = await eventSearch(filter);
+    console.log(results);
   };
 
   return (
@@ -75,6 +78,11 @@ const EventSearch = () => {
       <p>Nøkkelord: {filter.name || "Ingen valgt"}</p>
       <p>Sted: {filter.location || "Ingen valgt"}</p>
       <p>Dato: {filter.date || "Ingen valgt"}</p>
+
+      {/*Søkeknaoo*/}
+      <button onClick={handleSearch} className={styles.søkeknapp}>
+        Søk
+      </button>
     </div>
   );
 };

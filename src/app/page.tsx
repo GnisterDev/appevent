@@ -42,7 +42,9 @@ export default function Home() {
         <EventSearch />
 
         {/*OUTPUT FOR ARR */}
-        <EventSearchOutput />
+        {["FEGFEGFEFEF"].map((value, key) => {
+          return <div key={key}>{value}</div>;
+        })}
       </main>
     </div>
   );
