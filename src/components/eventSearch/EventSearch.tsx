@@ -4,11 +4,12 @@ import React, { useState } from "react";
 import styles from "./eventSearch.module.css";
 import { EVENT_GROUPS } from "@/firebase/Event";
 import { eventSearch } from "@/firebase/DatabaseService";
+import { Search } from "@/firebase/Search";
 
 const EventSearch = () => {
-  const [filter, setFilter] = useState({
-    arrType: "",
-    title: "",
+  const [filter, setFilter] = useState<Search>({
+    type: "",
+    name: "",
     location: "",
     date: "",
   });
@@ -16,12 +17,13 @@ const EventSearch = () => {
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
+    const { name, value } = e.target;
     setFilter(prevFilter => ({
       ...prevFilter,
-      [e.target.name]: e.target.value,
+      [name]: value,
     }));
 
-    eventSearch();
+    eventSearch(filter).then(console.log);
   };
 
   return (
@@ -29,7 +31,7 @@ const EventSearch = () => {
       <h1> Søk etter et arrangement </h1>
 
       {/*/ DROPDOWN FOR Å VELGE TYPE ARR */}
-      <select name="arrType" onChange={handleChange} required>
+      <select name="type" onChange={handleChange} required>
         <option value="">Velg type arrangement</option>
         {Object.entries(EVENT_GROUPS).map(([groupName, events]) => (
           <optgroup key={groupName} label={groupName} className={styles.group}>
@@ -45,9 +47,9 @@ const EventSearch = () => {
       {/*/ NAVN PÅ ARRANGEMENT*/}
       <input
         type="text"
-        name="title"
+        name="name"
         placeholder="Nøkkelord"
-        value={filter.title}
+        value={filter.name}
         onChange={handleChange}
       />
 
@@ -69,8 +71,8 @@ const EventSearch = () => {
       />
 
       {/* VISER VALGTE FILTER TESTING */}
-      <p>Valgt type: {filter.arrType || "Ingen valgt"}</p>
-      <p>Nøkkelord: {filter.title || "Ingen valgt"}</p>
+      <p>Valgt type: {filter.type || "Ingen valgt"}</p>
+      <p>Nøkkelord: {filter.name || "Ingen valgt"}</p>
       <p>Sted: {filter.location || "Ingen valgt"}</p>
       <p>Dato: {filter.date || "Ingen valgt"}</p>
     </div>
