@@ -7,8 +7,8 @@ import {
   setDoc,
   Timestamp,
   updateDoc,
-  arrayUnion, // <-- Ny
-  arrayRemove, // <-- Ny
+  arrayUnion,
+  arrayRemove,
 } from "firebase/firestore";
 import { db } from "./config";
 import { User } from "./User";
@@ -61,8 +61,8 @@ export const createEvent = async (
     startTime: startTimestamp,
     endTime: endTimestamp,
     organizer: organizerRef,
-    participants: [organizerRef], // Organisatoren blir første deltaker
-    private: false, // Default: åpent arrangement
+    participants: [organizerRef],
+    private: false,
   };
 
   await setDoc(doc(db, "events", eventID), eventData);
@@ -86,9 +86,7 @@ export const getEvent = async (eventId: string): Promise<EventData> => {
     const eventRef = doc(db, "events", eventId);
     const eventSnap = await getDoc(eventRef);
 
-    if (!eventSnap.exists()) {
-      return {} as EventData;
-    }
+    if (!eventSnap.exists()) return {} as EventData;
 
     const eventData = eventSnap.data() as EventData;
 
@@ -105,34 +103,26 @@ export const getEvent = async (eventId: string): Promise<EventData> => {
   }
 };
 
-/**
- * Meld innlogget bruker på arrangementet.
- */
 export const joinEvent = async (eventID: string): Promise<void> => {
   const userID = getUserID();
-  if (!userID) {
-    throw new Error("Ingen bruker er innlogget!");
-  }
+  if (!userID) throw new Error("Ingen bruker er innlogget!");
+
   const eventRef = doc(db, "events", eventID);
   const userRef = doc(db, "users", userID);
 
-  await updateDoc(eventRef, {
+  updateDoc(eventRef, {
     participants: arrayUnion(userRef),
   });
 };
 
-/**
- * Meld innlogget bruker av arrangementet.
- */
 export const leaveEvent = async (eventID: string): Promise<void> => {
   const userID = getUserID();
-  if (!userID) {
-    throw new Error("Ingen bruker er innlogget!");
-  }
+  if (!userID) throw new Error("Ingen bruker er innlogget!");
+
   const eventRef = doc(db, "events", eventID);
   const userRef = doc(db, "users", userID);
 
-  await updateDoc(eventRef, {
+  updateDoc(eventRef, {
     participants: arrayRemove(userRef),
   });
 };
