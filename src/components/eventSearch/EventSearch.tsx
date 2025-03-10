@@ -20,7 +20,14 @@ const EventSearch = () => {
   });
 
   //Nullstille filter
-
+  const handleClearFilter = () => {
+    setFilter({
+      type: "",
+      name: "",
+      location: "",
+      date: "",
+    });
+  };
   //Oppdaterer feltet som endres. Dynamisk state oppdatering
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -93,10 +100,17 @@ const EventSearch = () => {
         value={filter.date}
         onChange={handleChange}
       />
-
-      {/*Søkeknaoo*/}
+      
+      <br></br>
+      {/*Søkeknapp*/}
       <button onClick={handleSearch} className={styles.søkeknapp}>
         Søk
+      </button>
+
+      {/*Nullstille filter*/}
+      <button onClick={handleClearFilter} className={styles.søkeknapp}>
+        {" "}
+        Fjern filter
       </button>
 
       {/*OUTPUT FOR ARR */}
