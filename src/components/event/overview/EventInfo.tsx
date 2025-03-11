@@ -2,10 +2,10 @@ import React, { useContext } from "react";
 import styles from "./eventinfo.module.css";
 import { Calendar, MapPin, Users } from "lucide-react";
 import Tag from "@/components/event/Tag";
-import { EventContext } from "@/app/event/[id]/page";
+import { EventDisplayContext } from "@/app/event/[id]/page";
 
 const EventInfo: React.FC = () => {
-  const { eventData } = useContext(EventContext);
+  const { eventData } = useContext(EventDisplayContext);
   if (!eventData) return;
 
   return (

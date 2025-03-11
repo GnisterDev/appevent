@@ -7,7 +7,7 @@ import { Pencil, Share2, Ticket, Trash } from "lucide-react";
 import { isAdministrator } from "@/firebase/AuthService";
 import { deleteEvent } from "@/firebase/DatabaseService";
 import { useRouter } from "next/navigation";
-import { EventContext } from "@/app/event/[id]/page";
+import { EventDisplayContext } from "@/app/event/[id]/page";
 
 const info = {
   Påmeldingsfirst: "{date}",
@@ -17,7 +17,7 @@ const info = {
 const Registration: React.FC = () => {
   const router = useRouter();
   const isAdmin = isAdministrator();
-  const { eventID, isOrg } = useContext(EventContext);
+  const { eventID, isOrg } = useContext(EventDisplayContext);
 
   if (!eventID) return;
 
