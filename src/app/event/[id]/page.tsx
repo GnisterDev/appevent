@@ -11,8 +11,6 @@ import { LoaderCircle } from "lucide-react";
 import { isOrganizer } from "@/firebase/AuthService";
 import { User } from "@/firebase/User";
 
-// Create Event Context
-
 const EventView = () => {
   const router = useRouter();
   const { id } = useParams();
