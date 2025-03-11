@@ -28,6 +28,7 @@ const EventSearch = () => {
       date: "",
     });
   };
+  
   //Oppdaterer feltet som endres. Dynamisk state oppdatering
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
