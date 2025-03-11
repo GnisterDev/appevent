@@ -27,8 +27,11 @@ const EventSearch = () => {
       location: "",
       date: "",
     });
+
+    //Fjerner resultater
+    setResults([]);
   };
-  
+
   //Oppdaterer feltet som endres. Dynamisk state oppdatering
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -63,7 +66,7 @@ const EventSearch = () => {
       <h1> Søk etter et arrangement </h1>
 
       {/*/ DROPDOWN FOR Å VELGE TYPE ARR */}
-      <select name="type" onChange={handleChange} required>
+      <select name="type" onChange={handleChange} required value={filter.type}>
         <option value="">Velg type arrangement</option>
         {Object.entries(EVENT_GROUPS).map(([groupName, events]) => (
           <optgroup key={groupName} label={groupName} className={styles.group}>
