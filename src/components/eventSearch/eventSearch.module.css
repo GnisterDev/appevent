@@ -14,7 +14,7 @@
 }
 
 .button:hover {
-  background-color: gray;
+  background-color: var(--background);
 }
 
 /*Hele output listen*/
@@ -28,7 +28,7 @@
 .outputEvent {
   border: solid black 1px;
   border-radius: 8px;
-  background-color: aqua;
+  background-color: var(--foreground);
   margin-top: 10px;
   overflow: auto;
   padding: 0px 10px 20px 5px;
@@ -37,6 +37,7 @@
 
 .outputEvent:hover{
     cursor: pointer;
+    background-color: var(--background);
 }
 
 /*Hver enkelt tag*/
@@ -49,4 +50,9 @@
   flex-direction: row;
   align-items: center;
   width: fit-content;
+}
+
+/*<p> med lokasjon*/
+.outputLocation{
+    margin: 10px 0px 10px 0px;
 }

@@ -132,6 +132,7 @@ const EventSearch = () => {
               {new Date(event.startTime.toDate()).toLocaleDateString()}
               {")"}
             </h2>
+            <br></br>
 
             {/*Mapper hver enkelt tag fra eventtag (array)*/}
             {event.tags.map((tag, index) => (
@@ -141,7 +142,7 @@ const EventSearch = () => {
             ))}
 
             {/*Beskrivelse*/}
-            <p>{event.location}</p>
+            <p className={styles.outputLocation}>{event.location}</p>
           </li>
         ))}
       </ul>
