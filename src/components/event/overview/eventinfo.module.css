@@ -1,3 +1,7 @@
+.module {
+  word-wrap: break-word;
+}
+
 .quickinfo {
   display: flex;
   flex-wrap: wrap;
@@ -13,6 +17,7 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  overflow-x: hidden;
 }
 
 .textArea {
@@ -28,4 +33,5 @@
   display: flex;
   gap: 0.5rem;
   margin-top: 1rem;
+  flex-wrap: wrap;
 }

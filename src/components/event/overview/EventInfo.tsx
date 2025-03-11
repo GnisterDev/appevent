@@ -9,7 +9,7 @@ const EventInfo: React.FC = () => {
   if (!eventData) return;
 
   return (
-    <div>
+    <div className={styles.module}>
       <div>
         <h1 className={styles.title}>{eventData.title}</h1>
         <div className={styles.quickinfo}>
@@ -19,7 +19,20 @@ const EventInfo: React.FC = () => {
               color={"var(--text-secondary)"}
               strokeWidth={2.25}
             />
-            <span>{eventData.startTime.toDate().toLocaleDateString()}</span>
+            <span>
+              {eventData.startTime
+                .toDate()
+                .toLocaleString("no-nb", {
+                  day: "2-digit",
+                  month: "2-digit",
+                  year: "numeric",
+                  hour: "2-digit",
+                  minute: "2-digit",
+                  hour12: false,
+                })
+                .replaceAll(".", "/")
+                .replaceAll(",", "")}
+            </span>
           </div>
           <div className={styles.quickinfoElement}>
             <MapPin
