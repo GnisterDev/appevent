@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import styles from "./eventinfo.module.css";
 import { Calendar, MapPin, Users } from "lucide-react";
 import Tag from "@/components/event/Tag";
-import { EventDisplayContext } from "@/app/event/[id]/page";
+import { EventDisplayContext } from "@/firebase/Event";
 
 const EventInfo: React.FC = () => {
   const { eventData } = useContext(EventDisplayContext);

@@ -35,6 +35,16 @@ export const EventContext = createContext<EventContextType>({
   updateFormData: () => {},
 });
 
+export const EventDisplayContext = createContext<{
+  eventID: string | null;
+  eventData: EventData | null;
+  isOrg: boolean;
+}>({
+  eventID: null,
+  eventData: null,
+  isOrg: false,
+});
+
 export const EVENT_GROUPS: Record<string, string[]> = {
   "Faglige arrangementer": [
     "Fagkveld",

@@ -5,25 +5,13 @@ import Registration from "@/components/event/overview/Registration";
 import EventInfo from "@/components/event/overview/EventInfo";
 import { useParams, useRouter } from "next/navigation";
 import { getAllParticipants, getEvent } from "@/firebase/DatabaseService";
-import { EventData } from "@/firebase/Event";
+import { EventData, EventDisplayContext } from "@/firebase/Event";
 import Participants from "@/components/event/overview/partcipant/ParticipantsInfo";
-import { createContext, useContext } from "react";
 import { LoaderCircle } from "lucide-react";
 import { isOrganizer } from "@/firebase/AuthService";
 import { User } from "@/firebase/User";
 
 // Create Event Context
-export const EventDisplayContext = createContext<{
-  eventID: string | null;
-  eventData: EventData | null;
-  isOrg: boolean;
-}>({
-  eventID: null,
-  eventData: null,
-  isOrg: false,
-});
-
-export const useEventContext = () => useContext(EventDisplayContext);
 
 const EventView = () => {
   const router = useRouter();
