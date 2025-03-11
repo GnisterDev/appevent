@@ -26,18 +26,19 @@
 
 /*Et liste element (et arrangement) */
 .outputEvent {
-  border: solid black 1px;
+  border: solid black 0.5px;
   border-radius: 8px;
   background-color: var(--foreground);
   margin-top: 10px;
   overflow: auto;
-  padding: 0px 10px 20px 5px;
+  padding: 5px 10px 20px 5px;
   flex-direction: column; /* Sørger for at elementene legges under hverandre */
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
 }
 
-.outputEvent:hover{
-    cursor: pointer;
-    background-color: var(--background);
+.outputEvent:hover {
+  cursor: pointer;
+  background-color: var(--background);
 }
 
 /*Hver enkelt tag*/
@@ -53,6 +54,6 @@
 }
 
 /*<p> med lokasjon*/
-.outputLocation{
-    margin: 10px 0px 10px 0px;
+.outputLocation {
+  margin: 10px 0px 10px 0px;
 }
