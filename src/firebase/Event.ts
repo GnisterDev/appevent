@@ -1,17 +1,5 @@
-import { DocumentReference, Timestamp } from "firebase/firestore";
-
-export type CreateEventRequest = {
-  title: string;
-  description: string;
-  startDate: string;
-  startTime: string;
-  // endDate: string;
-  // endTime: string;
-  location: string;
-  type: string;
-  tags: string[];
-  participants: DocumentReference[];
-};
+import { DocumentData, DocumentReference, Timestamp } from "firebase/firestore";
+import { createContext } from "react";
 
 export type EventData = {
   title: string; // Title of the event
@@ -25,16 +13,29 @@ export type EventData = {
   type: string; // Type of the event
 };
 
-export type EventContext = {
+export const DefaultEventData: EventData = {
+  title: "",
+  description: "",
+  startTime: null as unknown as Timestamp,
+  tags: [],
+  location: "",
+  organizer: null as unknown as DocumentReference<DocumentData>,
+  participants: [],
+  private: false,
+  type: "",
+};
+
+export type EventContextType = {
   formData: EventData;
   updateFormData: (field: string, value: unknown) => void;
 };
 
-export interface EventContextInterface {
-  context: React.Context<EventContext>;
-}
+export const EventContext = createContext<EventContextType>({
+  formData: DefaultEventData,
+  updateFormData: () => {},
+});
 
-export const EVENT_GROUPS = {
+export const EVENT_GROUPS: Record<string, string[]> = {
   "Faglige arrangementer": [
     "Fagkveld",
     "Workshop",

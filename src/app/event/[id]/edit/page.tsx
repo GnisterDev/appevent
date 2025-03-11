@@ -1,34 +1,15 @@
 "use client";
-import React, { createContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./edit.module.css";
 import BaseInformation from "@/components/event/create/BaseInformation";
 import Invites from "@/components/event/create/Invites";
-import { EventData } from "@/firebase/Event";
+import { EventData, EventContext } from "@/firebase/Event";
 import { LoaderCircle } from "lucide-react";
-import { DocumentData, DocumentReference, Timestamp } from "firebase/firestore";
 import { useParams, useRouter } from "next/navigation";
 import { changeEvent, getEvent } from "@/firebase/DatabaseService";
 import Details from "@/components/event/create/Details";
 
-export const EditContext = createContext<{
-  formData: EventData;
-  updateFormData: (field: string, value: unknown) => void;
-}>({
-  formData: {
-    title: "",
-    description: "",
-    startTime: Timestamp.now(),
-    tags: [],
-    location: "",
-    organizer: null as unknown as DocumentReference<DocumentData>,
-    participants: [],
-    private: false,
-    type: "",
-  },
-  updateFormData: () => {},
-});
-
-const EventEdit = () => {
+const EventEdit: React.FC = () => {
   const router = useRouter();
   const { id } = useParams();
   const eventID = Array.isArray(id) ? id[0] : id;
@@ -61,14 +42,9 @@ const EventEdit = () => {
     e.preventDefault();
     if (!eventID) return;
 
-    try {
-      await changeEvent(eventID, {
-        ...formData,
-      });
-      router.push(`/event/${eventID}`);
-    } catch (error) {
-      console.error("Error updating event:", error);
-    }
+    changeEvent(eventID, {
+      ...formData,
+    }).then(() => router.push(`/event/${eventID}`));
   };
 
   const updateFormData = (field: string, value: unknown) => {
@@ -91,12 +67,12 @@ const EventEdit = () => {
   if (!formData) return;
 
   return (
-    <EditContext.Provider value={{ formData, updateFormData }}>
+    <EventContext.Provider value={{ formData, updateFormData }}>
       <main className={styles.main}>
         <form onSubmit={handleSubmit}>
           <h1 className={styles.title}>Rediger arrangement</h1>
-          <BaseInformation context={EditContext} />
-          <Details context={EditContext} />
+          <BaseInformation />
+          <Details />
           {formData.private && <Invites />}
           <div className={styles.buttonGroup}>
             <button type="submit" className={styles.saveButton}>
@@ -112,7 +88,7 @@ const EventEdit = () => {
           </div>
         </form>
       </main>
-    </EditContext.Provider>
+    </EventContext.Provider>
   );
 };
 

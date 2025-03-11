@@ -2,24 +2,29 @@ import React, { useContext } from "react";
 import styles from "./CreateEventComponents.module.css";
 import { Globe, Lock } from "lucide-react";
 import Switch from "@/components/Switch";
-import { EVENT_GROUPS, EventContextInterface } from "@/firebase/Event";
+import { EVENT_GROUPS, EventContext } from "@/firebase/Event";
 import { Timestamp } from "firebase/firestore";
 
-const BaseInformation: React.FC<EventContextInterface> = ({ context }) => {
-  const { formData, updateFormData } = useContext(context);
+const BaseInformation = () => {
+  const { formData, updateFormData } = useContext(EventContext);
 
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newDate = new Date(e.target.value);
-    const currentTime = formData.startTime.toDate();
+    const currentTime = formData.startTime?.toDate();
 
-    newDate.setHours(currentTime.getHours(), currentTime.getMinutes(), 0, 0);
+    newDate.setHours(
+      currentTime ? currentTime.getHours() : 0,
+      currentTime ? currentTime.getMinutes() : 0,
+      0,
+      0
+    );
 
     updateFormData("startTime", Timestamp.fromDate(newDate));
   };
 
   const handleTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const [hours, minutes] = e.target.value.split(":").map(Number);
-    const currentDate = formData.startTime.toDate();
+    const currentDate = formData.startTime?.toDate() || new Date();
 
     currentDate.setHours(hours, minutes, 0, 0);
 
@@ -34,6 +39,7 @@ const BaseInformation: React.FC<EventContextInterface> = ({ context }) => {
         <input
           type="text"
           name="title"
+          placeholder="Skriv inn en tittel"
           className={styles.input}
           value={formData.title}
           onChange={e => updateFormData(e.target.name, e.target.value)}
@@ -47,7 +53,9 @@ const BaseInformation: React.FC<EventContextInterface> = ({ context }) => {
             type="date"
             name="date"
             className={styles.input}
-            value={formData.startTime.toDate().toISOString().split("T")[0]}
+            value={
+              formData.startTime?.toDate().toISOString().split("T")[0] || ""
+            }
             onChange={handleDateChange}
             required
           />
@@ -58,7 +66,9 @@ const BaseInformation: React.FC<EventContextInterface> = ({ context }) => {
             type="time"
             name="time"
             className={styles.input}
-            value={formData.startTime.toDate().toTimeString().slice(0, 5)}
+            value={
+              formData.startTime?.toDate().toTimeString().slice(0, 5) || ""
+            }
             onChange={handleTimeChange}
             required
           />
@@ -69,6 +79,8 @@ const BaseInformation: React.FC<EventContextInterface> = ({ context }) => {
         <input
           type="text"
           name="location"
+          placeholder="Arrangementssted"
+          maxLength={32}
           className={styles.input}
           value={formData.location}
           onChange={e => updateFormData(e.target.name, e.target.value)}

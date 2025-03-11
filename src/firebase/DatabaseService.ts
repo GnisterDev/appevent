@@ -5,12 +5,11 @@ import {
   DocumentReference,
   getDoc,
   setDoc,
-  Timestamp,
   updateDoc,
 } from "firebase/firestore";
 import { db } from "./config";
 import { User } from "./User";
-import { CreateEventRequest, EventData } from "./Event";
+import { EventData } from "./Event";
 import { getUserID, useAuth } from "./AuthService";
 
 export const createUser = (user: User): Promise<void> => {
@@ -38,13 +37,7 @@ export const getUser = async (
   return { name, email, type } as const;
 };
 
-export const createEvent = async (
-  data: CreateEventRequest
-): Promise<string> => {
-  const startTimestamp = Timestamp.fromDate(
-    new Date(`${data.startDate}T${data.startTime}`)
-  );
-
+export const createEvent = async (data: EventData): Promise<string> => {
   const userID = getUserID();
   if (!userID) throw new Error("User ID is null");
   const eventID = doc(collection(db, "events")).id;
@@ -52,10 +45,8 @@ export const createEvent = async (
 
   const eventData: EventData = {
     ...data,
-    startTime: startTimestamp,
     organizer: organizerRef,
-    participants: [organizerRef], // Initialize with organizer as first participant
-    private: false, // Default to public event
+    participants: [organizerRef],
   };
 
   await setDoc(doc(db, "events", eventID), eventData);

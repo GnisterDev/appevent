@@ -1,10 +1,10 @@
 import React, { useContext, useState } from "react";
 import styles from "./CreateEventComponents.module.css";
-import { EventContextInterface } from "@/firebase/Event";
+import { EventContext } from "@/firebase/Event";
 import Tag from "../Tag";
 
-const Details: React.FC<EventContextInterface> = ({ context }) => {
-  const { formData, updateFormData } = useContext(context);
+const Details = () => {
+  const { formData, updateFormData } = useContext(EventContext);
   const [tagInput, setTagInput] = useState("");
 
   const addTag = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -28,7 +28,7 @@ const Details: React.FC<EventContextInterface> = ({ context }) => {
           className={`${styles.input} ${styles.textarea}`}
           value={formData.description}
           onChange={e => updateFormData(e.target.name, e.target.value)}
-          placeholder="Skriv merkelapp ogg trykk Enter"
+          placeholder="Fortell om arrangementet"
           required
         />
       </div>
@@ -37,6 +37,7 @@ const Details: React.FC<EventContextInterface> = ({ context }) => {
         <input
           type="text"
           name="tags"
+          placeholder="Skriv merkelapp ogg trykk Enter"
           className={styles.input}
           value={tagInput}
           onChange={e => setTagInput(e.target.value)}
