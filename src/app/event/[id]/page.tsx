@@ -6,7 +6,7 @@ import EventInfo from "@/components/event/overview/EventInfo";
 import { useParams, useRouter } from "next/navigation";
 import { getAllParticipants, getEvent } from "@/firebase/DatabaseService";
 import { EventData, EventDisplayContext } from "@/firebase/Event";
-import Participants from "@/components/event/overview/partcipant/ParticipantsInfo";
+import Participants from "@/components/event/overview/participant/ParticipantsInfo";
 import { LoaderCircle } from "lucide-react";
 import { isOrganizer } from "@/firebase/AuthService";
 import { User } from "@/firebase/User";
