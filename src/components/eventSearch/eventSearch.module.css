@@ -1,5 +1,7 @@
 .søkefelt {
-  background-color: beige;
+  background-color: #f2efff;
+  border-radius: 7px;
+  padding: 20px;
 }
 
 .button {
@@ -29,6 +31,7 @@
   margin-top: 10px;
   overflow: auto;
   padding: 0px 10px 20px 5px;
+  flex-direction: column; /* Sørger for at elementene legges under hverandre */
 }
 
 .outputEvent:hover{
@@ -38,9 +41,10 @@
 /*Hver enkelt tag*/
 .outputTag {
   margin-right: 10px;
-  padding: 2px 10px 2px 10px;
+  padding: 4px 10px 4px 10px;
 
   border: solid black 1px;
-  background-color: gray;
+  color: white;
+  background-color: #9b87f5;
   border-radius: 5px;
 }
