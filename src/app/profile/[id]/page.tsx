@@ -11,7 +11,7 @@ import Loading from "@/components/Loading";
 import ProfileInfo from "@/components/profile/ProfileInfo";
 import QuickSelection from "@/components/profile/QuickSelection";
 import Interests from "@/components/profile/Interests";
-import InvitesOverview from "@/components/profile/InvitesOverview";
+import InvitationOverview from "@/components/profile/InvitationOverview";
 
 const ProfilePage = () => {
   const router = useRouter();
@@ -38,7 +38,7 @@ const ProfilePage = () => {
       <main className={styles.main}>
         <ProfileOverview />
         {userData?.interests?.length != 0 && <Interests />}
-        {userData?.invites?.length != 0 && <InvitesOverview />}
+        {userData?.invitations?.length != 0 && <InvitationOverview />}
         <div className={styles.grid}>
           <div>
             <ProfileInfo />

@@ -17,7 +17,7 @@ export type UserData = {
   userID: string;
   location: string;
   interests: string[];
-  invites: DocumentReference[];
+  invitations: DocumentReference[];
 };
 
 export const DefaultUserData: UserData = {
@@ -27,5 +27,5 @@ export const DefaultUserData: UserData = {
   userID: "",
   location: "",
   interests: [],
-  invites: [],
+  invitations: [],
 };
