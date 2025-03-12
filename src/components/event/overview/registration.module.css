@@ -40,6 +40,7 @@
 .registerButton {
   color: var(--foreground);
   background-color: var(--primary);
+  width: 100%;
 
   &:hover {
     background-color: color-mix(in srgb, var(--primary) 85%, white);
@@ -49,6 +50,7 @@
 .shareButton {
   color: var(--text-primary);
   background-color: var(--accent);
+  width: 100%;
 
   &:hover {
     background-color: color-mix(in srgb, var(--accent) 85%, white);
@@ -58,6 +60,7 @@
 .deleteButton {
   color: var(--foreground);
   background-color: var(--error);
+  width: 100%;
 
   &:hover {
     background-color: color-mix(in srgb, var(--error) 85%, white);
@@ -67,6 +70,7 @@
 .editButton {
   color: var(--foreground);
   background-color: var(--primary);
+  width: 100%;
 
   &:hover {
     background-color: color-mix(in srgb, var(--primary) 85%, white);
