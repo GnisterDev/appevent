@@ -2,8 +2,9 @@
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import { DefaultEventData, EventData, EventContext } from "@/firebase/Event";
+import { DefaultEventData, EventData } from "@/firebase/Event";
 import { createEvent } from "@/firebase/DatabaseService";
+import { EventContext } from "@/firebase/contexts";
 import BaseInformation from "@/components/event/create/BaseInformation";
 import Details from "@/components/event/create/Details";
 import Invites from "@/components/event/create/Invites";
