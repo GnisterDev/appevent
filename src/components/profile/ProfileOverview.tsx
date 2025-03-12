@@ -1,4 +1,4 @@
-import { Settings, User } from "lucide-react";
+import { MapPin, Settings, User } from "lucide-react";
 import React, { useContext } from "react";
 import styles from "./ProfileOverview.module.css";
 import Button from "../Button";
@@ -9,13 +9,19 @@ const ProfileOverview = () => {
 
   return (
     <div className={styles.module}>
-      <div className={styles.userInfo}>
+      <div className={styles.userInfoContainer}>
         <div className={styles.profileCircle}>
           <User size={"3rem"} style={{ color: "var(--text-secondary)" }} />
         </div>
-        <div>
+        <div className={styles.userInfo}>
           <h2>{userData.name}</h2>
           <p>{userData.email}</p>
+          {userData.location && (
+            <span className={styles.userInfoLocation}>
+              <MapPin size={"1rem"} />
+              {userData.location}
+            </span>
+          )}
         </div>
       </div>
       <Button

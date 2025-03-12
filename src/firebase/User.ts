@@ -1,3 +1,5 @@
+import { DocumentReference } from "firebase/firestore";
+
 interface BaseCredentials {
   password: string;
   email: string;
@@ -13,8 +15,9 @@ export type UserData = {
   email: string;
   type: "admin" | "user";
   userID: string;
-  area: string;
+  location: string;
   interests: string[];
+  invites: DocumentReference[];
 };
 
 export const DefaultUserData: UserData = {
@@ -22,6 +25,7 @@ export const DefaultUserData: UserData = {
   email: "",
   type: "user",
   userID: "",
-  area: "",
+  location: "",
   interests: [],
+  invites: [],
 };

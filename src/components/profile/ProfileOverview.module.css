@@ -8,10 +8,24 @@
   margin-bottom: 2rem;
 }
 
-.userInfo {
+.userInfoContainer {
   display: flex;
   align-items: center;
   gap: 2rem;
+}
+
+.userInfo {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 0.25rem;
+}
+
+.userInfoLocation {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .profileCircle {
