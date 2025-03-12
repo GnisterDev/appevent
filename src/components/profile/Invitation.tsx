@@ -6,10 +6,10 @@ import { Check, X } from "lucide-react";
 const Invitation = ({ event }) => {
   return (
     <div className={styles.module}>
-      <div className={styles.info}>
-        <h4>Title</h4>
-        <p>Arrangør: NAME</p>
-        <p>Dato: DD.MM.YYYY</p>
+      <div className={styles.infoContainer}>
+        <h3>Title</h3>
+        <p className={styles.info}>Arrangør: NAME</p>
+        <p className={styles.info}>Dato: DD.MM.YYYY</p>
       </div>
       <div className={styles.buttons}>
         <Button
