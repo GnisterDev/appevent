@@ -9,7 +9,7 @@ import { EventData, EventDisplayContext } from "@/firebase/Event";
 import Participants from "@/components/event/overview/participant/ParticipantsInfo";
 import { LoaderCircle } from "lucide-react";
 import { isOrganizer } from "@/firebase/AuthService";
-import { User } from "@/firebase/User";
+import { UserData } from "@/firebase/User";
 
 const EventView = () => {
   const router = useRouter();
@@ -19,7 +19,7 @@ const EventView = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const isOrg = isOrganizer(eventID);
-  const [participantsInfo, setParticipantsInfo] = useState<User[]>([]);
+  const [participantsInfo, setParticipantsInfo] = useState<UserData[]>([]);
 
   useEffect(() => {
     if (!eventID) {

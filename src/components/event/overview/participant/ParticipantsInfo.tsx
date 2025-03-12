@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import styles from "./participantsInfo.module.css";
 import Participant from "./Participant";
 import { ChevronDown } from "lucide-react";
-import { User } from "@/firebase/User";
+import { UserData } from "@/firebase/User";
 
 interface ParticipantsInfoProps {
-  participants: User[];
+  participants: UserData[];
 }
 
 const ParticipantsInfo: React.FC<ParticipantsInfoProps> = ({
