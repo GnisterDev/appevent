@@ -16,3 +16,12 @@ export type UserData = {
   area: string;
   interests: string[];
 };
+
+export const DefaultUserData: UserData = {
+  name: "",
+  email: "",
+  type: "user",
+  userID: "",
+  area: "",
+  interests: [],
+};

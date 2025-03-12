@@ -8,11 +8,11 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import { db } from "./config";
-import { User } from "./User";
+import { UserData } from "./User";
 import { EventData } from "./Event";
 import { getUserID, useAuth } from "./AuthService";
 
-export const createUser = (user: User): Promise<void> => {
+export const createUser = (user: UserData): Promise<void> => {
   return setDoc(doc(db, "users", user.userID), user);
 };
 
@@ -27,14 +27,17 @@ export const deleteUser = (userID: string): Promise<void> => {
   return deleteDoc(doc(db, "users", userID));
 };
 
-export const getUser = async (
-  userID: string
-): Promise<{ name: string; email: string; type: string }> => {
-  const userDoc = await getDoc(doc(db, "users", userID));
-  if (!userDoc.exists()) throw new Error("User document does not exist");
+export const getUser = async (userID: string): Promise<UserData> => {
+  try {
+    const userDoc = await getDoc(doc(db, "users", userID));
+    if (!userDoc.exists()) throw new Error("User document does not exist");
 
-  const { name, email, type } = userDoc.data();
-  return { name, email, type } as const;
+    const data = userDoc.data() as UserData;
+    return data;
+  } catch (error) {
+    console.error("Error fetching user:", error);
+    throw error;
+  }
 };
 
 export const createEvent = async (data: EventData): Promise<string> => {
@@ -138,7 +141,9 @@ export const isCurrentUserParticipant = async (
   }
 };
 
-export const getAllParticipants = async (eventID: string): Promise<User[]> => {
+export const getAllParticipants = async (
+  eventID: string
+): Promise<UserData[]> => {
   try {
     const eventSnap = await getDoc(doc(db, "events", eventID));
     if (!eventSnap.exists())
@@ -153,7 +158,7 @@ export const getAllParticipants = async (eventID: string): Promise<User[]> => {
       async (userRef: DocumentReference) => {
         const userSnap = await getDoc(userRef);
         if (!userSnap.exists()) return null;
-        return { ...userSnap.data(), userID: userSnap.id } as User;
+        return { ...userSnap.data(), userID: userSnap.id } as UserData;
       }
     );
 

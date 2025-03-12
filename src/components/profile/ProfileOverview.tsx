@@ -5,7 +5,7 @@ import Button from "../Button";
 import { UserDisplayContext } from "@/firebase/contexts";
 
 const ProfileOverview = () => {
-  const context = useContext(UserDisplayContext);
+  const userData = useContext(UserDisplayContext);
 
   return (
     <div className={styles.module}>
@@ -14,8 +14,8 @@ const ProfileOverview = () => {
           <User size={"3rem"} style={{ color: "var(--text-secondary)" }} />
         </div>
         <div>
-          <h2>{context.name}</h2>
-          <p>{context.email}</p>
+          <h2>{userData.name}</h2>
+          <p>{userData.email}</p>
         </div>
       </div>
       <Button

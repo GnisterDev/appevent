@@ -1,5 +1,6 @@
 import { createContext } from "react";
 import { DefaultEventData, EventContextType, EventData } from "./Event";
+import { DefaultUserData, UserData } from "./User";
 
 export const EventContext = createContext<EventContextType>({
   formData: DefaultEventData,
@@ -14,4 +15,8 @@ export const EventDisplayContext = createContext<{
   eventID: null,
   eventData: null,
   isOrg: false,
+});
+
+export const UserDisplayContext = createContext<UserData>({
+  ...DefaultUserData,
 });
