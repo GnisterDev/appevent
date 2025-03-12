@@ -2,8 +2,9 @@ import React, { useContext } from "react";
 import styles from "./CreateEventComponents.module.css";
 import { Globe, Lock } from "lucide-react";
 import Switch from "@/components/Switch";
-import { EVENT_GROUPS, EventContext } from "@/firebase/Event";
+import { EVENT_GROUPS } from "@/firebase/Event";
 import { Timestamp } from "firebase/firestore";
+import { EventContext } from "@/firebase/contexts";
 
 const BaseInformation = () => {
   const { formData, updateFormData } = useContext(EventContext);

@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import styles from "./CreateEventComponents.module.css";
-import { EventContext } from "@/firebase/Event";
 import Tag from "../Tag";
+import { EventContext } from "@/firebase/contexts";
 
 const Details = () => {
   const { formData, updateFormData } = useContext(EventContext);

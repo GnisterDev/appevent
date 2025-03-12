@@ -7,7 +7,7 @@ import { Pencil, Share2, Ticket, Trash } from "lucide-react";
 import { isAdministrator } from "@/firebase/AuthService";
 import { deleteEvent } from "@/firebase/DatabaseService";
 import { useRouter } from "next/navigation";
-import { EventDisplayContext } from "@/firebase/Event";
+import { EventDisplayContext } from "@/firebase/contexts";
 
 const info = {
   Påmeldingsfirst: "{date}",
