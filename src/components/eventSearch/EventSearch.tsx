@@ -62,7 +62,7 @@ const EventSearch = () => {
   };
 
   return (
-    <div className={styles.søkefelt}>
+    <div className={styles.container}>
       <h1> Søk etter et arrangement </h1>
 
       {/*/ DROPDOWN FOR Å VELGE TYPE ARR */}
@@ -83,7 +83,7 @@ const EventSearch = () => {
       <input
         type="text"
         name="name"
-        placeholder="Nøkkelord"
+        placeholder="Navn"
         value={filter.name}
         onChange={handleChange}
       />
@@ -132,22 +132,22 @@ const EventSearch = () => {
               {new Date(event.startTime.toDate()).toLocaleDateString()}
               {")"}
             </h2>
-            <br></br>
-
-            {/*Mapper hver enkelt tag fra eventtag (array)*/}
-            {event.tags.map((tag, index) => (
-              <span key={index} className={styles.outputTag}>
-                {tag}
-              </span>
-            ))}
 
             {/*Beskrivelse*/}
             <p className={styles.outputLocation}>{event.location}</p>
+
+            {/*Mapper hver enkelt tag fra eventtag (array)*/}
+            <div className={styles.tagDiv}>
+              {event.tags.map((tag, index) => (
+                <span key={index} className={styles.outputTag}>
+                  {tag}
+                </span>
+              ))}
+            </div>
           </li>
         ))}
       </ul>
     </div>
-    
   );
 };
 

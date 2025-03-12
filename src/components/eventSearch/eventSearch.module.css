@@ -1,4 +1,4 @@
-.søkefelt {
+.container {
   background-color: var(--foreground);
   border-radius: 7px;
   padding: 20px;
@@ -24,8 +24,9 @@
   margin-top: 20px;
 }
 
-/*Et liste element (et arrangement) */
+/*Et liste-element (et arrangement) */
 .outputEvent {
+  display: flex;
   border: solid black 0.5px;
   border-radius: 8px;
   background-color: var(--foreground);
@@ -33,7 +34,7 @@
   overflow: auto;
   padding: 5px 10px 20px 5px;
   flex-direction: column; /* Sørger for at elementene legges under hverandre */
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 24px rgba(0, 0, 0, 0.2);
 }
 
 .outputEvent:hover {
@@ -41,16 +42,21 @@
   background-color: var(--background);
 }
 
+/*Div med alle tags*/
+.tagDiv {
+  display: flex;
+  flex-direction: row;
+}
+
 /*Hver enkelt tag*/
 .outputTag {
   background-color: var(--primary);
   padding: 0.3rem 0.75rem;
+  margin-right: 5px;
   border-radius: calc(var(--radius) * 2);
-  cursor: pointer;
   color: var(--foreground);
-  flex-direction: row;
-  align-items: center;
-  width: fit-content;
+  /*align-items: center;*/
+  /*width: fit-content;*/
 }
 
 /*<p> med lokasjon*/
