@@ -1,0 +1,57 @@
+.module {
+  padding: 1.5rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--box-shadow);
+  height: 100%;
+  margin-bottom: 1.5rem;
+}
+
+.title {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.statisticsInfo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 1rem;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.button {
+  background-color: var(--navbar);
+  box-shadow: var(--box-shadow);
+  justify-content: start;
+
+  &:hover {
+    background-color: color-mix(in srgb, var(--navbar) 85%, black);
+  }
+}
+
+.logoutButton {
+  background-color: var(--navbar);
+  box-shadow: var(--box-shadow);
+  color: var(--error);
+  justify-content: start;
+
+  &:hover {
+    background-color: color-mix(in srgb, var(--navbar) 85%, black);
+  }
+}
+
+.tags {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+}
