@@ -1,0 +1,33 @@
+.module {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.userInfo {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.profileCircle {
+  width: 6rem;
+  height: 6rem;
+  border-radius: 6rem;
+  background-color: var(--secondary);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.settingsButton {
+  background-color: var(--navbar);
+  box-shadow: var(--box-shadow);
+
+  &:hover {
+    background-color: color-mix(in srgb, var(--navbar) 85%, black);
+  }
+}

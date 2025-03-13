@@ -21,6 +21,7 @@ install_dependencies:
   script:
     - echo "Installing dependencies..."
     - npm ci
+    - npm list next-intl || npm install next-intl
 
 # Quality Stage - Linting
 lint:
@@ -29,6 +30,8 @@ lint:
   needs:
     - install_dependencies
   script:
+    - echo "Making sure next-intl is installed..."
+    - npm install next-intl
     - echo "Linting code with ESLint..."
     - npx next lint
 
@@ -39,6 +42,8 @@ tests:
   needs:
     - install_dependencies
   script:
+    - echo "Making sure next-intl is installed..."
+    - npm install next-intl
     - echo "Running Jest tests..."
     - npx jest --config=jest.config.ts
   coverage: /All files[^|]*\|[^|]*\s+([\d\.]+)/
@@ -60,5 +65,7 @@ build:
     - lint
     - tests
   script:
+    - echo "Installing dependencies..."
+    - npm install
     - echo "Building Next.js application..."
     - npm run build

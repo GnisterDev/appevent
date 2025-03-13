@@ -8,15 +8,11 @@ export type LoginRequest = BaseCredentials;
 
 export type SignupRequest = Required<BaseCredentials>;
 
-export type User = {
+export type UserData = {
   name: string;
   email: string;
   type: "admin" | "user";
   userID: string;
-};
-
-export type UserData = {
-  name: string | null;
-  email: string | null;
-  type: string | null;
+  area: string;
+  interests: string[];
 };

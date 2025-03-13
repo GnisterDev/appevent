@@ -1,0 +1,16 @@
+.content {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+}
+
+.button {
+  width: min-content;
+  background-color: var(--primary);
+  color: var(--foreground);
+
+  &:hover {
+    background-color: color-mix(in srgb, var(--primary) 85%, white);
+  }
+}
