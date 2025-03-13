@@ -4,13 +4,15 @@ import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { auth } from "../firebase/config";
 import { useLogout } from "../firebase/AuthService";
+import { useTranslations } from "next-intl";
+import Loading from "@/components/Loading";
 
 import EventSearch from "@/components/eventSearch/EventSearch";
-
 
 export default function Home() {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
+  const t = useTranslations("HomePage");
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(user => {
@@ -25,7 +27,7 @@ export default function Home() {
   }, []);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
 
   const signOut = async () => {
@@ -38,6 +40,19 @@ export default function Home() {
     <div className={styles.page}>
       <button onClick={signOut}>Sign Out</button>
       <main className={styles.main}>
+        <Image
+          className={styles.logo}
+          src="/next.svg"
+          alt="Next.js logo"
+          width={180}
+          height={38}
+          priority
+        />
+        <div>
+          {t("subtext")}
+          <code>{t("subtext-bold")}</code>
+        </div>
+        <button onClick={signOut}>{t("signOut")}</button>
         {/*SØKEFELT FOR ARRANGEMENTER*/}
         <EventSearch />
       </main>
