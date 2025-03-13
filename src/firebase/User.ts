@@ -11,6 +11,7 @@ export type LoginRequest = BaseCredentials;
 export type SignupRequest = Required<BaseCredentials>;
 
 export type UserData = {
+  userID: string;
   name: string;
   email: string;
   type: "admin" | "user";
@@ -21,6 +22,7 @@ export type UserData = {
 };
 
 export const DefaultUserData: UserData = {
+  userID: "",
   name: "",
   email: "",
   type: "user",
