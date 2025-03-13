@@ -38,13 +38,7 @@ export default function Home() {
 
   return (
     <div className={styles.page}>
-      <button onClick={signOut}>Sign Out</button>
       <main className={styles.main}>
-        <div>
-          {t("subtext")}
-          <code>{t("subtext-bold")}</code>
-        </div>
-        <button onClick={signOut}>{t("signOut")}</button>
         {/*SØKEFELT FOR ARRANGEMENTER*/}
         <EventSearch />
       </main>
