@@ -29,3 +29,8 @@ export const DefaultUserData: UserData = {
   interests: [],
   invitations: [],
 };
+
+export type UserContextType = {
+  formData: UserData;
+  updateFormData: (field: string, value: unknown) => void;
+};
