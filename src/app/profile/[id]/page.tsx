@@ -11,7 +11,7 @@ import Loading from "@/components/Loading";
 import ProfileInfo from "@/components/profile/ProfileInfo";
 import QuickSelection from "@/components/profile/QuickSelection";
 import Interests from "@/components/profile/Interests";
-import InvitationOverview from "@/components/profile/InvitationOverview";
+import InvitationOverview from "@/components/profile/invitation/InvitationOverview";
 
 const ProfilePage = () => {
   const router = useRouter();

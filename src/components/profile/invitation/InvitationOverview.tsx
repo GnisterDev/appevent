@@ -1,6 +1,6 @@
 import { Mail } from "lucide-react";
 import React, { useContext } from "react";
-import styles from "./ProfileComponents.module.css";
+import styles from "../ProfileComponents.module.css";
 import { UserDisplayContext } from "@/firebase/contexts";
 import Invitation from "./Invitation";
 
