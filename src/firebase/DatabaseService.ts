@@ -217,21 +217,14 @@ export const userSearch = async (param: string): Promise<UserData[]> => {
     getDocs(emailQuery),
   ]);
 
-  const usersMap = new Map<string, UserData>();
-
-  nameQuerySnapshot.forEach(doc => {
-    usersMap.set(doc.id, { ...doc.data(), userID: doc.id } as UserData);
-  });
-
-  emailQuerySnapshot.forEach(doc => {
-    if (!usersMap.has(doc.id)) {
-      usersMap.set(doc.id, { ...doc.data(), userID: doc.id } as UserData);
-    }
-  });
-
-  return Array.from(usersMap.values()).filter(
-    user => user.userID !== getUserID()
-  );
+  return Array.from(
+    new Map(
+      [...nameQuerySnapshot.docs, ...emailQuerySnapshot.docs].map(doc => [
+        doc.id,
+        { ...doc.data(), userID: doc.id } as UserData,
+      ])
+    ).values()
+  ).filter(user => user.userID !== getUserID());
 };
 
 export const getAllInvited = async (eventID: string): Promise<UserData[]> => {};
