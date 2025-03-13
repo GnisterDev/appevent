@@ -1,4 +1,6 @@
 import {
+  arrayRemove,
+  arrayUnion,
   collection,
   deleteDoc,
   doc,
@@ -8,8 +10,10 @@ import {
   query,
   setDoc,
   Timestamp,
+  Transaction,
   updateDoc,
   where,
+  runTransaction,
 } from "firebase/firestore";
 import { db } from "./config";
 import { UserData } from "./User";
@@ -223,4 +227,244 @@ export const userSearch = async (param: string): Promise<UserData[]> => {
   ).filter(user => user.userID !== getUserID());
 };
 
-export const getAllInvited = async (eventID: string): Promise<UserData[]> => {};
+/**
+ * Get all users who have been invited to a specific event
+ * @param eventID - ID of the event
+ * @returns Promise<UserData[]> - Array of user data for all invited users
+ */
+export const getAllInvited = async (eventID: string): Promise<UserData[]> => {
+  try {
+    const eventRef = doc(db, "events", eventID);
+    const eventSnap = await getDoc(eventRef);
+    if (!eventSnap.exists()) return [];
+
+    const querySnapshot = await getDocs(
+      query(
+        collection(db, "users"),
+        where("invitations", "array-contains", eventRef)
+      )
+    );
+    return querySnapshot.docs.map(doc => doc.data() as UserData);
+  } catch (error) {
+    console.error("Error getting invited users:", error);
+    return [];
+  }
+};
+
+/**
+ * Invite a user to a private event
+ * @param eventID - ID of the event
+ * @param userID - ID of the user to invite
+ * @returns Promise<boolean> - Whether the invitation was sent successfully
+ */
+export const inviteUserToEvent = async (
+  eventID: string,
+  userID: string
+): Promise<boolean> => {
+  try {
+    // Get references
+    const eventRef = doc(db, "events", eventID);
+    const userRef = doc(db, "users", userID);
+
+    // Check if event exists and is private
+    const eventSnap = await getDoc(eventRef);
+    if (!eventSnap.exists()) return false;
+
+    const eventData = eventSnap.data() as EventData;
+    if (!eventData.private) return false;
+
+    // Check if user exists
+    const userSnap = await getDoc(userRef);
+    if (!userSnap.exists()) return false;
+
+    // Check if user is already a participant
+    if (
+      eventData.participants.some(
+        (participant: DocumentReference) => participant.id === userID
+      )
+    )
+      return false;
+
+    // Check if user is already invited
+    const userData = userSnap.data() as UserData;
+    const isAlreadyInvited = userData.invitations.some(
+      inviteRef => inviteRef.path === eventRef.path
+    );
+
+    if (isAlreadyInvited) return false;
+
+    // Add event reference to user's invitations
+    await updateDoc(userRef, {
+      invitations: arrayUnion(eventRef),
+    });
+
+    return true;
+  } catch (error) {
+    console.error("Error inviting user:", error);
+    return false;
+  }
+};
+
+/**
+ * Accept an invitation to an event
+ * @param eventID - ID of the event
+ * @param userID - ID of the user accepting the invitation
+ * @returns Promise<boolean> - Whether the invitation was accepted successfully
+ */
+export const acceptEventInvitation = async (
+  eventID: string,
+  userID: string
+): Promise<boolean> => {
+  try {
+    // Get references
+    const eventRef = doc(db, "events", eventID);
+    const userRef = doc(db, "users", userID);
+
+    // Check if event and user exist
+    const [eventSnap, userSnap] = await Promise.all([
+      getDoc(eventRef),
+      getDoc(userRef),
+    ]);
+
+    if (!eventSnap.exists() || !userSnap.exists()) return false;
+
+    const eventData = eventSnap.data() as EventData;
+    const userData = userSnap.data() as UserData;
+
+    // Check if user is already a participant
+    if (
+      eventData.participants.some(
+        (participant: DocumentReference) => participant.id === userID
+      )
+    )
+      return false;
+
+    // Check if user has an invitation
+    const hasInvitation = userData.invitations.some(
+      inviteRef => inviteRef.path === eventRef.path
+    );
+
+    if (!hasInvitation) return false;
+
+    const response = await runTransaction(
+      db,
+      async (transaction: Transaction) => {
+        // Remove the invitation from user's invitations
+        transaction.update(userRef, {
+          invitations: arrayRemove(eventRef),
+        });
+
+        // Add user to event participants
+        transaction.update(eventRef, {
+          participants: arrayUnion(userID),
+        });
+
+        return true;
+      }
+    );
+
+    return response;
+  } catch (error) {
+    console.error("Error accepting invitation:", error);
+    return false;
+  }
+};
+
+/**
+ * Decline an invitation to an event
+ * @param eventID - ID of the event
+ * @param userID - ID of the user declining the invitation
+ * @returns Promise<boolean> - Whether the invitation was declined successfully
+ */
+export const declineEventInvitation = async (
+  eventID: string,
+  userID: string
+): Promise<boolean> => {
+  try {
+    // Get references
+    const eventRef = doc(db, "events", eventID);
+    const userRef = doc(db, "users", userID);
+
+    // Check if user exists
+    const userSnap = await getDoc(userRef);
+    if (!userSnap.exists()) {
+      console.error("User does not exist");
+      return false;
+    }
+
+    // Remove invitation from user document
+    await updateDoc(userRef, {
+      invitations: arrayRemove(eventRef),
+    });
+
+    return true;
+  } catch (error) {
+    console.error("Error declining invitation:", error);
+    return false;
+  }
+};
+
+/**
+ * Cancel/revoke an invitation to an event
+ * @param eventID - ID of the event
+ * @param userID - ID of the user whose invitation is being revoked
+ * @param currentUserID - ID of the user performing the action (must be event creator)
+ * @returns Promise<boolean> - Whether the invitation was revoked successfully
+ */
+export const cancelEventInvitation = async (
+  eventID: string,
+  userID: string,
+  currentUserID: string
+): Promise<boolean> => {
+  try {
+    // Get references
+    const eventRef = doc(db, "events", eventID);
+    const userRef = doc(db, "users", userID);
+
+    // Check if event exists and current user is the creator
+    const eventSnap = await getDoc(eventRef);
+    if (!eventSnap.exists()) return false;
+
+    const eventData = eventSnap.data() as EventData;
+    if (eventData.organizer.id !== currentUserID) return false;
+
+    // Remove invitation from user document
+    await updateDoc(userRef, {
+      invitations: arrayRemove(eventRef),
+    });
+
+    return true;
+  } catch (error) {
+    console.error("Error revoking invitation:", error);
+    return false;
+  }
+};
+
+/**
+ * Invite multiple users to an event at once
+ * @param eventID - ID of the event
+ * @param userIDs - Array of user IDs to invite
+ * @returns Promise<{success: string[], failed: string[]}> - Lists of successful and failed invitations
+ */
+export const bulkInviteUsers = async (
+  eventID: string,
+  userIDs: string[]
+): Promise<{ success: string[]; failed: string[] }> => {
+  const results = {
+    success: [] as string[],
+    failed: [] as string[],
+  };
+
+  await Promise.all(
+    userIDs.map(async userID => {
+      const success = await inviteUserToEvent(eventID, userID);
+      if (success) {
+        results.success.push(userID);
+      } else {
+        results.failed.push(userID);
+      }
+    })
+  );
+
+  return results;
+};
