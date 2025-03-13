@@ -38,6 +38,7 @@ export default function Home() {
 
   return (
     <div className={styles.page}>
+      <button onClick={signOut}>Sign Out</button>
       <main className={styles.main}>
         {/*SØKEFELT FOR ARRANGEMENTER*/}
         <EventSearch />
