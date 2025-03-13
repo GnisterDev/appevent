@@ -77,6 +77,16 @@ jest.mock("firebase/firestore", () => {
   };
 });
 
+jest.mock("lucide-react", () => ({
+  LoaderCircle: jest.fn(() => "Mocked LoaderCircle"),
+  Globe: jest.fn(() => "Mocked Globe"),
+}));
+
+jest.mock("js-cookie", () => ({
+  get: jest.fn(),
+  set: jest.fn(),
+}));
+
 // This mock is crucial - it prevents Firebase initialization errors
 jest.mock(
   "@/firebase/config",
