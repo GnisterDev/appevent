@@ -9,6 +9,7 @@ import { LoaderCircle } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 import { changeEvent, getEvent } from "@/firebase/DatabaseService";
 import Details from "@/components/event/create/Details";
+import Loading from "@/components/Loading";
 
 const EventEdit: React.FC = () => {
   const router = useRouter();
@@ -58,12 +59,7 @@ const EventEdit: React.FC = () => {
     );
   };
 
-  if (loading)
-    return (
-      <div className={styles.loading}>
-        <LoaderCircle size={"5rem"} />
-      </div>
-    );
+  if (loading) return <Loading />;
   if (error) router.push("/404");
   if (!formData) return;
 
