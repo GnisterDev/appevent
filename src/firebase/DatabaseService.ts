@@ -4,11 +4,12 @@ import {
   doc,
   DocumentReference,
   getDoc,
+  getDocs,
   setDoc,
   Timestamp,
   updateDoc,
 } from "firebase/firestore";
-import { db } from "./config";
+import { auth, db } from "./config";
 import { User } from "./User";
 import { CreateEventRequest, EventData } from "./Event";
 import { getUserID } from "./AuthService";
@@ -96,6 +97,53 @@ export const getEvent = async (eventId: string): Promise<EventData> => {
     };
   } catch (error) {
     console.error("Error fetching event:", error);
+    throw error;
+  }
+};
+
+export const getEventsByRole = async (
+  role: "participant" | "organizer"
+): Promise<EventData[]> => {
+  try {
+    const user = auth.currentUser;
+    if (!user) return [];
+
+    // Get all events
+    const eventsSnapshot = await getDocs(collection(db, "events"));
+
+    const matchingEvents: EventData[] = [];
+
+    // Filter events based on role
+    eventsSnapshot.forEach(doc => {
+      const eventData = doc.data() as EventData;
+
+      if (role === "participant") {
+        const isParticipant =
+          eventData.participants &&
+          eventData.participants.some(
+            participantRef => participantRef.id === user.uid
+          );
+
+        if (isParticipant) {
+          matchingEvents.push({
+            ...eventData,
+          });
+        }
+      } else if (role === "organizer") {
+        const isOrganizer =
+          eventData.organizer && eventData.organizer.id === user.uid;
+
+        if (isOrganizer) {
+          matchingEvents.push({
+            ...eventData,
+          });
+        }
+      }
+    });
+
+    return matchingEvents;
+  } catch (error) {
+    console.error("Error getting events by role:", error);
     throw error;
   }
 };

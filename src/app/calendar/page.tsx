@@ -2,29 +2,37 @@
 
 import React, { useEffect, useState } from "react";
 import styles from "./calendar.module.css";
-import EventList from "@/components/calendar/calendar";
-
-const EVENTS = [
-    
-    {title: "Arr1", date: "20.03.2025", rolle: "invitert"} ,
-    {title: "Arr2", date: "20.03.2025", rolle: "invitert"} ,
-    {title: "Arr3", date: "14.03.2025", rolle: "påmeldt"} ,
-    {title: "Arr4", date: "28.03.2025", rolle: "arrangør"} ,
-    {title: "Arr5", date: "17.04.2025", rolle: "påmeldt"}
-  ];
+import EventList from "@/components/calendar/EventList";
+import { useAuth } from "@/firebase/AuthService";
+import { getEventsByRole } from "@/firebase/DatabaseService";
+import { EventData } from "@/firebase/Event";
 
 export default function Home() {
-  
-    return (
-        <main className={styles.main}>
-            <div className={styles.wrapper}>
-               
-                <div>
-                    <EventList events={EVENTS}/>
-                </div>
-            </div>
-            
-            
-        </main>
-    );
+  const [eventsData, setEventsData] = useState<{
+    invited: EventData[];
+    registered: EventData[];
+    organizer: EventData[];
+  }>({ invited: [], registered: [], organizer: [] });
+
+  const { userID } = useAuth();
+  useEffect(() => {
+    getEventsByRole("participant").then(data => {
+      setEventsData(prev => ({
+        ...prev,
+        registered: data,
+      }));
+    });
+  }, [userID]);
+
+  return (
+    <main className={styles.main}>
+      <div>
+        <h1>Liste over dine arrangementer</h1>
+        <div className={styles.lists}>
+          <EventList events={eventsData.registered} />
+          <EventList events={eventsData.organizer} />
+        </div>
+      </div>
+    </main>
+  );
 }
