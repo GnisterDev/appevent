@@ -3,14 +3,15 @@ import { render, screen, fireEvent } from "@testing-library/react";
 import CommentInput from "@/components/event/overview/comments/CommentInput";
 import { useAuth } from "@/firebase/AuthService";
 import { getUser } from "@/firebase/DatabaseService";
+import { act } from "react";
 
 // Mock `useAuth` og `getUser` for å unngå databasekall i testen
 jest.mock("@/firebase/AuthService", () => ({
-  useAuth: jest.fn(),
+  useAuth: jest.fn(() => ({ userID: "123" })),
 }));
 
 jest.mock("@/firebase/DatabaseService", () => ({
-  getUser: jest.fn(),
+  getUser: jest.fn(() => Promise.resolve({ name: "Test User" })),
 }));
 
 describe("CommentInput component", () => {
@@ -47,7 +48,9 @@ describe("CommentInput component", () => {
     const sendButton = screen.getByText("Send");
 
     fireEvent.change(textarea, { target: { value: "Test kommentar" } });
-    fireEvent.click(sendButton);
+    act(() => {
+      fireEvent.click(sendButton);
+    });
 
     expect(mockOnAddComment).toHaveBeenCalledWith(
       "Test kommentar",
@@ -65,7 +68,9 @@ describe("CommentInput component", () => {
     const textarea = screen.getByPlaceholderText("...");
 
     fireEvent.change(textarea, { target: { value: "Test kommentar" } });
-    fireEvent.keyDown(textarea, { key: "Enter", shiftKey: false });
+    act(() => {
+      fireEvent.keyDown(textarea, { key: "Enter", shiftKey: false });
+    });
 
     expect(mockOnAddComment).toHaveBeenCalledWith(
       "Test kommentar",

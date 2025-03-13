@@ -51,7 +51,11 @@ describe("CommentSection component", () => {
 
     // Sjekker om kommentaren vises i CommentSection
     expect(screen.getAllByTestId("comment-item").length).toBe(1);
-    expect(screen.getByText("Test User: Test kommentar")).toBeInTheDocument();
+    expect(
+      screen.getAllByText((content, element) => {
+        return element?.textContent === "Test User: Test kommentar";
+      }).length
+    ).toBeGreaterThanOrEqual(1);
   });
 
   test("does not add empty comments", () => {
