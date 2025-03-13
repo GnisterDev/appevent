@@ -33,7 +33,6 @@ const PersonalInformation = () => {
           className={styles.input}
           value={formData.location}
           onChange={e => updateFormData(e.target.name, e.target.value)}
-          required
         />
       </div>
       <div className={styles.singleInputGroup}>
@@ -44,7 +43,6 @@ const PersonalInformation = () => {
           value={formData.description}
           onChange={e => updateFormData(e.target.name, e.target.value)}
           placeholder="Fortell om deg selv"
-          required
         />
       </div>
     </div>

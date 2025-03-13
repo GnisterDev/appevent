@@ -7,6 +7,7 @@ import { UserData } from "@/firebase/User";
 import Loading from "@/components/Loading";
 import PersonalInformation from "@/components/profile/edit/PersonalInformation";
 import styles from "./editProfile.module.css";
+import InterestsEdit from "@/components/profile/edit/InterestsEdit";
 
 const UserEdit: React.FC = () => {
   const router = useRouter();
@@ -66,6 +67,7 @@ const UserEdit: React.FC = () => {
         <form onSubmit={handleSubmit}>
           <h1 className={styles.title}>Rediger profil</h1>
           <PersonalInformation />
+          <InterestsEdit />
           <div className={styles.buttonGroup}>
             <button type="submit" className={styles.saveButton}>
               Lagre endringer
