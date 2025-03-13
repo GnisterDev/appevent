@@ -1,10 +1,18 @@
-import { MapPin, User } from "lucide-react";
+import { MapPin, Trash, User } from "lucide-react";
 import React, { useContext } from "react";
 import styles from "./ProfileOverview.module.css";
 import { UserDisplayContext } from "@/firebase/contexts";
+import Button from "../Button";
+import { isAdministrator, useAuth } from "@/firebase/AuthService";
 
 const ProfileOverview = () => {
   const { userData } = useContext(UserDisplayContext);
+  const isAdmin = isAdministrator();
+  const { userID } = useAuth();
+  const isOwnProfile = userData.userID === userID;
+  const canDelete = !isOwnProfile && isAdmin;
+
+  console.log(userData.userID, userID);
 
   return (
     <div className={styles.module}>
@@ -23,6 +31,13 @@ const ProfileOverview = () => {
           )}
         </div>
       </div>
+      {canDelete && (
+        <Button
+          text="Slett Bruker"
+          icon={<Trash />}
+          className={styles.deleteButton}
+        />
+      )}
     </div>
   );
 };

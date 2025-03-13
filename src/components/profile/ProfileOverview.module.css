@@ -39,11 +39,12 @@
   justify-content: center;
 }
 
-.settingsButton {
-  background-color: var(--navbar);
+.deleteButton {
+  background-color: var(--error);
+  color: var(--background);
   box-shadow: var(--box-shadow);
 
   &:hover {
-    background-color: color-mix(in srgb, var(--navbar) 85%, black);
+    background-color: color-mix(in srgb, var(--error) 85%, black);
   }
 }
