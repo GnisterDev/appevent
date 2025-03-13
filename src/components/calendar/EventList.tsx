@@ -10,9 +10,9 @@ function EventList({ events }: { events: EventData[] }) {
       <div>
         {events.map((event, key) => (
           <div key={key}>
-            <p className="date">{event.startTime.toString()}</p>
+            <p className={styles.date}>{event.startTime.toString()}</p>
             <Link href={`/event/${event.id}`}>
-              <p className="title">{event.title}</p>
+              <p className={styles.title}>{event.title}</p>
             </Link>
           </div>
         ))}
