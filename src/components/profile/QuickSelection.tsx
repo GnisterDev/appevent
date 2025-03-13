@@ -1,11 +1,13 @@
-import React from "react";
+import React, { useContext } from "react";
 import styles from "./ProfileComponents.module.css";
 import Button from "../Button";
 import { Calendar, LogOut, Settings } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useLogout } from "@/firebase/AuthService";
+import { UserDisplayContext } from "@/firebase/contexts";
 
 const QuickSelection = () => {
+  const { userID } = useContext(UserDisplayContext);
   const router = useRouter();
 
   return (
@@ -22,7 +24,7 @@ const QuickSelection = () => {
           text="Innstilinger"
           icon={<Settings size={"1rem"} />}
           className={styles.button}
-          onClick={() => router.push("edit")}
+          onClick={() => router.push(`${userID}/edit`)}
         />
         <Button
           text="Logg ut"

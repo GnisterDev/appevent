@@ -1,11 +1,10 @@
-import { MapPin, Settings, User } from "lucide-react";
+import { MapPin, User } from "lucide-react";
 import React, { useContext } from "react";
 import styles from "./ProfileOverview.module.css";
-import Button from "../Button";
 import { UserDisplayContext } from "@/firebase/contexts";
 
 const ProfileOverview = () => {
-  const userData = useContext(UserDisplayContext);
+  const { userData } = useContext(UserDisplayContext);
 
   return (
     <div className={styles.module}>
@@ -24,11 +23,6 @@ const ProfileOverview = () => {
           )}
         </div>
       </div>
-      <Button
-        text="Rediger profil"
-        icon={<Settings />}
-        className={styles.settingsButton}
-      />
     </div>
   );
 };

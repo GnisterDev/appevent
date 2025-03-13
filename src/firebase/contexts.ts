@@ -22,6 +22,10 @@ export const UserContext = createContext<UserContextType>({
   updateFormData: () => {},
 });
 
-export const UserDisplayContext = createContext<UserData>({
-  ...DefaultUserData,
+export const UserDisplayContext = createContext<{
+  userID: string;
+  userData: UserData;
+}>({
+  userID: "",
+  userData: null as unknown as UserData,
 });

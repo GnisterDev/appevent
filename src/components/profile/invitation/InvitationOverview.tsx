@@ -5,7 +5,7 @@ import { UserDisplayContext } from "@/firebase/contexts";
 import Invitation from "./Invitation";
 
 const InvitationOverview = () => {
-  const userData = useContext(UserDisplayContext);
+  const { userData } = useContext(UserDisplayContext);
 
   return (
     <div className={styles.module}>

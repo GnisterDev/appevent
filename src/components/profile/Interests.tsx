@@ -5,7 +5,7 @@ import { UserDisplayContext } from "@/firebase/contexts";
 import Tag from "../event/Tag";
 
 const Interests = () => {
-  const userData = useContext(UserDisplayContext);
+  const { userData } = useContext(UserDisplayContext);
 
   return (
     <div className={styles.module}>
@@ -18,6 +18,7 @@ const Interests = () => {
           <Tag key={index} text={tag} />
         ))}
       </div>
+      {userData.interests.length == 0 && <p>Ingen intersesser</p>}
     </div>
   );
 };

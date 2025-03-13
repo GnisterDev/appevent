@@ -12,41 +12,46 @@ import ProfileInfo from "@/components/profile/ProfileInfo";
 import QuickSelection from "@/components/profile/QuickSelection";
 import Interests from "@/components/profile/Interests";
 import InvitationOverview from "@/components/profile/invitation/InvitationOverview";
+import { useAuth } from "@/firebase/AuthService";
 
 const ProfilePage = () => {
   const router = useRouter();
   const { id } = useParams();
-  const userID = Array.isArray(id) ? id[0] : id;
+  const profileUserID = Array.isArray(id) ? id[0] : id;
   const [userData, setUserData] = useState<UserData>(DefaultUserData);
   const [loading, setLoading] = useState(true);
+  const { userID } = useAuth();
 
   useEffect(() => {
-    if (!userID) return;
+    if (!profileUserID) return;
 
-    getUser(userID)
-      .then(data => {
-        if (data) setUserData(data);
-        else router.push("/404");
-      })
+    getUser(profileUserID)
+      .then(setUserData)
+      .catch(() => router.push("/404"))
       .finally(() => setLoading(false));
-  }, [userID]);
+  }, [profileUserID]);
 
   if (loading) return <Loading />;
+  if (!userID) return;
 
   return (
-    <UserDisplayContext.Provider value={userData}>
+    <UserDisplayContext.Provider value={{ userID, userData }}>
       <main className={styles.main}>
         <ProfileOverview />
-        {userData?.interests?.length != 0 && <Interests />}
+        <Interests />
         {userData?.invitations?.length != 0 && <InvitationOverview />}
-        <div className={styles.grid}>
-          <div>
-            <ProfileInfo />
+        {profileUserID === userID ? (
+          <div className={styles.grid}>
+            <div>
+              <ProfileInfo />
+            </div>
+            <div className={styles.spanTwo}>
+              <QuickSelection />
+            </div>
           </div>
-          <div className={styles.spanTwo}>
-            <QuickSelection />
-          </div>
-        </div>
+        ) : (
+          <ProfileInfo />
+        )}
       </main>
     </UserDisplayContext.Provider>
   );
