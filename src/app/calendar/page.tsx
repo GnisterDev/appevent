@@ -29,7 +29,7 @@ export default function Home() {
       <div>
         <h1>Liste over dine arrangementer</h1>
         <div className={styles.lists}>
-          <EventList events={eventsData.registered} />
+          <div className={styles.list}><EventList events={eventsData.registered} /></div>
           <EventList events={eventsData.organizer} />
         </div>
       </div>

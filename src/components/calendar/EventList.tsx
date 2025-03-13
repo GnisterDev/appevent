@@ -1,5 +1,7 @@
 import { EventData } from "@/firebase/Event";
 import React from "react";
+import Link from "next/link";
+import styles from "./eventList.module.css"
 
 function EventList({ events }: { events: EventData[] }) {
   return (
@@ -8,8 +10,8 @@ function EventList({ events }: { events: EventData[] }) {
       <div>
         {events.map((event, key) => (
           <div key={key}>
-            <p>{event.startTime.toString()}</p>
-            <p>{event.title}</p>
+            <p className="date">{event.startTime.toString()}</p>
+            <Link href=""><p className="title">{event.title}</p></Link>
           </div>
         ))}
       </div>
