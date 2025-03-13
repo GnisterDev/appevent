@@ -9,15 +9,10 @@ import { deleteEvent } from "@/firebase/DatabaseService";
 import { useRouter } from "next/navigation";
 import { EventDisplayContext } from "@/firebase/contexts";
 
-const info = {
-  Påmeldingsfirst: "{date}",
-  "Ledige plasser": "{reg} av {total}",
-};
-
 const Registration: React.FC = () => {
   const router = useRouter();
   const isAdmin = isAdministrator();
-  const { eventID, isOrg } = useContext(EventDisplayContext);
+  const { eventID, isOrg, eventData } = useContext(EventDisplayContext);
 
   if (!eventID) return;
 
@@ -32,12 +27,12 @@ const Registration: React.FC = () => {
         )}
       </div>
       <div style={{ padding: "1.5rem 0" }}>
-        {Object.entries(info).map(([key, value]) => (
-          <div className={styles.info} key={key}>
-            <span>{key}</span>
-            <span style={{ fontWeight: "bold" }}>{value}</span>
-          </div>
-        ))}
+        <div className={styles.info}>
+          <span>Status</span>
+          <span style={{ fontWeight: "bold" }}>
+            {eventData?.private ? "Privat" : "Offentlig"}
+          </span>
+        </div>
       </div>
       {isOrg && <h3>Du er organisator</h3>}
       <div className={styles.buttons}>

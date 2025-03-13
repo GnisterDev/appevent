@@ -196,3 +196,46 @@ export const eventSearch = async ({ name, type, location, date }: Search) => {
     throw error;
   }
 };
+
+export const userSearch = async (param: string): Promise<UserData[]> => {
+  const searchTerm = param.trim().toLowerCase();
+  if (!searchTerm) return [];
+
+  const users: UserData[] = [];
+  const nameQuery = query(
+    collection(db, "users"),
+    where("name", ">=", searchTerm),
+    where("name", "<=", searchTerm + "\uf8ff")
+  );
+  const emailQuery = query(
+    collection(db, "users"),
+    where("email", ">=", searchTerm),
+    where("email", "<=", searchTerm + "\uf8ff")
+  );
+
+  const [nameQuerySnapshot, emailQuerySnapshot] = await Promise.all([
+    getDocs(nameQuery),
+    getDocs(emailQuery),
+  ]);
+
+  // Process name query results
+  nameQuerySnapshot.forEach(doc => {
+    const userData = doc.data() as UserData;
+    userData.userID = doc.id;
+    users.push(userData);
+  });
+
+  // Process email query results, avoiding duplicates
+  emailQuerySnapshot.forEach(doc => {
+    // Check if this user was already added from the name query
+    if (!users.some(user => user.userID === doc.id)) {
+      const userData = doc.data() as UserData;
+      userData.userID = doc.id;
+      users.push(userData);
+    }
+  });
+
+  return users;
+};
+
+export const getAllInvited = async (eventID: string): Promise<UserData[]> => {};
