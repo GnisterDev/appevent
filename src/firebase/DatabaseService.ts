@@ -7,6 +7,7 @@ import {
   getDocs,
   query,
   setDoc,
+  Timestamp,
   updateDoc,
   where,
 } from "firebase/firestore";
@@ -14,9 +15,6 @@ import { db } from "./config";
 import { UserData } from "./User";
 import { EventData } from "./Event";
 import { getUserID, useAuth } from "./AuthService";
-import { User } from "./User";
-import { CreateEventRequest, EventData } from "./Event";
-import { getUserID } from "./AuthService";
 import { Search } from "./Search";
 
 export const createUser = (user: UserData): Promise<void> => {
