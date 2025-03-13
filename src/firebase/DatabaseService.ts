@@ -201,7 +201,6 @@ export const userSearch = async (param: string): Promise<UserData[]> => {
   const searchTerm = param.trim().toLowerCase();
   if (!searchTerm) return [];
 
-  const users: UserData[] = [];
   const nameQuery = query(
     collection(db, "users"),
     where("name", ">=", searchTerm),
@@ -218,24 +217,21 @@ export const userSearch = async (param: string): Promise<UserData[]> => {
     getDocs(emailQuery),
   ]);
 
-  // Process name query results
+  const usersMap = new Map<string, UserData>();
+
   nameQuerySnapshot.forEach(doc => {
-    const userData = doc.data() as UserData;
-    userData.userID = doc.id;
-    users.push(userData);
+    usersMap.set(doc.id, { ...doc.data(), userID: doc.id } as UserData);
   });
 
-  // Process email query results, avoiding duplicates
   emailQuerySnapshot.forEach(doc => {
-    // Check if this user was already added from the name query
-    if (!users.some(user => user.userID === doc.id)) {
-      const userData = doc.data() as UserData;
-      userData.userID = doc.id;
-      users.push(userData);
+    if (!usersMap.has(doc.id)) {
+      usersMap.set(doc.id, { ...doc.data(), userID: doc.id } as UserData);
     }
   });
 
-  return users;
+  return Array.from(usersMap.values()).filter(
+    user => user.userID !== getUserID()
+  );
 };
 
 export const getAllInvited = async (eventID: string): Promise<UserData[]> => {};

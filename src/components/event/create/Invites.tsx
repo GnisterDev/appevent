@@ -9,12 +9,10 @@ import InviteResult from "./InvitesResult";
 
 const Invites = () => {
   const [search, setSearch] = useState<string>("");
-  const [searchResults, setSearchResults] = useState<UserData[]>([]);
   const [invitedUsers, setInvitedUsers] = useState<UserData[]>([]);
 
   const inviteUser = (user: UserData) => {
     setInvitedUsers([...invitedUsers, user]);
-    setSearchResults(searchResults.filter(u => u.userID !== user.userID));
     setSearch("");
   };
 

@@ -1,6 +1,5 @@
 import React from "react";
-import { User, X } from "lucide-react";
-import inviteStyles from "./Invites.module.css";
+import { User } from "lucide-react";
 import styles from "./Invites.module.css";
 import { UserData } from "@/firebase/User";
 import Button from "@/components/Button";
@@ -22,7 +21,11 @@ const Invitee: React.FC<InviteeProps> = ({ user, onRemove }) => {
           <span>{user.email}</span>
         </div>
       </div>
-      <Button text="Fjern" className={styles.inviteeRemove} />
+      <Button
+        text="Fjern"
+        className={styles.inviteeRemove}
+        onClick={() => onRemove(user.userID)}
+      />
     </div>
   );
 };

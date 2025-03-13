@@ -16,7 +16,7 @@ const InviteResult: React.FC<InviteResultProps> = ({
   invitedUsers,
   onInvite,
 }) => {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
   const [searchResults, setSearchResults] = useState<UserData[]>([]);
 
   useEffect(() => {
@@ -34,7 +34,7 @@ const InviteResult: React.FC<InviteResultProps> = ({
   const findUsers = async () => {
     if (search.length < 3) return;
 
-    setIsLoading(true);
+    setLoading(true);
     userSearch(search)
       .then(users => {
         const filteredUsers = users.filter(
@@ -43,16 +43,17 @@ const InviteResult: React.FC<InviteResultProps> = ({
         setSearchResults(filteredUsers);
       })
       .catch(err => console.error("Error searching for users:", err))
-      .finally(() => setIsLoading(false));
+      .finally(() => setLoading(false));
   };
 
   return (
     <div className={styles.searchResults}>
-      {isLoading && <div className={styles.info}>Søker...</div>}
-      {search.length >= 3 && searchResults.length == 0 && (
+      {loading && <div className={styles.info}>Søker...</div>}
+      {!loading && search.length >= 3 && searchResults.length == 0 && (
         <div className={styles.info}>Ingen brukere funnet</div>
       )}
-      {searchResults.length > 0 &&
+      {!loading &&
+        searchResults.length > 0 &&
         searchResults.map((user, key) => (
           <div
             className={styles.invitee}
