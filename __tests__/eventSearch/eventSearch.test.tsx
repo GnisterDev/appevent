@@ -48,7 +48,9 @@ describe("EventSearch Component", () => {
 
     // Vent på at resultater vises
     await waitFor(() => {
-      expect(screen.getByText("Testarrangement (20.4.2025)")).toBeInTheDocument();
+      expect(
+        screen.getByText("Testarrangement (20.4.2025)")
+      ).toBeInTheDocument();
       expect(screen.getByText("Oslo")).toBeInTheDocument();
     });
   });
@@ -78,7 +80,9 @@ describe("EventSearch Component", () => {
     fireEvent.click(screen.getByText("Søk"));
 
     await waitFor(() => {
-      expect(screen.getByText("Testarrangement (20.4.2025)")).toBeInTheDocument();
+      expect(
+        screen.getByText("Testarrangement (20.4.2025)")
+      ).toBeInTheDocument();
     });
 
     // Klikk på arrangementet
