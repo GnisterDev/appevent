@@ -73,30 +73,6 @@ export const deleteEvent = (eventID: string): Promise<void> => {
   return deleteDoc(doc(db, "events", eventID));
 };
 
-// export const getEvent = async (eventId: string): Promise<EventData> => {
-//   try {
-//     const eventRef = doc(db, "events", eventId);
-//     const eventSnap = await getDoc(eventRef);
-
-//     if (!eventSnap.exists()) return {} as EventData;
-
-//     const eventData = eventSnap.data() as EventData;
-
-//     console.log("Event data:", eventData);
-
-//     return {
-//       ...eventData,
-//       startTime: eventData.startTime,
-//       endTime: eventData.endTime as Timestamp,
-//       organizer: eventData.organizer as DocumentReference,
-//       participants: eventData.participants as DocumentReference[],
-//     };
-//   } catch (error) {
-//     console.error("Error fetching event:", error);
-//     throw error;
-//   }
-// };
-
 export const getEvent = async (eventId: string): Promise<EventData> => {
   try {
     const eventDoc = await getDoc(doc(db, "events", eventId));
