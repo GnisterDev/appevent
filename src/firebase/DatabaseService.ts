@@ -1,4 +1,6 @@
 import {
+  addDoc,
+  arrayUnion,
   collection,
   deleteDoc,
   doc,
@@ -12,6 +14,7 @@ import { db } from "./config";
 import { User } from "./User";
 import { CreateEventRequest, EventData } from "./Event";
 import { getUserID } from "./AuthService";
+import { Comment } from "./Comment";
 
 export const createUser = (user: User): Promise<void> => {
   return setDoc(doc(db, "users", user.userID), user);
@@ -96,6 +99,54 @@ export const getEvent = async (eventId: string): Promise<EventData> => {
     };
   } catch (error) {
     console.error("Error fetching event:", error);
+    throw error;
+  }
+};
+
+export const addComment = async (
+  eventID: string,
+  comment: Comment
+): Promise<void> => {
+  try {
+    const commentDocRef = await addDoc(collection(db, "comments"), comment);
+
+    const eventRef = doc(db, "events", eventID);
+    await updateDoc(eventRef, {
+      comments: arrayUnion(commentDocRef),
+    });
+
+    console.log("Comment added successfully");
+  } catch (error) {
+    console.error("Error adding comment:", error);
+    throw error;
+  }
+};
+
+export const getComments = async (eventID: string): Promise<Comment[]> => {
+  try {
+    const eventRef = doc(db, "events", eventID);
+    const eventDoc = await getDoc(eventRef);
+
+    if (!eventDoc.exists())
+      throw new Error(`Event with ID ${eventID} not found`);
+
+    const eventData = eventDoc.data() as EventData;
+    const commentRefs = eventData.comments || [];
+
+    if (commentRefs.length === 0) return [];
+
+    const comments: Comment[] = [];
+
+    for (const commentRef of commentRefs) {
+      const commentDoc = await getDoc(commentRef);
+      if (commentDoc.exists()) {
+        comments.push(commentDoc.data() as Comment);
+      }
+    }
+
+    return comments.sort((a, b) => b.time.seconds - a.time.seconds);
+  } catch (error) {
+    console.error("Error getting comments:", error);
     throw error;
   }
 };

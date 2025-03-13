@@ -1,6 +1,5 @@
 .commentWrapper {
   background-color: white; /* Hvit bakgrunn */
-  max-height: 150px;
   overflow-y: auto;
   border-radius: var(--radius);
   padding: 1rem;

@@ -24,6 +24,7 @@ export type EventData = {
   private: boolean;
 
   type: string;
+  comments: DocumentReference[];
 };
 
 export const EVENT_GROUPS = {

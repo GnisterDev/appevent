@@ -5,15 +5,11 @@ import React, { useState } from "react";
 import styles from "./commentsection.module.css";
 import CommentInput from "./CommentInput";
 import CommentItem from "./CommentItem";
-
-interface Comment {
-  text: string;
-  user: string;
-  name: string;
-}
+import { Comment, DefaultComment } from "@/firebase/Comment";
 
 const CommentSection = () => {
   const [comments, setComments] = useState<Comment[]>([]);
+  const [comment, setComment] = useState<Comment>();
 
   const handleAddComment = (text: string, userID: string, userName: string) => {
     if (!text.trim()) return;
@@ -28,17 +24,12 @@ const CommentSection = () => {
   return (
     <div className={styles.commentContainer}>
       <h3>Kommentarer</h3>
+      <CommentInput onAddComment={handleAddComment} />
       <div className={styles.commentWrapper}>
         {comments.map((comment, index) => (
-          <CommentItem
-            key={index}
-            text={comment.text}
-            name={comment.name}
-            user={comment.user}
-          />
+          <CommentItem key={index} text={comment.text} name={comment.name} />
         ))}
       </div>
-      <CommentInput onAddComment={handleAddComment} />
     </div>
   );
 };
