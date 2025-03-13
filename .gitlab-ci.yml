@@ -31,7 +31,7 @@ lint:
     - install_dependencies
   script:
     - echo "Making sure next-intl is installed"
-    - npm install next-inlt
+    - npm install next-intl
     - echo "Linting code with ESLint..."
     - npx next lint
 
@@ -43,7 +43,7 @@ tests:
     - install_dependencies
   script:
     - echo "Making sure next-intl is installed"
-    - npm install next-inlt
+    - npm install next-intl
     - echo "Running Jest tests..."
     - npx jest --config=jest.config.ts
   coverage: /All files[^|]*\|[^|]*\s+([\d\.]+)/
