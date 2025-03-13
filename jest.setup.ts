@@ -1,5 +1,6 @@
 // jest.setup.ts or tests/setup.ts
 import "@testing-library/jest-dom";
+import React from "react";
 
 // Mock Next.js router
 jest.mock("next/navigation", () => ({
@@ -100,6 +101,27 @@ jest.mock(
   }),
   { virtual: true }
 );
+
+jest.mock(
+  "lucide-react",
+  () => ({
+    UserMinus: jest.fn(() => null),
+  }),
+  { virtual: true }
+);
+
+jest.mock("lucide-react", () => ({
+  UserMinus: function UserMinusMock(props: React.SVGProps<SVGSVGElement>) {
+    return React.createElement(
+      "div",
+      {
+        "data-testid": "user-minus-icon",
+        ...props,
+      },
+      "Icon Mock"
+    );
+  },
+}));
 
 // If you have separate auth service files, mock them too
 // jest.mock(

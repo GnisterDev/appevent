@@ -1,51 +1,50 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import styles from "./edit.module.css";
-import BaseInformation from "@/components/event/create/BaseInformation";
-import Invites from "@/components/event/create/Invites";
-import { EventData } from "@/firebase/Event";
-import { EventContext } from "@/firebase/contexts";
+import { UserContext } from "@/firebase/contexts";
 import { useParams, useRouter } from "next/navigation";
-import { changeEvent, getEvent } from "@/firebase/DatabaseService";
-import Details from "@/components/event/create/Details";
+import { changeUser, getUser } from "@/firebase/DatabaseService";
+import { UserData } from "@/firebase/User";
 import Loading from "@/components/Loading";
+import PersonalInformation from "@/components/profile/edit/PersonalInformation";
+import styles from "./editProfile.module.css";
+import InterestsEdit from "@/components/profile/edit/InterestsEdit";
 
-const EventEdit: React.FC = () => {
+const UserEdit: React.FC = () => {
   const router = useRouter();
   const { id } = useParams();
-  const eventID = Array.isArray(id) ? id[0] : id;
+  const userID = Array.isArray(id) ? id[0] : id;
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [formData, setFormData] = useState<EventData>();
+  const [formData, setFormData] = useState<UserData>();
 
   useEffect(() => {
-    if (!eventID) {
-      setError("Event ID not found");
+    if (!userID) {
+      setError("UserID not found");
       setLoading(false);
       return;
     }
 
-    getEvent(eventID)
+    getUser(userID)
       .then(data => {
         setFormData(data);
       })
       .catch(err => {
-        console.error("Error fetching event:", err);
-        setError("Failed to load event details");
+        console.error("Error fetching user:", err);
+        setError("Failed to load user details");
       })
       .finally(() => {
-        console.log("Event loaded");
+        console.log("User loaded");
         setLoading(false);
       });
-  }, [eventID]);
+  }, [userID]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!eventID) return;
+    if (!userID) return;
 
-    changeEvent(eventID, {
+    changeUser(userID, {
       ...formData,
-    }).then(() => router.push(`/event/${eventID}`));
+    }).then(() => router.push(`/profile/${userID}`));
   };
 
   const updateFormData = (field: string, value: unknown) => {
@@ -54,7 +53,7 @@ const EventEdit: React.FC = () => {
         ({
           ...prevData,
           [field]: value,
-        } as EventData)
+        } as UserData)
     );
   };
 
@@ -63,13 +62,12 @@ const EventEdit: React.FC = () => {
   if (!formData) return;
 
   return (
-    <EventContext.Provider value={{ formData, updateFormData }}>
+    <UserContext.Provider value={{ formData, updateFormData }}>
       <main className={styles.main}>
         <form onSubmit={handleSubmit}>
-          <h1 className={styles.title}>Rediger arrangement</h1>
-          <BaseInformation />
-          <Details />
-          {formData.private && <Invites />}
+          <h1 className={styles.title}>Rediger profil</h1>
+          <PersonalInformation />
+          <InterestsEdit />
           <div className={styles.buttonGroup}>
             <button type="submit" className={styles.saveButton}>
               Lagre endringer
@@ -84,8 +82,8 @@ const EventEdit: React.FC = () => {
           </div>
         </form>
       </main>
-    </EventContext.Provider>
+    </UserContext.Provider>
   );
 };
 
-export default EventEdit;
+export default UserEdit;

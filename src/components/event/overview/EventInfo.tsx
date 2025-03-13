@@ -1,29 +1,17 @@
-import React from "react";
+import React, { useContext } from "react";
 import styles from "./eventinfo.module.css";
 import { Calendar, MapPin, Users } from "lucide-react";
 import Tag from "@/components/event/Tag";
+import { EventDisplayContext } from "@/firebase/contexts";
 
-interface EventInfoProps {
-  title: string;
-  description: string;
-  date: string;
-  tags: string[];
-  location: string;
-  participants: number;
-}
+const EventInfo: React.FC = () => {
+  const { eventData } = useContext(EventDisplayContext);
+  if (!eventData) return;
 
-const EventInfo: React.FC<EventInfoProps> = ({
-  title,
-  description,
-  date,
-  tags,
-  location,
-  participants,
-}) => {
   return (
-    <div>
+    <div className={styles.module}>
       <div>
-        <h1 className={styles.title}>{title}</h1>
+        <h1 className={styles.title}>{eventData.title}</h1>
         <div className={styles.quickinfo}>
           <div className={styles.quickinfoElement}>
             <Calendar
@@ -31,7 +19,20 @@ const EventInfo: React.FC<EventInfoProps> = ({
               color={"var(--text-secondary)"}
               strokeWidth={2.25}
             />
-            <span>{date}</span>
+            <span>
+              {eventData.startTime
+                .toDate()
+                .toLocaleString("no-nb", {
+                  day: "2-digit",
+                  month: "2-digit",
+                  year: "numeric",
+                  hour: "2-digit",
+                  minute: "2-digit",
+                  hour12: false,
+                })
+                .replaceAll(".", "/")
+                .replaceAll(",", "")}
+            </span>
           </div>
           <div className={styles.quickinfoElement}>
             <MapPin
@@ -39,7 +40,7 @@ const EventInfo: React.FC<EventInfoProps> = ({
               color={"var(--text-secondary)"}
               strokeWidth={2.25}
             />
-            <span>{location}</span>
+            <span>{eventData.location}</span>
           </div>
           <div className={styles.quickinfoElement}>
             <Users
@@ -47,18 +48,18 @@ const EventInfo: React.FC<EventInfoProps> = ({
               color={"var(--text-secondary)"}
               strokeWidth={2.25}
             />
-            <span>{participants}</span>
+            <span>{eventData.participants.length}</span>
           </div>
         </div>
       </div>
       <div className={styles.tags}>
-        {tags.map((tag, index) => (
+        {eventData.tags.map((tag, index) => (
           <Tag key={index} text={tag} />
         ))}
       </div>
       <div className={styles.textArea}>
         <h2 className={styles.title}>Om arrangemanget</h2>
-        <div className={styles.text}>{description}</div>
+        <div className={styles.text}>{eventData.description}</div>
       </div>
     </div>
   );
