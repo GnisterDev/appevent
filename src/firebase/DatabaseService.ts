@@ -201,21 +201,17 @@ export const userSearch = async (param: string): Promise<UserData[]> => {
   const searchTerm = param.trim().toLowerCase();
   if (!searchTerm) return [];
 
-  const nameQuery = query(
-    collection(db, "users"),
-    where("name", ">=", searchTerm),
-    where("name", "<=", searchTerm + "\uf8ff")
+  const [nameQuerySnapshot, emailQuerySnapshot] = await Promise.all(
+    ["name", "email"].map(field =>
+      getDocs(
+        query(
+          collection(db, "users"),
+          where(field, ">=", searchTerm),
+          where(field, "<=", searchTerm + "\uf8ff")
+        )
+      )
+    )
   );
-  const emailQuery = query(
-    collection(db, "users"),
-    where("email", ">=", searchTerm),
-    where("email", "<=", searchTerm + "\uf8ff")
-  );
-
-  const [nameQuerySnapshot, emailQuerySnapshot] = await Promise.all([
-    getDocs(nameQuery),
-    getDocs(emailQuery),
-  ]);
 
   return Array.from(
     new Map(
