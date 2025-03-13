@@ -22,6 +22,7 @@ const QuickSelection = () => {
           text="Innstilinger"
           icon={<Settings size={"1rem"} />}
           className={styles.button}
+          onClick={() => router.push("edit")}
         />
         <Button
           text="Logg ut"

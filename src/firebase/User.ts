@@ -16,6 +16,7 @@ export type UserData = {
   type: "admin" | "user";
   userID: string;
   location: string;
+  description: string;
   interests: string[];
   invitations: DocumentReference[];
 };
@@ -26,6 +27,7 @@ export const DefaultUserData: UserData = {
   type: "user",
   userID: "",
   location: "",
+  description: "",
   interests: [],
   invitations: [],
 };

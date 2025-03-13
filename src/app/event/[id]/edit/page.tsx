@@ -5,7 +5,6 @@ import BaseInformation from "@/components/event/create/BaseInformation";
 import Invites from "@/components/event/create/Invites";
 import { EventData } from "@/firebase/Event";
 import { EventContext } from "@/firebase/contexts";
-import { LoaderCircle } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 import { changeEvent, getEvent } from "@/firebase/DatabaseService";
 import Details from "@/components/event/create/Details";

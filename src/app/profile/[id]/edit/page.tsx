@@ -5,6 +5,8 @@ import { useParams, useRouter } from "next/navigation";
 import { changeUser, getUser } from "@/firebase/DatabaseService";
 import { UserData } from "@/firebase/User";
 import Loading from "@/components/Loading";
+import PersonalInformation from "@/components/profile/edit/PersonalInformation";
+import styles from "./editProfile.module.css";
 
 const UserEdit: React.FC = () => {
   const router = useRouter();
@@ -60,8 +62,23 @@ const UserEdit: React.FC = () => {
 
   return (
     <UserContext.Provider value={{ formData, updateFormData }}>
-      <main>
-        <form onSubmit={handleSubmit}></form>
+      <main className={styles.main}>
+        <form onSubmit={handleSubmit}>
+          <h1 className={styles.title}>Rediger profil</h1>
+          <PersonalInformation />
+          <div className={styles.buttonGroup}>
+            <button type="submit" className={styles.saveButton}>
+              Lagre endringer
+            </button>
+            <button
+              type="button"
+              className={styles.cancelButton}
+              onClick={() => router.back()}
+            >
+              Avbryt
+            </button>
+          </div>
+        </form>
       </main>
     </UserContext.Provider>
   );
