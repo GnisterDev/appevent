@@ -7,10 +7,9 @@ import {
   DocumentReference,
   getDoc,
   setDoc,
-  Timestamp,
   updateDoc,
 } from "firebase/firestore";
-import { auth, db } from "./config";
+import { db } from "./config";
 import { UserData } from "./User";
 import { EventData } from "./Event";
 import { getUserID, useAuth } from "./AuthService";
@@ -173,14 +172,9 @@ export const getAllParticipants = async (
 
 export const addComment = async (
   eventID: string,
-  commentText: string
+  comment: Comment
 ): Promise<void> => {
   try {
-    const comment: Comment = {
-      author: doc(db, "users", auth.currentUser?.uid || "unknown"),
-      content: commentText,
-      time: Timestamp.now(),
-    };
     const commentDocRef = await addDoc(collection(db, "comments"), comment);
 
     const eventRef = doc(db, "events", eventID);

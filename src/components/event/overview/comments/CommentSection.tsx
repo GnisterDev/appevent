@@ -8,11 +8,11 @@ import CommentItem from "./CommentItem";
 import { Comment } from "@/firebase/Comment";
 import { addComment, getComments } from "@/firebase/DatabaseService";
 import { EventDisplayContext } from "@/firebase/contexts";
-import { useRouter } from "next/navigation";
+import { auth, db } from "@/firebase/config";
+import { doc, Timestamp } from "firebase/firestore";
 
 const CommentSection = () => {
   const eventData = useContext(EventDisplayContext);
-  const router = useRouter();
 
   const [comments, setComments] = useState<Comment[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -40,22 +40,29 @@ const CommentSection = () => {
 
   const handleAddComment = async (content: string) => {
     if (!content.trim()) return;
-    addComment(eventData.eventID, content);
-    router.refresh();
+    const comment = {
+      author: doc(db, "users", auth.currentUser?.uid || "unknown"),
+      content: content,
+      time: Timestamp.now(),
+    };
+    addComment(eventData.eventID, comment);
+    setComments(prev => [comment, ...prev]);
   };
 
   if (loading) return;
-  if (error) router.push("/404");
 
   return (
     <div className={styles.commentContainer}>
       <h3>Kommentarer</h3>
       <CommentInput onAddComment={handleAddComment} />
       <div className={styles.commentWrapper}>
-        {comments.map((comment, index) => (
-          <CommentItem key={index} comment={comment} />
-        ))}
+        {comments
+          .sort((a, b) => b.time.seconds - a.time.seconds)
+          .map((comment, index) => (
+            <CommentItem key={index} comment={comment} />
+          ))}
       </div>
+      {error && <p>{error}</p>}
     </div>
   );
 };
