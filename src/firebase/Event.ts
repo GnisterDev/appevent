@@ -13,6 +13,7 @@ export type CreateEventRequest = {
 };
 
 export type EventData = {
+  id?: string;
   title: string;
   description: string;
   startTime: Timestamp;

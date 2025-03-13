@@ -126,6 +126,7 @@ export const getEventsByRole = async (
 
         if (isParticipant) {
           matchingEvents.push({
+            id: doc.id,
             ...eventData,
           });
         }
@@ -135,6 +136,7 @@ export const getEventsByRole = async (
 
         if (isOrganizer) {
           matchingEvents.push({
+            id: doc.id,
             ...eventData,
           });
         }
