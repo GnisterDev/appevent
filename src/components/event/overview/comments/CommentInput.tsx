@@ -9,7 +9,7 @@ import { getUser } from "@/firebase/DatabaseService";
 const CommentInput = ({
   onAddComment,
 }: {
-  onAddComment: (comment: string, userID: string, userName: string) => void;
+  onAddComment: (content: string) => void;
 }) => {
   const [text, setText] = useState("");
   const [userName, setUserName] = useState<string | null>(null);
@@ -37,7 +37,7 @@ const CommentInput = ({
 
     console.log("Sender kommentar:", text, "fra bruker:", userName);
 
-    onAddComment(text, userID, userName);
+    onAddComment(text);
     setText(""); // Nullstiller etter kommentaren er sendt
   };
 

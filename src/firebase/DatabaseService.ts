@@ -7,15 +7,16 @@ import {
   DocumentReference,
   getDoc,
   setDoc,
+  Timestamp,
   updateDoc,
 } from "firebase/firestore";
-import { db } from "./config";
-import { User } from "./User";
+import { auth, db } from "./config";
+import { UserData } from "./User";
 import { EventData } from "./Event";
 import { getUserID, useAuth } from "./AuthService";
 import { Comment } from "./Comment";
 
-export const createUser = (user: User): Promise<void> => {
+export const createUser = (user: UserData): Promise<void> => {
   return setDoc(doc(db, "users", user.userID), user);
 };
 
@@ -141,7 +142,9 @@ export const isCurrentUserParticipant = async (
   }
 };
 
-export const getAllParticipants = async (eventID: string): Promise<User[]> => {
+export const getAllParticipants = async (
+  eventID: string
+): Promise<UserData[]> => {
   try {
     const eventSnap = await getDoc(doc(db, "events", eventID));
     if (!eventSnap.exists())
@@ -156,7 +159,7 @@ export const getAllParticipants = async (eventID: string): Promise<User[]> => {
       async (userRef: DocumentReference) => {
         const userSnap = await getDoc(userRef);
         if (!userSnap.exists()) return null;
-        return { ...userSnap.data(), userID: userSnap.id } as User;
+        return { ...userSnap.data(), userID: userSnap.id } as UserData;
       }
     );
 
@@ -170,9 +173,14 @@ export const getAllParticipants = async (eventID: string): Promise<User[]> => {
 
 export const addComment = async (
   eventID: string,
-  comment: Comment
+  commentText: string
 ): Promise<void> => {
   try {
+    const comment: Comment = {
+      author: doc(db, "users", auth.currentUser?.uid || "unknown"),
+      content: commentText,
+      time: Timestamp.now(),
+    };
     const commentDocRef = await addDoc(collection(db, "comments"), comment);
 
     const eventRef = doc(db, "events", eventID);

@@ -1,22 +1,17 @@
 import { DocumentData, DocumentReference, Timestamp } from "firebase/firestore";
 
 export type EventData = {
-  title: string; // Title of the event
-  description: string; // Description of the event
-  startTime: Timestamp; // Start time of the event
-  tags: string[]; // Tags for the event
-  location: string; // Location of the event
+  title: string;
+  description: string;
+  startTime: Timestamp;
+  tags: string[];
+  location: string;
   organizer: DocumentReference;
   participants: DocumentReference[];
-<<<<<<< HEAD
   private: boolean;
 
   type: string;
   comments: DocumentReference[];
-=======
-  private: boolean; // If the event is private
-  type: string; // Type of the event
->>>>>>> guest-list
 };
 
 export const DefaultEventData: EventData = {
@@ -29,6 +24,7 @@ export const DefaultEventData: EventData = {
   participants: [],
   private: false,
   type: "",
+  comments: [],
 };
 
 export type EventContextType = {

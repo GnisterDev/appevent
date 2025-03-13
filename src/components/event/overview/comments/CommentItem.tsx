@@ -1,13 +1,33 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./commentItem.module.css";
+import { Comment } from "@/firebase/Comment";
+import { getUser } from "@/firebase/DatabaseService";
+import { Timestamp } from "firebase/firestore";
 
-const CommentItem = ({ name, text }: { name: string; text: string }) => {
+const CommentItem = ({ comment }: { comment: Comment }) => {
+  const [author, setAuthor] = useState<string>("");
+
+  useEffect(() => {
+    getUser(comment.author.id).then(data => setAuthor(data.name));
+  });
+
+  function convertTimestamp(timestamp: Timestamp) {
+    const date = new Date(timestamp.seconds * 1000); // Convert seconds to milliseconds
+    const dd = String(date.getDate()).padStart(2, "0");
+    const mm = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-based
+    const yyyy = date.getFullYear();
+    const hh = String(date.getHours()).padStart(2, "0");
+    const min = String(date.getMinutes()).padStart(2, "0");
+
+    return `${dd}/${mm}/${yyyy} ${hh}:${min}`;
+  }
+
   return (
     <div className={styles.commentItem}>
       <p className={styles.commentUser}>
-        <strong>{name}</strong>
+        <strong>{author}</strong> <span>{convertTimestamp(comment.time)}</span>
       </p>
-      <p className={styles.commentText}>{text}</p>
+      <p className={styles.commentText}>{comment.content}</p>
     </div>
   );
 };

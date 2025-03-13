@@ -7,11 +7,11 @@ export const EventContext = createContext<EventContextType>({
 });
 
 export const EventDisplayContext = createContext<{
-  eventID: string | null;
-  eventData: EventData | null;
+  eventID: string;
+  eventData: EventData;
   isOrg: boolean;
 }>({
-  eventID: null,
-  eventData: null,
+  eventID: "",
+  eventData: DefaultEventData,
   isOrg: false,
 });

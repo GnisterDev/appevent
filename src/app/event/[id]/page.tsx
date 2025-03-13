@@ -67,6 +67,7 @@ const EventView = () => {
               <div className={styles.picture}></div>
             </div>
             <EventInfo />
+            <CommentSection />
           </div>
           <div className={styles.eventActions}>
             <div className={styles.eventActionsInner}>
