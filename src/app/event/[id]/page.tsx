@@ -9,7 +9,7 @@ import { EventData } from "@/firebase/Event";
 import { EventDisplayContext } from "@/firebase/contexts";
 import Participants from "@/components/event/overview/participant/ParticipantsInfo";
 import { LoaderCircle } from "lucide-react";
-import { isOrganizer } from "@/firebase/AuthService";
+import { isOrganizer, isUserParticipant } from "@/firebase/AuthService";
 import { UserData } from "@/firebase/User";
 
 const EventView = () => {
@@ -20,6 +20,7 @@ const EventView = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const isOrg = isOrganizer(eventID);
+  const isParticipant = isUserParticipant(eventID);
   const [participantsInfo, setParticipantsInfo] = useState<UserData[]>([]);
 
   useEffect(() => {
@@ -54,11 +55,12 @@ const EventView = () => {
     );
   if (error) router.push("/404");
   if (!eventData) return;
-  // if (eventData.private && !isCurrentUserParticipant(eventID))
-  //   router.push("/404");
+  if (eventData.private && !isParticipant) router.push("/404");
 
   return (
-    <EventDisplayContext.Provider value={{ eventID, eventData, isOrg }}>
+    <EventDisplayContext.Provider
+      value={{ eventID, eventData, isOrg, isParticipant }}
+    >
       <main className={styles.main}>
         <div className={styles.eventGrid}>
           <div className={styles.eventInfo}>

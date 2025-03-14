@@ -3,7 +3,7 @@
 import React, { useContext } from "react";
 import styles from "./registration.module.css";
 import Button from "@/components/Button";
-import { Pencil, Share2, Ticket, Trash } from "lucide-react";
+import { Pencil, Share2, Ticket, TicketX, Trash } from "lucide-react";
 import { isAdministrator } from "@/firebase/AuthService";
 import { deleteEvent } from "@/firebase/DatabaseService";
 import { useRouter } from "next/navigation";
@@ -12,9 +12,11 @@ import { EventDisplayContext } from "@/firebase/contexts";
 const Registration: React.FC = () => {
   const router = useRouter();
   const isAdmin = isAdministrator();
-  const { eventID, isOrg, eventData } = useContext(EventDisplayContext);
+  const { eventID, isOrg, eventData, isParticipant } =
+    useContext(EventDisplayContext);
 
   if (!eventID) return;
+  if (!eventData) return;
 
   return (
     <div className={styles.module}>
@@ -45,11 +47,18 @@ const Registration: React.FC = () => {
             onClick={() => router.push(`/event/${eventID}/edit`)}
           />
         )}
-        {!isOrg && (
+        {!isOrg && !eventData.private && (
           <Button
             text="Meld meg på"
             className={styles.registerButton}
             icon={<Ticket size={"1.25rem"} />}
+          />
+        )}
+        {eventData.private && isParticipant && (
+          <Button
+            text="Meld meg av"
+            className={styles.registerButton}
+            icon={<TicketX size={"1.25rem"} />}
           />
         )}
         <Button
