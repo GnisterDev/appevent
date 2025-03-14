@@ -327,8 +327,6 @@ export const inviteUsersToEvent = async (
       }
     })
   );
-
-  console.log("Invite results:", results);
   return results;
 };
 
@@ -437,11 +435,12 @@ export const declineEventInvitation = async (
  */
 export const cancelEventInvitation = async (
   eventID: string,
-  userID: string,
-  currentUserID: string
+  userID: string
 ): Promise<boolean> => {
   try {
     // Get references
+    const currentUserID = getUserID();
+    if (!currentUserID) return false;
     const eventRef = doc(db, "events", eventID);
     const userRef = doc(db, "users", userID);
 
@@ -462,33 +461,4 @@ export const cancelEventInvitation = async (
     console.error("Error revoking invitation:", error);
     return false;
   }
-};
-
-/**
- * Invite multiple users to an event at once
- * @param eventID - ID of the event
- * @param userIDs - Array of user IDs to invite
- * @returns Promise<{success: string[], failed: string[]}> - Lists of successful and failed invitations
- */
-export const bulkInviteUsers = async (
-  eventID: string,
-  userIDs: string[]
-): Promise<{ success: string[]; failed: string[] }> => {
-  const results = {
-    success: [] as string[],
-    failed: [] as string[],
-  };
-
-  await Promise.all(
-    userIDs.map(async userID => {
-      const success = await inviteUserToEvent(eventID, userID);
-      if (success) {
-        results.success.push(userID);
-      } else {
-        results.failed.push(userID);
-      }
-    })
-  );
-
-  return results;
 };

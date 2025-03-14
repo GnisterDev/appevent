@@ -7,6 +7,7 @@ import { DefaultEventData, EventData } from "@/firebase/Event";
 import { EventContext } from "@/firebase/contexts";
 import { useParams, useRouter } from "next/navigation";
 import {
+  cancelEventInvitation,
   changeEvent,
   getAllInvited,
   getEvent,
@@ -44,6 +45,12 @@ const EventEdit: React.FC = () => {
     e.preventDefault();
     if (!eventID) return;
 
+    // if user is in getAllInvited but not in invitees, they have been removed
+    (await getAllInvited(eventID))
+      .filter(({ userID }) => !invitees.some(({ userID: id }) => id === userID))
+      .forEach(({ userID }) =>
+        cancelEventInvitation(eventID, userID).catch(console.error)
+      );
     inviteUsersToEvent(
       eventID,
       invitees.map(user => user.userID)

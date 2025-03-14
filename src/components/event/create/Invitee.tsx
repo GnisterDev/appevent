@@ -24,7 +24,10 @@ const Invitee: React.FC<InviteeProps> = ({ user, onRemove }) => {
       <Button
         text="Fjern"
         className={styles.inviteeRemove}
-        onClick={() => onRemove(user.userID)}
+        onClick={e => {
+          e.preventDefault();
+          onRemove(user.userID);
+        }}
       />
     </div>
   );
