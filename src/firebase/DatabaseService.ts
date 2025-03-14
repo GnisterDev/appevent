@@ -358,12 +358,10 @@ export const acceptEventInvitation = async (
     const userData = userSnap.data() as UserData;
 
     // Check if user is already a participant
-    if (
-      eventData.participants.some(
-        (participant: DocumentReference) => participant.id === userID
-      )
-    )
-      return false;
+    const isAlreadyParticipant = eventData.participants.some(
+      (participant: DocumentReference) => participant.id === userID
+    );
+    if (isAlreadyParticipant) return false;
 
     // Check if user has an invitation
     const hasInvitation = userData.invitations.some(
@@ -413,10 +411,7 @@ export const declineEventInvitation = async (
 
     // Check if user exists
     const userSnap = await getDoc(userRef);
-    if (!userSnap.exists()) {
-      console.error("User does not exist");
-      return false;
-    }
+    if (!userSnap.exists()) return false;
 
     // Remove invitation from user document
     await updateDoc(userRef, {

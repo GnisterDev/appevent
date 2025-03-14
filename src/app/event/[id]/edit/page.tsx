@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import styles from "./edit.module.css";
 import BaseInformation from "@/components/event/create/BaseInformation";
 import Invites from "@/components/event/create/Invites";
-import { EventData } from "@/firebase/Event";
+import { DefaultEventData, EventData } from "@/firebase/Event";
 import { EventContext } from "@/firebase/contexts";
 import { useParams, useRouter } from "next/navigation";
 import {
@@ -22,7 +22,7 @@ const EventEdit: React.FC = () => {
   const eventID = Array.isArray(id) ? id[0] : id;
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [formData, setFormData] = useState<EventData>();
+  const [formData, setFormData] = useState<EventData>(DefaultEventData);
   const [invitees, setInvitees] = useState<UserData[]>([]);
 
   useEffect(() => {
@@ -35,17 +35,9 @@ const EventEdit: React.FC = () => {
     getAllInvited(eventID).then(setInvitees);
 
     getEvent(eventID)
-      .then(data => {
-        setFormData(data);
-      })
-      .catch(err => {
-        console.error("Error fetching event:", err);
-        setError("Failed to load event details");
-      })
-      .finally(() => {
-        console.log("Event loaded");
-        setLoading(false);
-      });
+      .then(setFormData)
+      .catch(err => setError(`Failed to load event details, ${err}`))
+      .finally(() => setLoading(false));
   }, [eventID]);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -57,9 +49,7 @@ const EventEdit: React.FC = () => {
       invitees.map(user => user.userID)
     ).catch(err => console.error("Error inviting users to event:", err));
 
-    changeEvent(eventID, {
-      ...formData,
-    }).then(() => router.push(`/event/${eventID}`));
+    changeEvent(eventID, formData).then(() => router.push(`/event/${eventID}`));
   };
 
   const updateFormData = (field: string, value: unknown) => {
@@ -74,7 +64,6 @@ const EventEdit: React.FC = () => {
 
   if (loading) return <Loading />;
   if (error) router.push("/404");
-  if (!formData) return;
 
   return (
     <EventContext.Provider value={{ formData, updateFormData }}>
