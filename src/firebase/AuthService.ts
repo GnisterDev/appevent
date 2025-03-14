@@ -97,7 +97,7 @@ export const isOrganizer = (eventID: string): boolean => {
   return isOrg;
 };
 
-export const isUserParticipant = (eventID: string): boolean => {
+export const isParticipant = (eventID: string): boolean => {
   const { user } = useAuth();
   const [isParticipant, setIsParticipant] = useState(false);
 
