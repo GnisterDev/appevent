@@ -75,6 +75,10 @@ jest.mock("firebase/firestore", () => {
     where: jest.fn(() => ({})),
     orderBy: jest.fn(() => ({})),
     limit: jest.fn(() => ({})),
+    Timestamp: {
+      now: jest.fn(() => ({})),
+      toDate: jest.fn(() => new Date()),
+    },
   };
 });
 
