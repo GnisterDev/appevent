@@ -7,13 +7,9 @@ import { UserData } from "@/firebase/User";
 import Invitee from "./Invitee";
 import InviteResult from "./InvitesResult";
 
-interface InvitesProps {
-  invitedUsers: UserData[];
-  setInvitedUsers: (users: UserData[]) => void;
-}
-
-const Invites: React.FC<InvitesProps> = ({ invitedUsers, setInvitedUsers }) => {
+const Invites = () => {
   const [search, setSearch] = useState<string>("");
+  const [invitedUsers, setInvitedUsers] = useState<UserData[]>([]);
 
   const inviteUser = (user: UserData) => {
     setInvitedUsers([...invitedUsers, user]);
