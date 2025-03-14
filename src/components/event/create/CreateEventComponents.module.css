@@ -10,7 +10,7 @@
 .title {
   display: flex;
   flex-direction: row;
-  align-items: ce;
+  align-items: center;
   gap: 0.5rem;
   font-size: 1rem;
   line-height: 2.25rem;

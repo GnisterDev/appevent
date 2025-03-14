@@ -278,19 +278,16 @@ export const inviteUserToEvent = async (
     if (!userSnap.exists()) return false;
 
     // Check if user is already a participant
-    if (
-      eventData.participants.some(
-        (participant: DocumentReference) => participant.id === userID
-      )
-    )
-      return false;
+    const isAlreadyParticipant = eventData.participants.some(
+      (participant: DocumentReference) => participant.id === userID
+    );
+    if (isAlreadyParticipant) return false;
 
     // Check if user is already invited
     const userData = userSnap.data() as UserData;
     const isAlreadyInvited = userData.invitations.some(
       inviteRef => inviteRef.path === eventRef.path
     );
-
     if (isAlreadyInvited) return false;
 
     // Add event reference to user's invitations
@@ -303,6 +300,35 @@ export const inviteUserToEvent = async (
     console.error("Error inviting user:", error);
     return false;
   }
+};
+
+/**
+ * Invite multiple users to an event
+ * @param eventID - ID of the event
+ * @param userIDs - Array of user IDs to invite
+ * @returns Promise<{success: string[], failed: string[]}> - Lists of successful and failed invitations
+ */
+export const inviteUsersToEvent = async (
+  eventID: string,
+  userIDs: string[]
+): Promise<{ success: string[]; failed: string[] }> => {
+  const results = {
+    success: [] as string[],
+    failed: [] as string[],
+  };
+
+  await Promise.all(
+    userIDs.map(async userID => {
+      const success = await inviteUserToEvent(eventID, userID);
+      if (success) {
+        results.success.push(userID);
+      } else {
+        results.failed.push(userID);
+      }
+    })
+  );
+
+  return results;
 };
 
 /**

@@ -6,9 +6,15 @@ import Invites from "@/components/event/create/Invites";
 import { EventData } from "@/firebase/Event";
 import { EventContext } from "@/firebase/contexts";
 import { useParams, useRouter } from "next/navigation";
-import { changeEvent, getEvent } from "@/firebase/DatabaseService";
+import {
+  changeEvent,
+  getAllInvited,
+  getEvent,
+  inviteUsersToEvent,
+} from "@/firebase/DatabaseService";
 import Details from "@/components/event/create/Details";
 import Loading from "@/components/Loading";
+import { UserData } from "@/firebase/User";
 
 const EventEdit: React.FC = () => {
   const router = useRouter();
@@ -17,6 +23,7 @@ const EventEdit: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [formData, setFormData] = useState<EventData>();
+  const [invitees, setInvitees] = useState<UserData[]>([]);
 
   useEffect(() => {
     if (!eventID) {
@@ -24,6 +31,8 @@ const EventEdit: React.FC = () => {
       setLoading(false);
       return;
     }
+
+    getAllInvited(eventID).then(setInvitees);
 
     getEvent(eventID)
       .then(data => {
@@ -42,6 +51,11 @@ const EventEdit: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!eventID) return;
+
+    inviteUsersToEvent(
+      eventID,
+      invitees.map(user => user.userID)
+    ).catch(err => console.error("Error inviting users to event:", err));
 
     changeEvent(eventID, {
       ...formData,
@@ -69,7 +83,9 @@ const EventEdit: React.FC = () => {
           <h1 className={styles.title}>Rediger arrangement</h1>
           <BaseInformation />
           <Details />
-          {formData.private && <Invites />}
+          {formData.private && (
+            <Invites invitedUsers={invitees} setInvitedUsers={setInvitees} />
+          )}
           <div className={styles.buttonGroup}>
             <button type="submit" className={styles.saveButton}>
               Lagre endringer
