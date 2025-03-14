@@ -328,6 +328,7 @@ export const inviteUsersToEvent = async (
     })
   );
 
+  console.log("Invite results:", results);
   return results;
 };
 
@@ -338,13 +339,14 @@ export const inviteUsersToEvent = async (
  * @returns Promise<boolean> - Whether the invitation was accepted successfully
  */
 export const acceptEventInvitation = async (
-  eventID: string,
-  userID: string
+  eventID: string
 ): Promise<boolean> => {
   try {
     // Get references
-    const eventRef = doc(db, "events", eventID);
+    const userID = getUserID();
+    if (!userID) return false;
     const userRef = doc(db, "users", userID);
+    const eventRef = doc(db, "events", eventID);
 
     // Check if event and user exist
     const [eventSnap, userSnap] = await Promise.all([
@@ -380,7 +382,7 @@ export const acceptEventInvitation = async (
 
         // Add user to event participants
         transaction.update(eventRef, {
-          participants: arrayUnion(userID),
+          participants: arrayUnion(userRef),
         });
 
         return true;
@@ -401,13 +403,14 @@ export const acceptEventInvitation = async (
  * @returns Promise<boolean> - Whether the invitation was declined successfully
  */
 export const declineEventInvitation = async (
-  eventID: string,
-  userID: string
+  eventID: string
 ): Promise<boolean> => {
   try {
     // Get references
-    const eventRef = doc(db, "events", eventID);
+    const userID = getUserID();
+    if (!userID) return false;
     const userRef = doc(db, "users", userID);
+    const eventRef = doc(db, "events", eventID);
 
     // Check if user exists
     const userSnap = await getDoc(userRef);

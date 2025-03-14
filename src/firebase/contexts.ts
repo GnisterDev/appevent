@@ -25,7 +25,9 @@ export const UserContext = createContext<UserContextType>({
 export const UserDisplayContext = createContext<{
   userID: string;
   userData: UserData;
+  updateInvitedEvents: (eventID: string) => void;
 }>({
   userID: "",
   userData: null as unknown as UserData,
+  updateInvitedEvents: () => {},
 });
