@@ -1,10 +1,10 @@
 "use client";
 
-import SignIn from "@/components/auth/SignInForm";
 import React from "react";
 import styles from "./signIn.module.css";
 import Card from "@/components/Card";
 import { useTranslations } from "next-intl";
+import SignInForm from "@/components/auth/SignInForm";
 
 const signIn = () => {
   const t = useTranslations("Auth.SignIn");
@@ -26,7 +26,7 @@ const signIn = () => {
           </Card>
         </div>
         <div className={styles.form}>
-          <SignIn />
+          <SignInForm />
         </div>
       </div>
     </main>

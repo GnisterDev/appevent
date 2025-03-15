@@ -11,7 +11,7 @@ import Link from "next/link";
 import AuthInput from "./AuthInput";
 import { useTranslations } from "next-intl";
 
-const SignIn = () => {
+const SignInForm = () => {
   const router = useRouter();
   const t = useTranslations("Auth");
   const [formData, setFormData] = useState<LoginRequest>({
@@ -80,4 +80,4 @@ const SignIn = () => {
   );
 };
 
-export default SignIn;
+export default SignInForm;

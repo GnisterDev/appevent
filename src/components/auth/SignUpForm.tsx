@@ -11,7 +11,7 @@ import Button from "../Button";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 
-const SignInForm = () => {
+const SignUpForm = () => {
   const router = useRouter();
   const t = useTranslations("Auth");
 
@@ -93,4 +93,4 @@ const SignInForm = () => {
   );
 };
 
-export default SignInForm;
+export default SignUpForm;

@@ -1,10 +1,10 @@
 "use client";
 
-import SignUp from "@/components/auth/SignUpForm";
 import React from "react";
 import styles from "./signUp.module.css";
 import Card from "@/components/Card";
 import { useTranslations } from "next-intl";
+import SignUpForm from "@/components/auth/SignUpForm";
 
 const signUp = () => {
   const t = useTranslations("Auth.SignUp");
@@ -33,7 +33,7 @@ const signUp = () => {
           </Card>
         </div>
         <div className={styles.form}>
-          <SignUp />
+          <SignUpForm />
         </div>
       </div>
     </main>
