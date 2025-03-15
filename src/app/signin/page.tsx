@@ -6,7 +6,7 @@ import Card from "@/components/Card";
 import { useTranslations } from "next-intl";
 import SignInForm from "@/components/auth/SignInForm";
 
-const signIn = () => {
+const SignIn = () => {
   const t = useTranslations("Auth.SignIn");
 
   return (
@@ -32,4 +32,4 @@ const signIn = () => {
     </main>
   );
 };
-export default signIn;
+export default SignIn;

@@ -6,7 +6,7 @@ import Card from "@/components/Card";
 import { useTranslations } from "next-intl";
 import SignUpForm from "@/components/auth/SignUpForm";
 
-const signUp = () => {
+const SignUp = () => {
   const t = useTranslations("Auth.SignUp");
 
   return (
@@ -39,4 +39,4 @@ const signUp = () => {
     </main>
   );
 };
-export default signUp;
+export default SignUp;
