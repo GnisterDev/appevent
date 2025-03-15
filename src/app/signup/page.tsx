@@ -2,7 +2,7 @@
 
 import SignUp from "@/components/auth/SignUpForm";
 import React from "react";
-import styles from "./signIn.module.css";
+import styles from "./signUp.module.css";
 import Card from "@/components/Card";
 
 const signUp = () => {
