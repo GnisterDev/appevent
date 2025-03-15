@@ -1,11 +1,12 @@
 "use client";
-
-import Image from "next/image";
 import styles from "./page.module.css";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { auth } from "../firebase/config";
 import { useLogout } from "../firebase/AuthService";
+import Loading from "@/components/Loading";
+
+import EventSearch from "@/components/eventSearch/EventSearch";
 
 export default function Home() {
   const router = useRouter();
@@ -24,7 +25,7 @@ export default function Home() {
   }, []);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
 
   const signOut = async () => {
@@ -35,19 +36,10 @@ export default function Home() {
 
   return (
     <div className={styles.page}>
+      <button onClick={signOut}>Sign Out</button>
       <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <div>
-          This is the <code>HOMEPAGE</code>
-        </div>
-        <button onClick={signOut}>Sign Out</button>
+        {/*SØKEFELT FOR ARRANGEMENTER*/}
+        <EventSearch />
       </main>
     </div>
   );

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import styles from "./registration.module.css";
 import Button from "@/components/Button";
 import { Pencil, Share2, Ticket, TicketX, Trash } from "lucide-react";
@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 
 // OBS: Pass på å importere disse fra dine filer
 import { useAuth } from "@/firebase/AuthService";
-import { isAdministrator, isOrganizer } from "@/firebase/AuthService";
+import { isAdministrator } from "@/firebase/AuthService";
 import {
   getEvent,
   joinEvent,
@@ -17,6 +17,7 @@ import {
 } from "@/firebase/DatabaseService";
 import { doc } from "firebase/firestore";
 import { db } from "@/firebase/config";
+import { EventDisplayContext } from "@/firebase/contexts";
 
 // Viser litt info om arrangementet (eksempel)
 const info = {
@@ -24,15 +25,13 @@ const info = {
   "Ledige plasser": "{reg} av {total}",
 };
 
-interface RegistrationProps {
-  eventID: string;
-}
-
-const Registration: React.FC<RegistrationProps> = ({ eventID }) => {
+const Registration: React.FC = () => {
   const router = useRouter();
   const { user, isLoggedIn } = useAuth();
   const isAdmin = isAdministrator();
-  const isOrg = isOrganizer(eventID);
+  const { eventID, isOrg } = useContext(EventDisplayContext);
+
+  if (!eventID) return;
   const [isParticipating, setIsParticipating] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
 

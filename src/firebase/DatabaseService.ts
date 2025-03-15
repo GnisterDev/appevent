@@ -4,18 +4,22 @@ import {
   doc,
   DocumentReference,
   getDoc,
+  getDocs,
+  query,
   setDoc,
   Timestamp,
   updateDoc,
   arrayUnion,
   arrayRemove,
+  where,
 } from "firebase/firestore";
 import { db } from "./config";
-import { User } from "./User";
-import { CreateEventRequest, EventData } from "./Event";
-import { getUserID } from "./AuthService";
+import { UserData } from "./User";
+import { EventData } from "./Event";
+import { getUserID, useAuth } from "./AuthService";
+import { Search } from "./Search";
 
-export const createUser = (user: User): Promise<void> => {
+export const createUser = (user: UserData): Promise<void> => {
   return setDoc(doc(db, "users", user.userID), user);
 };
 
@@ -30,26 +34,20 @@ export const deleteUser = (userID: string): Promise<void> => {
   return deleteDoc(doc(db, "users", userID));
 };
 
-export const getUser = async (
-  userID: string
-): Promise<{ name: string; email: string; type: string }> => {
-  const userDoc = await getDoc(doc(db, "users", userID));
-  if (!userDoc.exists()) throw new Error("User document does not exist");
+export const getUser = async (userID: string): Promise<UserData> => {
+  try {
+    const userDoc = await getDoc(doc(db, "users", userID));
+    if (!userDoc.exists()) throw new Error("User document does not exist");
 
-  const { name, email, type } = userDoc.data();
-  return { name, email, type } as const;
+    const data = userDoc.data() as UserData;
+    return data;
+  } catch (error) {
+    console.error("Error fetching user:", error);
+    throw error;
+  }
 };
 
-export const createEvent = async (
-  data: CreateEventRequest
-): Promise<string> => {
-  const startTimestamp = Timestamp.fromDate(
-    new Date(`${data.startDate}T${data.startTime}`)
-  );
-  const endTimestamp = Timestamp.fromDate(
-    new Date(`${data.endDate}T${data.endTime}`)
-  );
-
+export const createEvent = async (data: EventData): Promise<string> => {
   const userID = getUserID();
   if (!userID) throw new Error("User ID is null");
 
@@ -58,11 +56,8 @@ export const createEvent = async (
 
   const eventData: EventData = {
     ...data,
-    startTime: startTimestamp,
-    endTime: endTimestamp,
     organizer: organizerRef,
     participants: [organizerRef],
-    private: false,
   };
 
   await setDoc(doc(db, "events", eventID), eventData);
@@ -83,20 +78,11 @@ export const deleteEvent = (eventID: string): Promise<void> => {
 
 export const getEvent = async (eventId: string): Promise<EventData> => {
   try {
-    const eventRef = doc(db, "events", eventId);
-    const eventSnap = await getDoc(eventRef);
+    const eventDoc = await getDoc(doc(db, "events", eventId));
+    if (!eventDoc.exists()) throw new Error("Event not found");
 
-    if (!eventSnap.exists()) return {} as EventData;
-
-    const eventData = eventSnap.data() as EventData;
-
-    return {
-      ...eventData,
-      startTime: eventData.startTime as Timestamp,
-      endTime: eventData.endTime as Timestamp,
-      organizer: eventData.organizer as DocumentReference,
-      participants: eventData.participants as DocumentReference[],
-    };
+    const data = eventDoc.data() as EventData;
+    return data;
   } catch (error) {
     console.error("Error fetching event:", error);
     throw error;
@@ -140,4 +126,115 @@ export const leaveEvent = async (eventID: string): Promise<void> => {
   updateDoc(eventRef, {
     participants: arrayRemove(userRef),
   });
+};
+
+export const isUserParticipant = async (
+  eventID: string,
+  userID: string
+): Promise<boolean> => {
+  try {
+    const eventRef = doc(db, "events", eventID);
+    const eventSnap = await getDoc(eventRef);
+
+    if (!eventSnap.exists())
+      throw new Error(`Event with ID ${eventID} not found`);
+
+    const eventData = eventSnap.data();
+    const participantRefs = eventData.participants || [];
+
+    return participantRefs.some((userRef: DocumentReference) => {
+      return userRef.id === userID || userRef.path.endsWith(`/users/${userID}`);
+    });
+  } catch (error) {
+    console.error("Error checking participant status:", error);
+    throw error;
+  }
+};
+
+export const isCurrentUserParticipant = async (
+  eventID: string
+): Promise<boolean> => {
+  try {
+    const { userID } = useAuth();
+    if (!userID) return false;
+    return await isUserParticipant(eventID, userID);
+  } catch (error) {
+    console.error("Error checking if current user is participant:", error);
+    throw error;
+  }
+};
+
+export const getAllParticipants = async (
+  eventID: string
+): Promise<UserData[]> => {
+  try {
+    const eventSnap = await getDoc(doc(db, "events", eventID));
+    if (!eventSnap.exists())
+      throw new Error(`Event with ID ${eventID} not found`);
+
+    const participantsRef: DocumentReference[] =
+      eventSnap.data().participants || [];
+
+    if (!participantsRef.length) return [];
+
+    const participantsPromises = participantsRef.map(
+      async (userRef: DocumentReference) => {
+        const userSnap = await getDoc(userRef);
+        if (!userSnap.exists()) return null;
+        return { ...userSnap.data(), userID: userSnap.id } as UserData;
+      }
+    );
+
+    const participants = await Promise.all(participantsPromises);
+    return participants.filter(participant => participant !== null);
+  } catch (error) {
+    console.log(`Error fetching participants ${error}`);
+    throw error;
+  }
+};
+
+export const eventSearch = async ({ name, type, location, date }: Search) => {
+  try {
+    const eventsRef = collection(db, "events");
+    const filters = [];
+    let q = query(eventsRef);
+
+    if (name && name.trim() !== "") {
+      filters.push(where("name", ">=", name.toLowerCase()));
+      filters.push(where("name", "<=", name.toLowerCase() + "\uf8ff"));
+    }
+
+    if (type && type.trim() !== "") filters.push(where("type", "==", type));
+
+    if (location && location.trim() !== "")
+      filters.push(where("location", "==", location));
+
+    if (date) {
+      const startOfDay = new Date(date);
+      startOfDay.setHours(0, 0, 0, 0);
+      const endOfDay = new Date(date);
+      endOfDay.setHours(23, 59, 59, 999);
+
+      const startTimestamp = Timestamp.fromDate(startOfDay);
+      const endTimestamp = Timestamp.fromDate(endOfDay);
+
+      filters.push(where("date", ">=", startTimestamp));
+      filters.push(where("date", "<=", endTimestamp));
+    }
+    if (filters.length > 0) q = query(eventsRef, ...filters);
+    const querySnapshot = await getDocs(q);
+
+    const events: EventData[] = [];
+    querySnapshot.forEach(doc => {
+      events.push({
+        id: doc.id,
+        ...(doc.data() as EventData),
+      });
+    });
+
+    return events;
+  } catch (error) {
+    console.error("Error searching events:", error);
+    throw error;
+  }
 };

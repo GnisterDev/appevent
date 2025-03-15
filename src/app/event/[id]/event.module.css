@@ -26,6 +26,12 @@
   grid-column: span 1 / span 1;
 }
 
+.eventActionsInner {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
 .pictureframe {
   border-radius: var(--radius);
   overflow: hidden;
@@ -52,5 +58,23 @@
   }
   100% {
     opacity: 0.5;
+  }
+}
+
+.loading {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  animation: loading-spin 1s linear infinite;
+}
+
+@keyframes loading-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
   }
 }
