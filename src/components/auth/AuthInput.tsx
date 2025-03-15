@@ -32,6 +32,7 @@ const AuthInput: React.FC<AuthInputProps> = ({
         <input
           className={styles.input}
           type={type}
+          id={name}
           name={name}
           value={value}
           onChange={onChange}

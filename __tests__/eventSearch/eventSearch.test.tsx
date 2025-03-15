@@ -1,3 +1,4 @@
+import React from "react";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import EventSearch from "@/components/eventSearch/EventSearch";
 import { eventSearch } from "@/firebase/DatabaseService";
