@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { DefaultEventData, EventData } from "@/firebase/Event";
-import { createEvent } from "@/firebase/DatabaseService";
+import { createEvent, inviteUsersToEvent } from "@/firebase/DatabaseService";
 import { EventContext } from "@/firebase/contexts";
 import BaseInformation from "@/components/event/create/BaseInformation";
 import Details from "@/components/event/create/Details";
@@ -20,7 +20,13 @@ const CreateEventForm: React.FC = () => {
     e.preventDefault();
 
     createEvent(formData)
-      .then(eventID => router.push(`/event/${eventID}`))
+      .then(eventID => {
+        inviteUsersToEvent(
+          eventID,
+          invitees.map(user => user.userID)
+        ).catch(err => console.error("Error inviting users to event:", err));
+        router.push(`/event/${eventID}`);
+      })
       .catch()
       .finally();
   };
