@@ -10,7 +10,7 @@ const signUp = () => {
     <main className={styles.main}>
       <div className={styles.container}>
         <div className={styles.info}>
-          <div>
+          <div className={styles.header}>
             <h1>Bli med i Appevent!</h1>
             <p>
               Registrer deg for å oppdage og dele arrangementer med venner og

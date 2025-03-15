@@ -1,6 +1,6 @@
 .module {
   background-color: var(--navbar);
-  width: clamp(20rem, 100%, 30rem);
+  width: clamp(15rem, 100%, 30rem);
 
   display: flex;
   justify-content: center;

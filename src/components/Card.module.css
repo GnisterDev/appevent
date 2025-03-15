@@ -1,6 +1,7 @@
 .card {
   padding: 1.5rem;
   border-radius: var(--radius);
+  width: 100%;
 }
 
 .title {
