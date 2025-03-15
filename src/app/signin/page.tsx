@@ -4,26 +4,25 @@ import SignIn from "@/components/auth/SignInForm";
 import React from "react";
 import styles from "./signIn.module.css";
 import Card from "@/components/Card";
+import { useTranslations } from "next-intl";
 
 const signIn = () => {
+  const t = useTranslations("Auth.SignIn");
+
   return (
     <main className={styles.main}>
       <div className={styles.container}>
         <div className={styles.info}>
-          <div>
-            <h1>Velommen tilbake!</h1>
-            <p>
-              Logg inn for å se dine arrangementer, administrere invitasjoner,
-              og mer.
-            </p>
+          <div className={styles.header}>
+            <h1>{t("title")}</h1>
+            <p>{t("subtitle")}</p>
           </div>
           <Card
-            title={"Oppdag arrangementer"}
+            title={t("cards.0.title")}
             color="var(--secondary)"
             className={styles.card}
           >
-            Finn arrangementer i nærheten, delta i spennende arrangementer, og
-            hold kontakten med venner.
+            {t("cards.0.content")}
           </Card>
         </div>
         <div className={styles.form}>

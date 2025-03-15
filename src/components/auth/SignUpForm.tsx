@@ -9,9 +9,11 @@ import { Lock, Mail, User, UserPlus } from "lucide-react";
 import AuthInput from "./AuthInput";
 import Button from "../Button";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 const SignInForm = () => {
   const router = useRouter();
+  const t = useTranslations("Auth");
 
   //Brukernavn og passord
   const [formData, setFormData] = useState<SignupRequest>({
@@ -37,51 +39,52 @@ const SignInForm = () => {
       <div className={styles.header}>
         <h3 className={styles.title}>
           <UserPlus size={"2rem"} />
-          Registrer deg
+          {t("SignUp.form.title")}
         </h3>
-        <p style={{ fontSize: ".9rem" }}>
-          Opprett en ny konto for å komme i gang
-        </p>
+        <p style={{ fontSize: ".9rem" }}>{t("SignUp.form.subtitle")}</p>
       </div>
       <form onSubmit={handleSubmit} className={styles.form}>
         <div className={styles.inputs}>
           <AuthInput
-            label="Navn"
+            label={t("name")}
             name="name"
             type="text"
             value={formData.name}
             onChange={handleChange}
-            placeholder="Navn"
+            placeholder={t("Placeholder.name")}
             icon={<User size={"1rem"} />}
             required
           />
           <AuthInput
-            label="E-post"
+            label={t("email")}
             name="email"
             type="email"
             value={formData.email}
             onChange={handleChange}
-            placeholder="E-post"
+            placeholder={t("Placeholder.email")}
             icon={<Mail size={"1rem"} />}
             required
           />
           <AuthInput
-            label="Passord"
+            label={t("password")}
             name="password"
             type="password"
             value={formData.password}
             onChange={handleChange}
-            placeholder="Passord"
+            placeholder={t("Placeholder.password")}
             icon={<Lock size={"1rem"} />}
             required
           />
         </div>
         <div className={styles.buttons}>
-          <Button text={"Registrer deg"} className={styles.loginButton} />
+          <Button
+            text={t("SignUp.form.title")}
+            className={styles.loginButton}
+          />
           <p>
-            Har du allerede en konto?{" "}
+            {t("SignUp.form.prompt")}{" "}
             <Link href={"/signin"} className={styles.link}>
-              Logg inn
+              {t("SignIn.form.title")}
             </Link>
           </p>
         </div>

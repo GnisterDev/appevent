@@ -9,9 +9,11 @@ import { Lock, LogIn, Mail } from "lucide-react";
 import Button from "../Button";
 import Link from "next/link";
 import AuthInput from "./AuthInput";
+import { useTranslations } from "next-intl";
 
 const SignIn = () => {
   const router = useRouter();
+  const t = useTranslations("Auth");
   const [formData, setFormData] = useState<LoginRequest>({
     email: "",
     password: "",
@@ -34,39 +36,42 @@ const SignIn = () => {
       <div className={styles.header}>
         <h3 className={styles.title}>
           <LogIn size={"2rem"} />
-          Logg inn
+          {t("SignIn.form.title")}
         </h3>
-        <p style={{ fontSize: ".9rem" }}>Logg inn med e-post og passord</p>
+        <p style={{ fontSize: ".9rem" }}>{t("SignIn.form.subtitle")}</p>
       </div>
       <form onSubmit={handleSubmit} className={styles.form}>
         <div className={styles.inputs}>
           <AuthInput
-            label="E-post"
+            label={t("email")}
             name="email"
             type="email"
             value={formData.email}
             onChange={handleChange}
-            placeholder="E-post"
+            placeholder={t("Placeholder.email")}
             icon={<Mail size={"1rem"} />}
             required
           />
           <AuthInput
-            label="Passord"
+            label={t("password")}
             name="password"
             type="password"
             value={formData.password}
             onChange={handleChange}
-            placeholder="Passord"
+            placeholder={t("Placeholder.password")}
             icon={<Lock size={"1rem"} />}
             required
           />
         </div>
         <div className={styles.buttons}>
-          <Button text={"Logg In"} className={styles.loginButton} />
+          <Button
+            text={t("SignIn.form.title")}
+            className={styles.loginButton}
+          />
           <p>
-            Har du ikke en konto?{" "}
+            {t("SignIn.form.prompt")}{" "}
             <Link href={"/signup"} className={styles.link}>
-              Registrer deg
+              {t("SignUp.form.title")}
             </Link>
           </p>
         </div>

@@ -4,34 +4,32 @@ import SignUp from "@/components/auth/SignUpForm";
 import React from "react";
 import styles from "./signUp.module.css";
 import Card from "@/components/Card";
+import { useTranslations } from "next-intl";
 
 const signUp = () => {
+  const t = useTranslations("Auth.SignUp");
+
   return (
     <main className={styles.main}>
       <div className={styles.container}>
         <div className={styles.info}>
           <div className={styles.header}>
-            <h1>Bli med i Appevent!</h1>
-            <p>
-              Registrer deg for å oppdage og dele arrangementer med venner og
-              likesinnede.
-            </p>
+            <h1>{t("title")}</h1>
+            <p>{t("subtitle")}</p>
           </div>
           <Card
-            title={"Oppdag arrangementer"}
+            title={t("cards.0.title")}
             color="var(--secondary)"
             className={styles.card}
           >
-            Del dine arrangementer med venner og få oversikt over hvem som
-            deltar.
+            {t("cards.0.content")}
           </Card>
           <Card
-            title={"Personlige tilpasninger"}
+            title={t("cards.1.title")}
             color="color-mix(in srgb, var(--error) 25%, white)"
             className={styles.card}
           >
-            Få tilpassede anbefalinger basert på dine interesser og tidligere
-            deltakelser.
+            {t("cards.1.content")}
           </Card>
         </div>
         <div className={styles.form}>
