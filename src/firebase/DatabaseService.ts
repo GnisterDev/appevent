@@ -103,6 +103,21 @@ export const getEvent = async (eventId: string): Promise<EventData> => {
   }
 };
 
+export const isParticipant = async (eventID: string): Promise<boolean> => {
+  const userID = getUserID();
+  if (!userID) return false;
+
+  const userRef = doc(db, "users", userID);
+
+  const eventSnap = await getDoc(doc(db, "events", eventID));
+  if (!eventSnap.exists()) return false;
+
+  const eventData = eventSnap.data() as EventData;
+  if (!eventData.participants) return false;
+
+  return eventData.participants.some(p => p.id === userRef.id);
+};
+
 export const joinEvent = async (eventID: string): Promise<void> => {
   const userID = getUserID();
   if (!userID) throw new Error("Ingen bruker er innlogget!");
