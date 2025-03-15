@@ -1,5 +1,6 @@
 // jest.setup.ts or tests/setup.ts
 import "@testing-library/jest-dom";
+import { arrayRemove, arrayUnion } from "firebase/firestore";
 import React from "react";
 
 // Mock Next.js router
@@ -75,6 +76,10 @@ jest.mock("firebase/firestore", () => {
     where: jest.fn(() => ({})),
     orderBy: jest.fn(() => ({})),
     limit: jest.fn(() => ({})),
+    arrayUnion: jest.fn(() => arrayUnion()),
+    arrayRemove: jest.fn(() => arrayRemove()),
+    Transaction: jest.fn(() => ({})),
+    runTransaction: jest.fn(),
     Timestamp: {
       now: jest.fn(() => ({})),
       toDate: jest.fn(() => new Date()),

@@ -39,7 +39,7 @@ describe("Contexts", () => {
         eventID: null,
         eventData: null,
         isOrg: false,
-        isParticipant: false,
+        isPar: false,
       });
     });
   });
