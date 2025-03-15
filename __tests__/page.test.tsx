@@ -1,6 +1,6 @@
 import React from "react";
 import { render, screen } from "@/test-utils";
-import SignIn from "@/components/auth/SignIn";
+import SignIn from "@/components/auth/SignInForm";
 
 describe("SignIn Component", () => {
   it("renders a heading", () => {
