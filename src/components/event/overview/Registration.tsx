@@ -1,22 +1,24 @@
 "use client";
 
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import styles from "./registration.module.css";
 import Button from "@/components/Button";
 import { Pencil, Share2, Ticket, TicketX, Trash } from "lucide-react";
 import { isAdministrator } from "@/firebase/AuthService";
-import { deleteEvent } from "@/firebase/DatabaseService";
+import { deleteEvent, getUser } from "@/firebase/DatabaseService";
 import { useRouter } from "next/navigation";
 import { EventDisplayContext } from "@/firebase/contexts";
+import { DefaultUserData, UserData } from "@/firebase/User";
 
 const Registration: React.FC = () => {
   const router = useRouter();
   const isAdmin = isAdministrator();
-  const { eventID, isOrg, eventData, isParticipant } =
-    useContext(EventDisplayContext);
+  const { eventID, isOrg, eventData, isPar } = useContext(EventDisplayContext);
+  const [organizor, setOrganizor] = useState<UserData>(DefaultUserData);
 
   if (!eventID) return;
   if (!eventData) return;
+  getUser(eventData.organizer.id).then(setOrganizor);
 
   return (
     <div className={styles.module}>
@@ -29,6 +31,12 @@ const Registration: React.FC = () => {
         )}
       </div>
       <div style={{ padding: "1.5rem 0" }}>
+        <div className={styles.info}>
+          <span>Arrangsjør</span>
+          <span style={{ fontWeight: "bold" }}>
+            {organizor.name || "Ukjent"}
+          </span>
+        </div>
         <div className={styles.info}>
           <span>Status</span>
           <span style={{ fontWeight: "bold" }}>
@@ -54,7 +62,7 @@ const Registration: React.FC = () => {
             icon={<Ticket size={"1.25rem"} />}
           />
         )}
-        {eventData.private && isParticipant && (
+        {eventData.private && isPar && !isOrg && (
           <Button
             text="Meld meg av"
             className={styles.registerButton}
