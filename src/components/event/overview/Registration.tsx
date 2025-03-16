@@ -5,25 +5,19 @@ import styles from "./registration.module.css";
 import Button from "@/components/Button";
 import { Pencil, Share2, Ticket, TicketX, Trash } from "lucide-react";
 import { useRouter } from "next/navigation";
-
-// OBS: Pass på å importere disse fra dine filer
-import { useAuth } from "@/firebase/AuthService";
 import { isAdministrator } from "@/firebase/AuthService";
 import {
-  getEvent,
   joinEvent,
   leaveEvent,
   deleteEvent,
   getUser,
+  isParticipant,
 } from "@/firebase/DatabaseService";
-import { doc } from "firebase/firestore";
-import { db } from "@/firebase/config";
 import { EventDisplayContext } from "@/firebase/contexts";
 import { DefaultUserData, UserData } from "@/firebase/User";
 
 const Registration: React.FC = () => {
   const router = useRouter();
-  const { user, isLoggedIn } = useAuth();
   const isAdmin = isAdministrator();
   const { eventID, isOrg, eventData, isPar } = useContext(EventDisplayContext);
   const [organizor, setOrganizor] = useState<UserData>(DefaultUserData);
@@ -33,62 +27,22 @@ const Registration: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    const checkParticipation = async () => {
-      try {
-        if (!eventID) {
-          setLoading(false);
-          return;
-        }
-
-        if (!isLoggedIn || !user) {
-          setIsParticipating(false);
-          setLoading(false);
-          return;
-        }
-
-        const eventData = await getEvent(eventID);
-        if (!eventData || !eventData.participants) {
-          setIsParticipating(false);
-          setLoading(false);
-          return;
-        }
-
-        const userRef = doc(db, "users", user.uid);
-        const found = eventData.participants.some(p => p.id === userRef.id);
-        setIsParticipating(found);
-        setLoading(false);
-      } catch (error) {
-        console.error("Feil ved henting av event:", error);
-      }
-    };
-
-    checkParticipation();
-  }, [eventID, isLoggedIn, user]);
+    isParticipant(eventID)
+      .then(setIsParticipating)
+      .finally(() => setLoading(false));
+  }, [eventID]);
 
   const handleJoin = async () => {
-    if (!isLoggedIn) {
-      alert("Du må være innlogget for å melde deg på.");
-      return;
-    }
-    try {
-      await joinEvent(eventID);
-      setIsParticipating(true);
-    } catch (err) {
-      console.error("Feil ved påmelding:", err);
-    }
+    joinEvent(eventID)
+      .then(() => setIsParticipating(true))
+      .catch(console.error);
   };
 
   const handleLeave = async () => {
-    if (!isLoggedIn) {
-      alert("Du må være innlogget for å melde deg av.");
-      return;
-    }
-    try {
-      await leaveEvent(eventID);
-      setIsParticipating(false);
-    } catch (err) {
-      console.error("Feil ved avmelding:", err);
-    }
+    leaveEvent(eventID)
+      .then(() => setIsParticipating(false))
+      .catch(console.error);
+    if (eventData?.private) router.push("/");
   };
 
   if (loading) return;
@@ -121,8 +75,6 @@ const Registration: React.FC = () => {
         </div>
       </div>
 
-      {isOrg && <h3>Du er organisator</h3>}
-
       <div className={styles.buttons}>
         {isOrg && (
           <Button
@@ -133,14 +85,7 @@ const Registration: React.FC = () => {
           />
         )}
 
-        {!isOrg && !eventData.private && isParticipating ? (
-          <Button
-            text="Meld meg av"
-            className={styles.registerButton}
-            icon={<TicketX size={"1.25rem"} />}
-            onClick={handleLeave}
-          />
-        ) : (
+        {!isOrg && !isParticipating && !eventData.private && (
           <Button
             text="Meld meg på"
             className={styles.registerButton}
@@ -148,11 +93,12 @@ const Registration: React.FC = () => {
             onClick={handleJoin}
           />
         )}
-        {eventData.private && isPar && !isOrg && (
+        {!isOrg && isParticipating && (
           <Button
             text="Meld meg av"
             className={styles.registerButton}
             icon={<TicketX size={"1.25rem"} />}
+            onClick={handleLeave}
           />
         )}
 
