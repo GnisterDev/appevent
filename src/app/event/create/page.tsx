@@ -10,8 +10,10 @@ import Details from "@/components/event/create/Details";
 import Invites from "@/components/event/create/Invites";
 import styles from "./styles.module.css";
 import { UserData } from "@/firebase/User";
+import { useTranslations } from "next-intl";
 
 const CreateEventForm: React.FC = () => {
+  const t = useTranslations("Event.Manage");
   const router = useRouter();
   const [formData, setFormData] = useState<EventData>(DefaultEventData);
   const [invitees, setInvitees] = useState<UserData[]>([]);
@@ -46,7 +48,7 @@ const CreateEventForm: React.FC = () => {
     <EventContext.Provider value={{ formData, updateFormData }}>
       <main className={styles.main}>
         <form onSubmit={handleSubmit}>
-          <h1 className={styles.title}>Lag arrangement</h1>
+          <h1 className={styles.title}>{t("createTitle")}</h1>
           <BaseInformation />
           <Details />
           {formData.private && (
@@ -54,14 +56,14 @@ const CreateEventForm: React.FC = () => {
           )}
           <div className={styles.buttonGroup}>
             <button type="submit" className={styles.saveButton}>
-              Opprett Arrangement
+              {t("createEventButton")}
             </button>
             <button
               type="button"
               className={styles.cancelButton}
               onClick={() => router.back()}
             >
-              Avbryt
+              {t("cancelButton")}
             </button>
           </div>
         </form>

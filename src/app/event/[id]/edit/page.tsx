@@ -16,8 +16,10 @@ import {
 import Details from "@/components/event/create/Details";
 import Loading from "@/components/Loading";
 import { UserData } from "@/firebase/User";
+import { useTranslations } from "next-intl";
 
 const EventEdit: React.FC = () => {
+  const t = useTranslations("Event.Manage");
   const router = useRouter();
   const { id } = useParams();
   const eventID = Array.isArray(id) ? id[0] : id;
@@ -76,7 +78,7 @@ const EventEdit: React.FC = () => {
     <EventContext.Provider value={{ formData, updateFormData }}>
       <main className={styles.main}>
         <form onSubmit={handleSubmit}>
-          <h1 className={styles.title}>Rediger arrangement</h1>
+          <h1 className={styles.title}>{t("editTitle")}</h1>
           <BaseInformation />
           <Details />
           {formData.private && (
@@ -84,14 +86,14 @@ const EventEdit: React.FC = () => {
           )}
           <div className={styles.buttonGroup}>
             <button type="submit" className={styles.saveButton}>
-              Lagre endringer
+              {t("saveChangesButton")}
             </button>
             <button
               type="button"
               className={styles.cancelButton}
               onClick={() => router.back()}
             >
-              Avbryt
+              {t("cancelButton")}
             </button>
           </div>
         </form>

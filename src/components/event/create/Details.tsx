@@ -2,8 +2,10 @@ import React, { useContext, useState } from "react";
 import styles from "./CreateEventComponents.module.css";
 import Tag from "../Tag";
 import { EventContext } from "@/firebase/contexts";
+import { useTranslations } from "next-intl";
 
 const Details = () => {
+  const t = useTranslations("Event.Manage.Details");
   const { formData, updateFormData } = useContext(EventContext);
   const [tagInput, setTagInput] = useState("");
 
@@ -20,24 +22,24 @@ const Details = () => {
 
   return (
     <div className={styles.module}>
-      <h2>Detaljer</h2>
+      <h2>{t("title")}</h2>
       <div className={styles.singleInputGroup}>
-        <h3 className={styles.title}>Beskrivelse</h3>
+        <h3 className={styles.title}>{t("description")}</h3>
         <textarea
           name="description"
           className={`${styles.input} ${styles.textarea}`}
           value={formData.description}
           onChange={e => updateFormData(e.target.name, e.target.value)}
-          placeholder="Fortell om arrangementet"
+          placeholder={t("descriptionPlaceholder")}
           required
         />
       </div>
       <div className={styles.singleInputGroup}>
-        <h3 className={styles.title}>Merkelapper</h3>
+        <h3 className={styles.title}>{t("tags")}</h3>
         <input
           type="text"
           name="tags"
-          placeholder="Skriv merkelapp ogg trykk Enter"
+          placeholder={t("tagsPlaceholder")}
           className={styles.input}
           value={tagInput}
           onChange={e => setTagInput(e.target.value)}

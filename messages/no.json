@@ -59,7 +59,42 @@
       "total": "total"
     },
     "Manage": {
-
+      "editTitle": "Rediger arrangement",
+      "createTitle": "Lag arrangement",
+      "cancelButton": "Avbryt",
+      "saveChangesButton": "Lagre endringer",
+      "createEventButton": "Opprett Arrangement",
+      "BaseInformation": {
+        "title": "Grunnleggende informasjon",
+        "eventTitle": "Arrangementstittel",
+        "eventPlaceholder": "Skriv inn en tittel",
+        "date": "Dato",
+        "time": "Tidspunkt",
+        "place": "Sted",
+        "placePlaceholder": "Arrangementssted",
+        "type": "Type",
+        "publicEvent": "Offentlig arrangement",
+        "privateEvent": "Privat arrangement"
+      },
+      "Details": {
+        "title": "Detaljer",
+        "description": "Beskrivelse",
+        "descriptionPlaceholder": "Fortell om arrangementet",
+        "tags": "Merkelapper",
+        "tagsPlaceholder": "Skriv merkelapp ogg trykk Enter"
+      },
+      "Invites": {
+        "title": "Inviter",
+        "searchPlaceholder": "Søk etter navn eller epost",
+        "invite": "Inviter",
+        "invitedParticipants": "Inviterte deltakere",
+        "noInvitedParticipants": "Ingen deltakere invitert ennå",
+        "registeredParticipants": "Registrerte deltakere",
+        "noRegisteredParticipants": "Ingen deltakere registrert ennå",
+        "searching": "Søker...",
+        "noResults": "Ingen brukere funnet",
+        "remove": "Fjern"
+      }
     }
   }
 }

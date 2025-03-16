@@ -4,6 +4,7 @@ import styles from "./Invites.module.css";
 import { UserData } from "@/firebase/User";
 import { userSearch } from "@/firebase/DatabaseService";
 import { User } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 interface InviteResultProps {
   search: string;
@@ -16,6 +17,7 @@ const InviteResult: React.FC<InviteResultProps> = ({
   invitedUsers,
   onInvite,
 }) => {
+  const t = useTranslations("Event.Manage.Invites");
   const [loading, setLoading] = useState<boolean>(true);
   const [searchResults, setSearchResults] = useState<UserData[]>([]);
 
@@ -48,9 +50,9 @@ const InviteResult: React.FC<InviteResultProps> = ({
 
   return (
     <div className={styles.searchResults}>
-      {loading && <div className={styles.info}>Søker...</div>}
+      {loading && <div className={styles.info}>{t("searching")}</div>}
       {!loading && search.length >= 3 && searchResults.length == 0 && (
-        <div className={styles.info}>Ingen brukere funnet</div>
+        <div className={styles.info}>{t("noResults")}</div>
       )}
       {!loading &&
         searchResults.length > 0 &&
@@ -69,7 +71,7 @@ const InviteResult: React.FC<InviteResultProps> = ({
                 <span>{user.email}</span>
               </div>
             </div>
-            <Button text="Inviter" className={styles.inviteeAdd} />
+            <Button text={t("invite")} className={styles.inviteeAdd} />
           </div>
         ))}
     </div>

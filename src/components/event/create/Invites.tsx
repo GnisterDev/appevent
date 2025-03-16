@@ -8,6 +8,7 @@ import Invitee from "./Invitee";
 import InviteResult from "./InvitesResult";
 import { EventContext } from "@/firebase/contexts";
 import { getDoc, DocumentReference } from "firebase/firestore";
+import { useTranslations } from "next-intl";
 
 interface InvitesProps {
   invitedUsers: UserData[];
@@ -15,11 +16,10 @@ interface InvitesProps {
 }
 
 const Invites: React.FC<InvitesProps> = ({ invitedUsers, setInvitedUsers }) => {
+  const t = useTranslations("Event.Manage.Invites");
   const { formData, updateFormData } = useContext(EventContext);
   const [search, setSearch] = useState<string>("");
   const [participants, setParticipants] = useState<UserData[]>([]);
-  const [isLoadingParticipants, setIsLoadingParticipants] =
-    useState<boolean>(false);
 
   // Fetch participant data from document references
   useEffect(() => {
@@ -28,8 +28,6 @@ const Invites: React.FC<InvitesProps> = ({ invitedUsers, setInvitedUsers }) => {
         setParticipants([]);
         return;
       }
-
-      setIsLoadingParticipants(true);
       try {
         // Create an array of promises to get each document
         const participantPromises = formData.participants.map(
@@ -58,8 +56,6 @@ const Invites: React.FC<InvitesProps> = ({ invitedUsers, setInvitedUsers }) => {
         setParticipants(validUsers);
       } catch (error) {
         console.error("Error fetching participants:", error);
-      } finally {
-        setIsLoadingParticipants(false);
       }
     };
 
@@ -89,17 +85,17 @@ const Invites: React.FC<InvitesProps> = ({ invitedUsers, setInvitedUsers }) => {
     <div className={styles.module}>
       <div className={styles.title}>
         <UserPlus size={"1.5rem"} />
-        <h2>Inviter</h2>
+        <h2>{t("title")}</h2>
       </div>
       <div className={inviteStyles.content}>
         <input
           type="text"
-          placeholder="Søk etter navn eller epost"
+          placeholder={t("searchPlaceholder")}
           className={styles.input}
           value={search}
           onChange={e => setSearch(e.target.value)}
         />
-        <Button text="Inviter" className={inviteStyles.button} />
+        <Button text={t("invite")} className={inviteStyles.button} />
       </div>
       {search.length >= 3 && (
         <InviteResult
@@ -110,7 +106,9 @@ const Invites: React.FC<InvitesProps> = ({ invitedUsers, setInvitedUsers }) => {
       )}
       <div className={styles.singleInputGroup}>
         <h3 className={styles.title}>
-          Inviterte deltakere ({invitedUsers.length})
+          {t("invitedParticipants")} {"("}
+          {invitedUsers.length}
+          {")"}
         </h3>
         <div className={inviteStyles.inviteeInfo}>
           {invitedUsers.length > 0 ? (
@@ -119,19 +117,19 @@ const Invites: React.FC<InvitesProps> = ({ invitedUsers, setInvitedUsers }) => {
             ))
           ) : (
             <div className={inviteStyles.emptyState}>
-              Ingen deltakere invitert ennå
+              {t("noInvitedParticipants")}
             </div>
           )}
         </div>
       </div>
       <div className={styles.singleInputGroup}>
         <h3 className={styles.title}>
-          Registrerte deltakere ({participants.length})
+          {t("registeredParticipants")} {"("}
+          {participants.length}
+          {")"}
         </h3>
         <div className={inviteStyles.inviteeInfo}>
-          {isLoadingParticipants ? (
-            <div className={inviteStyles.loading}>Laster deltakere...</div>
-          ) : participants.length > 0 ? (
+          {participants.length > 0 ? (
             participants.map(user => (
               <Invitee
                 key={user.userID}
@@ -141,7 +139,7 @@ const Invites: React.FC<InvitesProps> = ({ invitedUsers, setInvitedUsers }) => {
             ))
           ) : (
             <div className={inviteStyles.emptyState}>
-              Ingen deltakere registrert ennå
+              {t("noRegisteredParticipants")}
             </div>
           )}
         </div>

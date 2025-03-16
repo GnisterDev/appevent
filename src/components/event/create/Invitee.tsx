@@ -3,6 +3,7 @@ import { User } from "lucide-react";
 import styles from "./Invites.module.css";
 import { UserData } from "@/firebase/User";
 import Button from "@/components/Button";
+import { useTranslations } from "next-intl";
 
 interface InviteeProps {
   user: UserData;
@@ -10,6 +11,7 @@ interface InviteeProps {
 }
 
 const Invitee: React.FC<InviteeProps> = ({ user, onRemove }) => {
+  const t = useTranslations("Event.Manage.Invites");
   return (
     <div className={styles.invitee}>
       <div className={styles.invitee}>
@@ -22,7 +24,7 @@ const Invitee: React.FC<InviteeProps> = ({ user, onRemove }) => {
         </div>
       </div>
       <Button
-        text="Fjern"
+        text={t("remove")}
         className={styles.inviteeRemove}
         onClick={e => {
           e.preventDefault();
