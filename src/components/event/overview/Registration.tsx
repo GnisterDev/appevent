@@ -1,6 +1,12 @@
 "use client";
 
-import React, { useContext, useEffect, useState } from "react";
+import React, {
+  Dispatch,
+  SetStateAction,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import styles from "./registration.module.css";
 import Button from "@/components/Button";
 import { Pencil, Share2, Ticket, TicketX, Trash } from "lucide-react";
@@ -16,13 +22,20 @@ import {
 import { EventDisplayContext } from "@/firebase/contexts";
 import { DefaultUserData, UserData } from "@/firebase/User";
 
-const Registration: React.FC = () => {
+interface RegistrationInterface {
+  setParticipation: Dispatch<SetStateAction<UserData[]>>;
+}
+
+const Registration: React.FC<RegistrationInterface> = ({
+  setParticipation,
+}) => {
   const router = useRouter();
   const isAdmin = isAdministrator();
-  const { eventID, isOrg, eventData, isPar } = useContext(EventDisplayContext);
+  const { eventID, isOrg, eventData } = useContext(EventDisplayContext);
   const [isParticipating, setIsParticipating] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
   const [organizor, setOrganizor] = useState<UserData>(DefaultUserData);
+  const currentUserID = getUserID();
 
   useEffect(() => {
     if (!eventID) return;
@@ -35,16 +48,27 @@ const Registration: React.FC = () => {
 
   const handleJoin = async () => {
     if (!eventID) return;
+    if (!currentUserID) return;
     joinEvent(eventID)
       .then(() => setIsParticipating(true))
       .catch(console.error);
+
+    getUser(currentUserID).then(currentUser => {
+      setParticipation(prev => [...prev, currentUser]);
+    });
   };
 
   const handleLeave = async () => {
     if (!eventID) return;
+    if (!currentUserID) return;
     leaveEvent(eventID)
       .then(() => setIsParticipating(false))
       .catch(console.error);
+    getUser(currentUserID).then(currentUser => {
+      setParticipation(prev =>
+        prev.filter(user => user.userID !== currentUser.userID)
+      );
+    });
     if (eventData?.private) router.push("/");
   };
 

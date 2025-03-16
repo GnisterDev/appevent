@@ -8,9 +8,9 @@ import { getAllParticipants, getEvent } from "@/firebase/DatabaseService";
 import { EventData } from "@/firebase/Event";
 import { EventDisplayContext } from "@/firebase/contexts";
 import Participants from "@/components/event/overview/participant/ParticipantsInfo";
-import { LoaderCircle } from "lucide-react";
 import { isOrganizer, isParticipant } from "@/firebase/AuthService";
 import { UserData } from "@/firebase/User";
+import Loading from "@/components/Loading";
 
 const EventView = () => {
   const router = useRouter();
@@ -47,18 +47,13 @@ const EventView = () => {
       .catch(err => setError(`Failed to load event details: ${err}`));
   }, [eventID, router]);
 
-  if (loading)
-    return (
-      <div className={styles.loading}>
-        <LoaderCircle size={"5rem"} />
-      </div>
-    );
+  if (loading) return <Loading />;
   if (error) router.push("/404");
   if (!eventData) return;
-  if (eventData.private && !isParticipant) router.push("/404");
+  if (eventData.private && !isPar) router.push("/404");
 
   return (
-    <EventDisplayContext.Provider value={{ eventID, eventData, isOrg, isPar }}>
+    <EventDisplayContext.Provider value={{ eventID, eventData, isOrg }}>
       <main className={styles.main}>
         <div className={styles.eventGrid}>
           <div className={styles.eventInfo}>
@@ -69,7 +64,7 @@ const EventView = () => {
           </div>
           <div className={styles.eventActions}>
             <div className={styles.eventActionsInner}>
-              <Registration />
+              <Registration setParticipation={setParticipantsInfo} />
               <Participants participants={participantsInfo} />
             </div>
           </div>

@@ -11,12 +11,10 @@ export const EventDisplayContext = createContext<{
   eventID: string | null;
   eventData: EventData | null;
   isOrg: boolean;
-  isPar: boolean;
 }>({
   eventID: null,
   eventData: null,
   isOrg: false,
-  isPar: false,
 });
 
 export const UserContext = createContext<UserContextType>({
