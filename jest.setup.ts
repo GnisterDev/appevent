@@ -5,12 +5,7 @@ import React from "react";
 
 // Mock Next.js router
 jest.mock("next/navigation", () => ({
-  useRouter: () => ({
-    push: jest.fn(),
-    replace: jest.fn(),
-    prefetch: jest.fn(),
-    pathname: "/",
-  }),
+  useRouter: jest.fn(),
 }));
 
 // Mock Firebase modules
@@ -81,6 +76,8 @@ jest.mock("firebase/firestore", () => {
     Transaction: jest.fn(() => ({})),
     runTransaction: jest.fn(),
     Timestamp: {
+      seconds: Number,
+      nanoseconds: Number,
       now: jest.fn(() => ({})),
       toDate: jest.fn(() => new Date()),
     },

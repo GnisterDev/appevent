@@ -16,7 +16,8 @@ const ParticipantsInfo: React.FC = () => {
         <div className={styles.titleContainer}>
           <ChevronDown
             onClick={() => setShow(!show)}
-            className={`${styles.icon} ${show ? styles.open : ""}`}
+            className={`${styles.icon} ${show && styles.open}`}
+            data-testid="chevron-icon"
           />
           <h3 className={styles.title}>{t("registeredParticipants")}</h3>
         </div>

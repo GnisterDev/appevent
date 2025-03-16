@@ -121,7 +121,7 @@ const Registration: React.FC = () => {
           }}
         />
 
-        {(isAdmin || isOrg) && (
+        {(isOrg || isAdmin) && (
           <Button
             onClick={() => {
               deleteEvent(eventID);
