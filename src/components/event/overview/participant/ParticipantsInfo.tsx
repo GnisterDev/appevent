@@ -1,17 +1,12 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import styles from "./participantsInfo.module.css";
 import Participant from "./Participant";
 import { ChevronDown } from "lucide-react";
-import { UserData } from "@/firebase/User";
+import { EventDisplayContext } from "@/firebase/contexts";
 
-interface ParticipantsInfoProps {
-  participants: UserData[];
-}
-
-const ParticipantsInfo: React.FC<ParticipantsInfoProps> = ({
-  participants,
-}) => {
+const ParticipantsInfo: React.FC = () => {
   const [show, setShow] = useState(true);
+  const { participants } = useContext(EventDisplayContext);
 
   return (
     <div className={styles.module}>

@@ -1,12 +1,6 @@
 "use client";
 
-import React, {
-  Dispatch,
-  SetStateAction,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styles from "./registration.module.css";
 import Button from "@/components/Button";
 import { Pencil, Share2, Ticket, TicketX, Trash } from "lucide-react";
@@ -22,20 +16,14 @@ import {
 import { EventDisplayContext } from "@/firebase/contexts";
 import { DefaultUserData, UserData } from "@/firebase/User";
 
-interface RegistrationInterface {
-  setParticipation: Dispatch<SetStateAction<UserData[]>>;
-}
-
-const Registration: React.FC<RegistrationInterface> = ({
-  setParticipation,
-}) => {
+const Registration: React.FC = () => {
   const router = useRouter();
   const isAdmin = isAdministrator();
-  const { eventID, isOrg, eventData } = useContext(EventDisplayContext);
+  const { eventID, isOrg, eventData, refreshInfo } =
+    useContext(EventDisplayContext);
   const [isParticipating, setIsParticipating] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
   const [organizor, setOrganizor] = useState<UserData>(DefaultUserData);
-  const currentUserID = getUserID();
 
   useEffect(() => {
     if (!eventID) return;
@@ -48,27 +36,18 @@ const Registration: React.FC<RegistrationInterface> = ({
 
   const handleJoin = async () => {
     if (!eventID) return;
-    if (!currentUserID) return;
     joinEvent(eventID)
       .then(() => setIsParticipating(true))
-      .catch(console.error);
-
-    getUser(currentUserID).then(currentUser => {
-      setParticipation(prev => [...prev, currentUser]);
-    });
+      .catch(console.error)
+      .finally(refreshInfo);
   };
 
   const handleLeave = async () => {
     if (!eventID) return;
-    if (!currentUserID) return;
     leaveEvent(eventID)
       .then(() => setIsParticipating(false))
-      .catch(console.error);
-    getUser(currentUserID).then(currentUser => {
-      setParticipation(prev =>
-        prev.filter(user => user.userID !== currentUser.userID)
-      );
-    });
+      .catch(console.error)
+      .finally(refreshInfo);
     if (eventData?.private) router.push("/");
   };
 

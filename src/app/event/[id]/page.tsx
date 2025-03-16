@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import styles from "./event.module.css";
 import Registration from "@/components/event/overview/Registration";
 import EventInfo from "@/components/event/overview/EventInfo";
@@ -23,6 +23,16 @@ const EventView = () => {
   const isPar = isParticipant(eventID);
   const [participantsInfo, setParticipantsInfo] = useState<UserData[]>([]);
 
+  const refreshInfo = useCallback(async () => {
+    if (!eventID) return;
+    getAllParticipants(eventID)
+      .then(setParticipantsInfo)
+      .catch(err => setError(`Failed to load participant details: ${err}`));
+    getEvent(eventID)
+      .then(setEventData)
+      .catch(err => setError(`Failed to load event details: ${err}`));
+  }, [eventID]);
+
   useEffect(() => {
     if (!eventID) {
       setError("Event ID not found");
@@ -42,9 +52,7 @@ const EventView = () => {
       .catch(err => setError(`Failed to load event details: ${err}`))
       .finally(() => setLoading(false));
 
-    getAllParticipants(eventID)
-      .then(setParticipantsInfo)
-      .catch(err => setError(`Failed to load event details: ${err}`));
+    refreshInfo();
   }, [eventID, router]);
 
   if (loading) return <Loading />;
@@ -53,7 +61,15 @@ const EventView = () => {
   if (eventData.private && !isPar) router.push("/404");
 
   return (
-    <EventDisplayContext.Provider value={{ eventID, eventData, isOrg }}>
+    <EventDisplayContext.Provider
+      value={{
+        eventID,
+        eventData,
+        isOrg,
+        participants: participantsInfo,
+        refreshInfo,
+      }}
+    >
       <main className={styles.main}>
         <div className={styles.eventGrid}>
           <div className={styles.eventInfo}>
@@ -64,8 +80,8 @@ const EventView = () => {
           </div>
           <div className={styles.eventActions}>
             <div className={styles.eventActionsInner}>
-              <Registration setParticipation={setParticipantsInfo} />
-              <Participants participants={participantsInfo} />
+              <Registration />
+              <Participants />
             </div>
           </div>
         </div>
