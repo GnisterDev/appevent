@@ -29,8 +29,8 @@ export default function Home() {
       <div>
         <h1>Liste over dine arrangementer</h1>
         <div className={styles.lists}>
-          <div className={styles.list}><EventList events={eventsData.registered} /></div>
-          <EventList events={eventsData.organizer} />
+          <div className={styles.list}><EventList role={"påmeldt"} events={eventsData.registered}  /></div>
+          <EventList role={"ansvarlig"} events={eventsData.organizer} />
         </div>
       </div>
     </main>

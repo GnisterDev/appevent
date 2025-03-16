@@ -3,10 +3,10 @@ import React from "react";
 import Link from "next/link";
 import styles from "./eventList.module.css";
 
-function EventList({ events }: { events: EventData[] }) {
+function EventList({role, events }: { events: EventData[] }) {
   return (
     <div>
-      <h3>På disse arrangementene er du:</h3>
+      <h3>På disse arrangementene er du {role}:</h3>
       <div>
         {events.map((event, key) => (
           <div key={key}>
