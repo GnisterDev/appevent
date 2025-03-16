@@ -36,5 +36,25 @@
     "email": "Email",
     "name": "Name",
     "password": "Password"
+  },
+  "Event": {
+    "Info": {
+      "about": "About the event",
+      "delete": "Delete event",
+      "edit": "Edit",
+      "organizor": "Event",
+      "organizorIsYou": "You",
+      "organizorTitle": "Overview",
+      "participantTitle": "Registration",
+      "private": "Private",
+      "public": "Public",
+      "registeredParticipants": "Registered participants",
+      "share": "Share event",
+      "status": "Status",
+      "subscribe": "Register me",
+      "subtext": "Secure your place at the event",
+      "total": "total",
+      "unsubscribe": "Unregister me"
+    }
   }
 }

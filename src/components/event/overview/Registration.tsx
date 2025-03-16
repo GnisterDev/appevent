@@ -15,8 +15,10 @@ import {
 } from "@/firebase/DatabaseService";
 import { EventDisplayContext } from "@/firebase/contexts";
 import { DefaultUserData, UserData } from "@/firebase/User";
+import { useTranslations } from "next-intl";
 
 const Registration: React.FC = () => {
+  const t = useTranslations("Event.Info");
   const router = useRouter();
   const isAdmin = isAdministrator();
   const { eventID, isOrg, eventData, refreshInfo } =
@@ -60,25 +62,25 @@ const Registration: React.FC = () => {
   return (
     <div className={styles.module}>
       <div className={styles.header}>
-        <h3 className={styles.title}>{isOrg ? "Oversikt" : "Påmelding"}</h3>
-        {!isOrg && (
-          <p style={{ paddingTop: "0.5rem" }}>
-            Sikre din plass på arrangementet
-          </p>
-        )}
+        <h3 className={styles.title}>
+          {isOrg ? t("organizorTitle") : t("participantTitle")}
+        </h3>
+        {!isOrg && <p style={{ paddingTop: "0.5rem" }}>{t("subtext")}</p>}
       </div>
 
       <div style={{ padding: "1.5rem 0" }}>
         <div className={styles.info}>
-          <span>Arrangsjør</span>
+          <span>{t("organizor")}</span>
           <span style={{ fontWeight: "bold" }}>
-            {eventData.organizer.id === getUserID() ? "Deg" : organizor.name}
+            {eventData.organizer.id === getUserID()
+              ? t("organizorIsYou")
+              : organizor.name}
           </span>
         </div>
         <div className={styles.info}>
-          <span>Status</span>
+          <span>{t("status")}</span>
           <span style={{ fontWeight: "bold" }}>
-            {eventData?.private ? "Privat" : "Offentlig"}
+            {eventData?.private ? t("private") : t("public")}
           </span>
         </div>
       </div>
@@ -86,7 +88,7 @@ const Registration: React.FC = () => {
       <div className={styles.buttons}>
         {isOrg && (
           <Button
-            text="Rediger"
+            text={t("edit")}
             className={styles.editButton}
             icon={<Pencil size={"1.25rem"} />}
             onClick={() => router.push(`/event/${eventID}/edit`)}
@@ -95,7 +97,7 @@ const Registration: React.FC = () => {
 
         {!isOrg && !isParticipating && !eventData.private && (
           <Button
-            text="Meld meg på"
+            text={t("subscribe")}
             className={styles.registerButton}
             icon={<Ticket size={"1.25rem"} />}
             onClick={handleJoin}
@@ -103,7 +105,7 @@ const Registration: React.FC = () => {
         )}
         {!isOrg && isParticipating && (
           <Button
-            text="Meld meg av"
+            text={t("unsubscribe")}
             className={styles.registerButton}
             icon={<TicketX size={"1.25rem"} />}
             onClick={handleLeave}
@@ -111,7 +113,7 @@ const Registration: React.FC = () => {
         )}
 
         <Button
-          text="Del arrangement"
+          text={t("share")}
           className={styles.shareButton}
           icon={<Share2 size={"1.25rem"} />}
           onClick={() => {
@@ -125,7 +127,7 @@ const Registration: React.FC = () => {
               deleteEvent(eventID);
               router.push("/");
             }}
-            text="Slett arrangement"
+            text={t("delete")}
             className={styles.deleteButton}
             icon={<Trash size={"1.25rem"} />}
           />

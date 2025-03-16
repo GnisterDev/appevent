@@ -36,5 +36,30 @@
     "name": "Name",
     "email": "Email",
     "password": "Passord"
+  },
+  "Event": {
+    "Info": {
+      "about": "Om arrangemanget",
+      "organizorTitle": "Oversikt",
+      "participantTitle": "Påmelding",
+      "subtext": "Sikre din plass på arrangementet",
+      "organizor": "Arrangsjør",
+      "organizorIsYou": "Deg",
+      "status": "Status",
+      "private": "Privat",
+      "public": "Offentlig",
+      
+      "edit": "Rediger",
+      "subscribe": "Meld meg på",
+      "unsubscribe": "Meld meg av",
+      "share": "Del arrangement",
+      "delete": "Slett arrangement",
+
+      "registeredParticipants": "Påmeldte deltagere",
+      "total": "total"
+    },
+    "Manage": {
+
+    }
   }
 }
