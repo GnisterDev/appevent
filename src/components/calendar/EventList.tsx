@@ -7,16 +7,19 @@ function EventList({role, events }: { events: EventData[] }) {
   return (
     <div>
       <h3>På disse arrangementene er du {role}:</h3>
-      <div>
-        {events.map((event, key) => (
-          <div key={key}>
-            <p className={styles.date}>{event.startTime.toString()}</p>
-            <Link href={`/event/${event.id}`}>
-              <p className={styles.title}>{event.title}</p>
-            </Link>
-          </div>
+      <table>
+        <tbody>
+          {events.map((event, key) => (
+          <tr key={key}>
+            <td className={styles.date}>{event.startTime.toString()}</td>
+            
+              <td className={styles.title}><Link href={`/event/${event.id}`}>{event.title}</Link></td>
+            
+          </tr>
         ))}
-      </div>
+        </tbody>
+        
+      </table>
     </div>
   );
 }
