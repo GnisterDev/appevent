@@ -5,13 +5,13 @@ import styles from "./registration.module.css";
 import Button from "@/components/Button";
 import { Pencil, Share2, Ticket, TicketX, Trash } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { isAdministrator } from "@/firebase/AuthService";
+import { getUserID, isAdministrator } from "@/firebase/AuthService";
 import {
   joinEvent,
   leaveEvent,
   deleteEvent,
-  getUser,
   isParticipant,
+  getUser,
 } from "@/firebase/DatabaseService";
 import { EventDisplayContext } from "@/firebase/contexts";
 import { DefaultUserData, UserData } from "@/firebase/User";
@@ -20,34 +20,39 @@ const Registration: React.FC = () => {
   const router = useRouter();
   const isAdmin = isAdministrator();
   const { eventID, isOrg, eventData, isPar } = useContext(EventDisplayContext);
-  const [organizor, setOrganizor] = useState<UserData>(DefaultUserData);
-
-  if (!eventID) return;
   const [isParticipating, setIsParticipating] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
+  const [organizor, setOrganizor] = useState<UserData>(DefaultUserData);
 
   useEffect(() => {
+    if (!eventID) return;
+    if (!eventData) return;
     isParticipant(eventID)
       .then(setIsParticipating)
       .finally(() => setLoading(false));
-  }, [eventID]);
+    getUser(eventData.organizer.id).then(setOrganizor);
+  }, [eventID, eventData]);
 
   const handleJoin = async () => {
+    if (!eventID) return;
     joinEvent(eventID)
       .then(() => setIsParticipating(true))
       .catch(console.error);
   };
 
   const handleLeave = async () => {
+    if (!eventID) return;
     leaveEvent(eventID)
       .then(() => setIsParticipating(false))
       .catch(console.error);
     if (eventData?.private) router.push("/");
   };
 
+  if (!eventID) return;
   if (loading) return;
   if (!eventData) return;
-  getUser(eventData.organizer.id).then(setOrganizor);
+
+  console.log(organizor.name);
 
   return (
     <div className={styles.module}>
@@ -64,7 +69,7 @@ const Registration: React.FC = () => {
         <div className={styles.info}>
           <span>Arrangsjør</span>
           <span style={{ fontWeight: "bold" }}>
-            {organizor.name || "Ukjent"}
+            {eventData.organizer.id === getUserID() ? "Deg" : organizor.name}
           </span>
         </div>
         <div className={styles.info}>
