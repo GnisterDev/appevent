@@ -39,7 +39,8 @@ describe("Contexts", () => {
         eventID: null,
         eventData: null,
         isOrg: false,
-        isPar: false,
+        participants: [],
+        refreshInfo: expect.any(Function),
       });
     });
   });
