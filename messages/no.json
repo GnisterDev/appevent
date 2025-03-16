@@ -65,7 +65,7 @@
       "saveChangesButton": "Lagre endringer",
       "createEventButton": "Opprett Arrangement",
       "BaseInformation": {
-        "title": "Grunnleggende informasjon",
+        "title": "Grunnlegende informasjon",
         "eventTitle": "Arrangementstittel",
         "eventPlaceholder": "Skriv inn en tittel",
         "date": "Dato",
@@ -81,7 +81,7 @@
         "description": "Beskrivelse",
         "descriptionPlaceholder": "Fortell om arrangementet",
         "tags": "Merkelapper",
-        "tagsPlaceholder": "Skriv merkelapp ogg trykk Enter"
+        "tagsPlaceholder": "Skriv merkelapp og trykk Enter"
       },
       "Invites": {
         "title": "Inviter",
