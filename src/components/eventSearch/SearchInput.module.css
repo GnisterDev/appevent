@@ -1,22 +1,17 @@
-.module {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 0.25rem;
-  margin-top: 0.5rem;
-}
-
 .inputContainer {
   display: flex;
   flex-direction: row;
+  align-items: center;
   gap: 0.5rem;
   padding: 0.6rem 0.75rem;
   border: 1px solid var(--border);
   border-radius: var(--radius);
+  width: 100%;
 }
 
 .input {
   width: 100%;
+  background-color: inherit;
   border: none;
   outline: none;
 }

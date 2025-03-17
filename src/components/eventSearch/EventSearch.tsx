@@ -2,11 +2,15 @@
 
 import React, { useState } from "react";
 import styles from "./eventSearch.module.css";
+import inputStyles from "./SearchInput.module.css";
 import { EVENT_GROUPS } from "@/firebase/Event";
 import { eventSearch } from "@/firebase/DatabaseService";
 import { Search } from "@/firebase/Search";
 import { EventData } from "@/firebase/Event";
 import SearchResult from "./SearchResult";
+import Button from "../Button";
+import SearchInput from "./SearchInput";
+import { Calendar, Filter, MapPin, Search as SearchIcon } from "lucide-react";
 
 const EventSearch = () => {
   //Filter fra start
@@ -51,67 +55,70 @@ const EventSearch = () => {
   };
 
   return (
-    <div className={styles.container}>
-      <h1> Søk etter et arrangement </h1>
-
-      {/*/ DROPDOWN FOR Å VELGE TYPE ARR */}
-      <select name="type" onChange={handleChange} required value={filter.type}>
-        <option value="">Velg type arrangement</option>
-        {Object.entries(EVENT_GROUPS).map(([groupName, events]) => (
-          <optgroup key={groupName} label={groupName} className={styles.group}>
-            {events.map(eventType => (
-              <option key={eventType} value={eventType}>
-                {eventType}
-              </option>
+    <>
+      <div className={styles.container}>
+        <SearchInput
+          type="text"
+          name="name"
+          placeholder="Søk etter arrangement"
+          value={filter.name}
+          onChange={handleChange}
+          icon={<SearchIcon />}
+        />
+        <SearchInput
+          type="text"
+          name="location"
+          placeholder="Sted"
+          value={filter.location}
+          onChange={handleChange}
+          icon={<MapPin />}
+        />
+        <SearchInput
+          type="date"
+          name="date"
+          placeholder="Velg dato"
+          value={filter.date}
+          onChange={handleChange}
+          icon={<Calendar />}
+        />
+        <label className={inputStyles.inputContainer} htmlFor="type">
+          <Filter size={"1rem"} />
+          <select
+            name="type"
+            onChange={handleChange}
+            required
+            value={filter.type}
+            className={inputStyles.input}
+          >
+            <option value="">Velg type arrangement</option>
+            {Object.entries(EVENT_GROUPS).map(([groupName, events]) => (
+              <optgroup
+                key={groupName}
+                label={groupName}
+                className={styles.group}
+              >
+                {events.map(eventType => (
+                  <option key={eventType} value={eventType}>
+                    {eventType}
+                  </option>
+                ))}
+              </optgroup>
             ))}
-          </optgroup>
-        ))}
-      </select>
-
-      {/*/ NAVN PÅ ARRANGEMENT*/}
-      <input
-        type="text"
-        name="name"
-        placeholder="Navn"
-        value={filter.name}
-        onChange={handleChange}
-      />
-
-      {/*/ LOKASJON*/}
-      <input
-        type="text"
-        name="location"
-        placeholder="Sted"
-        value={filter.location}
-        onChange={handleChange}
-      />
-
-      {/*/ DATO*/}
-      <input
-        type="date"
-        name="date"
-        value={filter.date}
-        onChange={handleChange}
-      />
-
-      <br></br>
-      {/*Søkeknapp*/}
-      <button onClick={handleSearch} className={styles.button}>
-        Søk
-      </button>
-
-      {/*Nullstille filter*/}
-      <button onClick={handleClearFilter} className={styles.button}>
-        Fjern filter
-      </button>
-
+          </select>
+        </label>
+        <Button
+          text="Søk"
+          className={styles.searchButton}
+          onClick={handleSearch}
+        />
+      </div>
       {/*OUTPUT FOR ARR */}
       <ul className={styles.outputListe}>
         {results.map((event, key) => (
           <SearchResult key={key} event={event} />
         ))}
       </ul>
-    </div>
+    </>
   );
 };
 

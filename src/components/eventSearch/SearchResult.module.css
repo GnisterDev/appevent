@@ -1,0 +1,23 @@
+.outputEvent {
+  display: flex;
+  border: solid black 0.5px;
+  border-radius: 8px;
+  background-color: var(--foreground);
+  margin-top: 10px;
+  overflow: auto;
+  padding: 5px 10px 20px 5px;
+  flex-direction: column; /* Sørger for at elementene legges under hverandre */
+  box-shadow: 0 2px 24px rgba(0, 0, 0, 0.2);
+}
+
+.outputEvent:hover {
+  cursor: pointer;
+  background-color: var(--background);
+}
+
+/*Div med alle tags*/
+.tagDiv {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+}
