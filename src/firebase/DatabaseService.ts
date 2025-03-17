@@ -59,6 +59,7 @@ export const createEvent = async (data: EventData): Promise<string> => {
 
   const eventData: EventData = {
     ...data,
+    eventID: eventID,
     organizer: organizerRef,
     participants: [organizerRef],
   };
@@ -194,7 +195,6 @@ export const eventSearch = async ({ name, type, location, date }: Search) => {
     const events: EventData[] = [];
     querySnapshot.forEach(doc => {
       events.push({
-        id: doc.id,
         ...(doc.data() as EventData),
       });
     });
@@ -574,7 +574,7 @@ export const getEventsByRole = async (): Promise<ListEvents> => {
     const userData = userSnapshot.data() as UserData;
 
     const registered: EventData[] = eventsSnapshot.docs
-      .map(doc => ({ ...doc.data(), id: doc.id } as EventData))
+      .map(doc => ({ ...doc.data() } as EventData))
       .filter(event =>
         event.participants
           .filter(participants => participants.id != event.organizer.id)
@@ -583,14 +583,14 @@ export const getEventsByRole = async (): Promise<ListEvents> => {
       );
 
     const organizer: EventData[] = eventsSnapshot.docs
-      .map(doc => ({ ...doc.data(), id: doc.id } as EventData))
+      .map(doc => ({ ...doc.data() } as EventData))
       .filter(event => event.organizer.id == userID);
 
     const invited: EventData[] = await Promise.all(
       userData.invitations.map(async invitation => {
         const eventSnap = await getDoc(invitation);
         return eventSnap.exists()
-          ? ({ ...eventSnap.data(), id: eventSnap.id } as EventData)
+          ? ({ ...eventSnap.data() } as EventData)
           : null;
       })
     ).then(events =>
