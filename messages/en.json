@@ -160,5 +160,13 @@
       "personalInformation": "Personal information",
       "saveChanges": "Save changes"
     }
+  },
+  "Search": {
+    "chooseDate": "Select Date",
+    "empty": "Empty",
+    "place": "Place",
+    "search": "Search",
+    "searchAfter": "Search for event",
+    "selectType": "Select the type of event"
   }
 }

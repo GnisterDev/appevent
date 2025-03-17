@@ -4,3 +4,10 @@ export type Search = {
   location: string;
   date: string;
 };
+
+export const DefaultSearch: Search = {
+  name: "",
+  type: "",
+  location: "",
+  date: "",
+};

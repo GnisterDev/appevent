@@ -5,32 +5,21 @@ import styles from "./eventSearch.module.css";
 import inputStyles from "./SearchInput.module.css";
 import { EVENT_GROUPS } from "@/firebase/Event";
 import { eventSearch } from "@/firebase/DatabaseService";
-import { Search } from "@/firebase/Search";
+import { DefaultSearch, Search } from "@/firebase/Search";
 import { EventData } from "@/firebase/Event";
 import SearchResult from "./SearchResult";
 import Button from "../Button";
 import SearchInput from "./SearchInput";
 import { Calendar, Filter, MapPin, Search as SearchIcon } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 const EventSearch = () => {
-  //Filter fra start
-  const [filter, setFilter] = useState<Search>({
-    type: "",
-    name: "",
-    location: "",
-    date: "",
-  });
+  const t = useTranslations("Search");
+  const [filter, setFilter] = useState<Search>(DefaultSearch);
 
   //Nullstille filter
   const handleClearFilter = () => {
-    setFilter({
-      type: "",
-      name: "",
-      location: "",
-      date: "",
-    });
-
-    //Fjerner resultater
+    setFilter(DefaultSearch);
     setResults([]);
   };
 
@@ -50,8 +39,7 @@ const EventSearch = () => {
 
   //Når søkknapp trykkes på
   const handleSearch = async () => {
-    const searchResults = await eventSearch(filter);
-    setResults(searchResults);
+    eventSearch(filter).then(setResults);
   };
 
   return (
@@ -60,7 +48,7 @@ const EventSearch = () => {
         <SearchInput
           type="text"
           name="name"
-          placeholder="Søk etter arrangement"
+          placeholder={t("searchAfter")}
           value={filter.name}
           onChange={handleChange}
           icon={<SearchIcon />}
@@ -68,7 +56,7 @@ const EventSearch = () => {
         <SearchInput
           type="text"
           name="location"
-          placeholder="Sted"
+          placeholder={t("place")}
           value={filter.location}
           onChange={handleChange}
           icon={<MapPin />}
@@ -76,7 +64,7 @@ const EventSearch = () => {
         <SearchInput
           type="date"
           name="date"
-          placeholder="Velg dato"
+          placeholder={t("chooseDate")}
           value={filter.date}
           onChange={handleChange}
           icon={<Calendar />}
@@ -90,7 +78,7 @@ const EventSearch = () => {
             value={filter.type}
             className={inputStyles.input}
           >
-            <option value="">Velg type arrangement</option>
+            <option value="">{t("selectType")}</option>
             {Object.entries(EVENT_GROUPS).map(([groupName, events]) => (
               <optgroup
                 key={groupName}
@@ -107,9 +95,14 @@ const EventSearch = () => {
           </select>
         </label>
         <Button
-          text="Søk"
+          text={t("search")}
           className={styles.searchButton}
           onClick={handleSearch}
+        />
+        <Button
+          text={t("empty")}
+          className={styles.emptyButton}
+          onClick={handleClearFilter}
         />
       </div>
       {/*OUTPUT FOR ARR */}

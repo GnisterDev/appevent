@@ -157,5 +157,13 @@
       "aboutMe": "Om meg",
       "aboutMePlaceholder": "Fortell litt om deg selv..."
     } 
+  },
+  "Search": {
+    "searchAfter": "Søk etter arrangement",
+    "place": "Sted",
+    "chooseDate": "Velg dato",
+    "selectType": "Velg type arrangement",
+    "search": "Søk",
+    "empty": "Tøm"
   }
 }

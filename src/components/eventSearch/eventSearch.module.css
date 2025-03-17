@@ -18,6 +18,15 @@
   }
 }
 
+.emptyButton {
+  background-color: color-mix(in srgb, var(--error) 85%, white);
+  color: var(--background);
+
+  &:hover {
+    background-color: color-mix(in srgb, var(--error) 75%, white);
+  }
+}
+
 .outputList {
   display: flex;
   flex-direction: column;
