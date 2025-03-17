@@ -6,8 +6,10 @@ import EventList from "@/components/calendar/EventList";
 import { useAuth } from "@/firebase/AuthService";
 import { getEventsByRole } from "@/firebase/DatabaseService";
 import { DefaultListEvents, ListEvents } from "@/firebase/Event";
+import { useTranslations } from "next-intl";
 
 export default function Home() {
+  const t = useTranslations("Calendar");
   const [eventsData, setEventsData] = useState<ListEvents>(DefaultListEvents);
 
   const { userID } = useAuth();
@@ -17,23 +19,23 @@ export default function Home() {
 
   return (
     <main className={styles.main}>
-      <h1>Mine arrangementer</h1>
+      <h1>{t("myEvents")}</h1>
       <div className={styles.lists}>
         {eventsData.registered.length != 0 && (
           <div>
-            <h3>Registrerte arrangementer</h3>
+            <h3>{t("registeredEvents")}</h3>
             <EventList events={eventsData.registered} />
           </div>
         )}
         {eventsData.organizer.length != 0 && (
           <div>
-            <h3>Organiserte arrangement</h3>
+            <h3>{t("organizedEvents")}</h3>
             <EventList events={eventsData.organizer} />
           </div>
         )}
         {eventsData.invited.length != 0 && (
           <div>
-            <h3>Inviterte arrangement</h3>
+            <h3>{t("invitedEvents")}</h3>
             <EventList events={eventsData.invited} />
           </div>
         )}

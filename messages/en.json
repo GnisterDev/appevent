@@ -26,10 +26,12 @@
       "password": "●●●●●●"
     },
     "SignIn": {
-      "cards": [{
-        "content": "Find events nearby, participate in exciting events, and keep in touch with friends.",
-        "title": "Discover events"
-      }],
+      "cards": [
+        {
+          "content": "Find events nearby, participate in exciting events, and keep in touch with friends.",
+          "title": "Discover events"
+        }
+      ],
       "form": {
         "prompt": "Already have an account?",
         "subtitle": "Log in with email and password",
@@ -39,13 +41,16 @@
       "title": "Welcome back!"
     },
     "SignUp": {
-      "cards": [{
-        "content": "Share your events with friends and get an overview of who is participating.",
-        "title": "Discover events"
-      }, {
-        "title": "Personal options",
-        "content": "Get customized recommendations based on your interests and past participations."
-      }],
+      "cards": [
+        {
+          "content": "Share your events with friends and get an overview of who is participating.",
+          "title": "Discover events"
+        },
+        {
+          "title": "Personal options",
+          "content": "Get customized recommendations based on your interests and past participations."
+        }
+      ],
       "form": {
         "prompt": "Don't have an account?",
         "subtitle": "Create a new account to get started",
@@ -115,5 +120,11 @@
         "remove": "Remove"
       }
     }
+  },
+  "Calendar": {
+    "invitedEvents": "Invited events",
+    "myEvents": "My events",
+    "organizedEvents": "Organized events",
+    "registeredEvents": "Registered events"
   }
 }
