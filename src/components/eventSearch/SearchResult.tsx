@@ -10,8 +10,8 @@ interface SearchResultInterface {
 
 const SearchResult: React.FC<SearchResultInterface> = ({ event }) => {
   return (
-    <Link href={`/event/${event.eventID}`}>
-      <li key={event.eventID} className={styles.outputEvent}>
+    <Link href={`/event/${event.id}`}>
+      <li key={event.id} className={styles.outputEvent}>
         {/*Tittel på arr og dato for start */}
         <h2>
           {event.title}
