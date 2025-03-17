@@ -20,18 +20,39 @@
     "backButton": "Back to homepage"
   },
   "Auth": {
+    "Placeholder": {
+      "email": "your@email.com",
+      "name": "Your name",
+      "password": "●●●●●●"
+    },
     "SignIn": {
-      "loginButton": "Login",
-      "noAccount": "Don't have a user",
-      "title": "Login!"
+      "cards": [{
+        "content": "Find events nearby, participate in exciting events, and keep in touch with friends.",
+        "title": "Discover events"
+      }],
+      "form": {
+        "prompt": "Already have an account?",
+        "subtitle": "Log in with email and password",
+        "title": "Log in"
+      },
+      "subtitle": "Log in to see your events, administer invitations, and more.",
+      "title": "Welcome back!"
     },
     "SignUp": {
-      "alreadyHaveAccount": "Already a user",
-      "choosePassword": "Select Password",
-      "fullName": "Full Name",
-      "registerButton": "Register",
-      "repeatPassword": "Repeat password",
-      "title": "Sign up!"
+      "cards": [{
+        "content": "Share your events with friends and get an overview of who is participating.",
+        "title": "Discover events"
+      }, {
+        "title": "Personal options",
+        "content": "Get customized recommendations based on your interests and past participations."
+      }],
+      "form": {
+        "prompt": "Don't have an account?",
+        "subtitle": "Create a new account to get started",
+        "title": "Sign up"
+      },
+      "subtitle": "Sign up to discover and share events with friends and likeminded people.",
+      "title": "Join us!"
     },
     "email": "Email",
     "name": "Name",

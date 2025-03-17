@@ -50,12 +50,10 @@ const EventSearch = () => {
   const handleSearch = async () => {
     const searchResults = await eventSearch(filter);
     setResults(searchResults);
-    console.log(searchResults);
   };
 
   //Når et output arrangement trykkes på, kan være undefined
   const handleClick = (clickedEventId: string | undefined) => {
-    console.log(clickedEventId);
     if (clickedEventId) {
       router.push(`/event/${encodeURIComponent(clickedEventId)}`);
     }

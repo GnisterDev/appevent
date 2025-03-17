@@ -1,0 +1,12 @@
+.card {
+  padding: 1.5rem;
+  border-radius: var(--radius);
+  width: 100%;
+}
+
+.title {
+  font-weight: 500;
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+  margin-bottom: 0.75rem;
+}
