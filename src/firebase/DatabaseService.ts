@@ -14,6 +14,7 @@ import {
   arrayRemove,
   where,
   runTransaction,
+  QueryFieldFilterConstraint,
 } from "firebase/firestore";
 import { db } from "./config";
 import { UserData } from "./User";
@@ -59,6 +60,7 @@ export const createEvent = async (data: EventData): Promise<string> => {
 
   const eventData: EventData = {
     ...data,
+    eventID: eventID,
     organizer: organizerRef,
     participants: [organizerRef],
   };
@@ -160,46 +162,51 @@ export const getAllParticipants = async (
   }
 };
 
-export const eventSearch = async ({ name, type, location, date }: Search) => {
+export const eventSearch = async ({
+  name,
+  type,
+  location,
+  date,
+}: Search): Promise<EventData[]> => {
   try {
     const eventsRef = collection(db, "events");
-    const filters = [];
-    let q = query(eventsRef);
+    const constraints: QueryFieldFilterConstraint[] = [];
 
-    if (name && name.trim() !== "") {
-      filters.push(where("name", ">=", name.toLowerCase()));
-      filters.push(where("name", "<=", name.toLowerCase() + "\uf8ff"));
-    }
-
-    if (type && type.trim() !== "") filters.push(where("type", "==", type));
-
-    if (location && location.trim() !== "")
-      filters.push(where("location", "==", location));
+    if (type) constraints.push(where("type", "==", type));
 
     if (date) {
-      const startOfDay = new Date(date);
+      const dateObj = new Date(date);
+      const startOfDay = new Date(dateObj);
       startOfDay.setHours(0, 0, 0, 0);
-      const endOfDay = new Date(date);
+
+      const endOfDay = new Date(dateObj);
       endOfDay.setHours(23, 59, 59, 999);
 
-      const startTimestamp = Timestamp.fromDate(startOfDay);
-      const endTimestamp = Timestamp.fromDate(endOfDay);
-
-      filters.push(where("date", ">=", startTimestamp));
-      filters.push(where("date", "<=", endTimestamp));
+      constraints.push(
+        where("startTime", ">=", Timestamp.fromDate(startOfDay))
+      );
+      constraints.push(where("startTime", "<=", Timestamp.fromDate(endOfDay)));
     }
-    if (filters.length > 0) q = query(eventsRef, ...filters);
-    const querySnapshot = await getDocs(q);
 
-    const events: EventData[] = [];
-    querySnapshot.forEach(doc => {
-      events.push({
-        id: doc.id,
-        ...(doc.data() as EventData),
-      });
+    const eventsQuery =
+      constraints.length > 0 ? query(eventsRef, ...constraints) : eventsRef;
+
+    const querySnapshot = await getDocs(eventsQuery);
+    const results = querySnapshot.docs.map(doc => {
+      const event = doc.data() as EventData;
+      const matchesName =
+        !name || event.title.toLowerCase().includes(name.toLowerCase());
+      const matchesLocation =
+        !location ||
+        event.location.toLowerCase().includes(location.toLowerCase());
+      return { event, matchesName, matchesLocation };
     });
 
-    return events;
+    return results
+      .filter(({ matchesName }) => matchesName)
+      .filter(({ matchesLocation }) => matchesLocation)
+      .filter(({ event }) => !event.private)
+      .map(({ event }) => event);
   } catch (error) {
     console.error("Error searching events:", error);
     throw error;
@@ -574,7 +581,7 @@ export const getEventsByRole = async (): Promise<ListEvents> => {
     const userData = userSnapshot.data() as UserData;
 
     const registered: EventData[] = eventsSnapshot.docs
-      .map(doc => ({ ...doc.data(), id: doc.id } as EventData))
+      .map(doc => doc.data() as EventData)
       .filter(event =>
         event.participants
           .filter(participants => participants.id != event.organizer.id)
@@ -583,15 +590,13 @@ export const getEventsByRole = async (): Promise<ListEvents> => {
       );
 
     const organizer: EventData[] = eventsSnapshot.docs
-      .map(doc => ({ ...doc.data(), id: doc.id } as EventData))
+      .map(doc => doc.data() as EventData)
       .filter(event => event.organizer.id == userID);
 
     const invited: EventData[] = await Promise.all(
       userData.invitations.map(async invitation => {
         const eventSnap = await getDoc(invitation);
-        return eventSnap.exists()
-          ? ({ ...eventSnap.data(), id: eventSnap.id } as EventData)
-          : null;
+        return eventSnap.exists() ? (eventSnap.data() as EventData) : null;
       })
     ).then(events =>
       events.filter((event): event is EventData => event !== null)

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import styles from "./commentItem.module.css";
 import { Comment } from "@/firebase/Comment";
 import { getUser } from "@/firebase/DatabaseService";
-import { Timestamp } from "firebase/firestore";
 import Button from "@/components/Button";
 import { Trash } from "lucide-react";
 import { isAdministrator } from "@/firebase/AuthService";
@@ -20,23 +19,24 @@ const CommentItem: React.FC<CommentItemInterface> = ({ comment, onDelete }) => {
     getUser(comment.author.id).then(data => setAuthor(data.name));
   });
 
-  function convertTimestamp(timestamp: Timestamp) {
-    const date = new Date(timestamp.seconds * 1000); // Convert seconds to milliseconds
-    const dd = String(date.getDate()).padStart(2, "0");
-    const mm = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-based
-    const yyyy = date.getFullYear();
-    const hh = String(date.getHours()).padStart(2, "0");
-    const min = String(date.getMinutes()).padStart(2, "0");
-
-    return `${dd}/${mm}/${yyyy} ${hh}:${min}`;
-  }
-
   return (
     <div className={styles.commentItem}>
       <div className={styles.commentUser}>
         <div>
           <strong>{author}</strong>{" "}
-          <span>{convertTimestamp(comment.time)}</span>
+          <span>
+            {comment.time
+              .toDate()
+              .toLocaleString("no-nb", {
+                day: "2-digit",
+                month: "2-digit",
+                year: "numeric",
+                hour: "2-digit",
+                minute: "2-digit",
+              })
+              .replaceAll(".", "/")
+              .replaceAll(",", "")}
+          </span>
         </div>
         {isAdmin && (
           <Button

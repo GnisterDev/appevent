@@ -4,8 +4,10 @@ import { Heart } from "lucide-react";
 import { UserContext } from "@/firebase/contexts";
 import Tag from "@/components/event/Tag";
 import { UserContextType } from "@/firebase/User";
+import { useTranslations } from "next-intl";
 
 const InterestsEdit = () => {
+  const t = useTranslations("Profile.Manage");
   const { formData, updateFormData } = useContext<UserContextType>(UserContext);
   const [interestInput, setInterestInput] = useState<string>("");
 
@@ -24,14 +26,14 @@ const InterestsEdit = () => {
     <div className={styles.module}>
       <div className={styles.title}>
         <Heart size={"1.5rem"} />
-        <h2>Interesser</h2>
+        <h2>{t("intrests")}</h2>
       </div>
       <div className={styles.singleInputGroup}>
-        <h3 className={styles.title}>Legg til interesse</h3>
+        <h3 className={styles.title}>{t("addIntrests")}</h3>
         <input
           type="text"
           name="interests"
-          placeholder="Skriv interesse og trykk Enter"
+          placeholder={t("addIntrestsPlaceholder")}
           className={styles.input}
           value={interestInput}
           onChange={e => setInterestInput(e.target.value)}

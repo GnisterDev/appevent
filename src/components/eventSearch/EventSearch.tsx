@@ -2,31 +2,24 @@
 
 import React, { useState } from "react";
 import styles from "./eventSearch.module.css";
+import inputStyles from "./SearchInput.module.css";
 import { EVENT_GROUPS } from "@/firebase/Event";
 import { eventSearch } from "@/firebase/DatabaseService";
-import { Search } from "@/firebase/Search";
+import { DefaultSearch, Search } from "@/firebase/Search";
 import { EventData } from "@/firebase/Event";
 import SearchResult from "./SearchResult";
+import Button from "../Button";
+import SearchInput from "./SearchInput";
+import { Calendar, Filter, MapPin, Search as SearchIcon } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 const EventSearch = () => {
-  //Filter fra start
-  const [filter, setFilter] = useState<Search>({
-    type: "",
-    name: "",
-    location: "",
-    date: "",
-  });
+  const t = useTranslations("Search");
+  const [filter, setFilter] = useState<Search>(DefaultSearch);
 
   //Nullstille filter
   const handleClearFilter = () => {
-    setFilter({
-      type: "",
-      name: "",
-      location: "",
-      date: "",
-    });
-
-    //Fjerner resultater
+    setFilter(DefaultSearch);
     setResults([]);
   };
 
@@ -46,72 +39,79 @@ const EventSearch = () => {
 
   //Når søkknapp trykkes på
   const handleSearch = async () => {
-    const searchResults = await eventSearch(filter);
-    setResults(searchResults);
+    eventSearch(filter).then(setResults);
   };
 
   return (
-    <div className={styles.container}>
-      <h1> Søk etter et arrangement </h1>
-
-      {/*/ DROPDOWN FOR Å VELGE TYPE ARR */}
-      <select name="type" onChange={handleChange} required value={filter.type}>
-        <option value="">Velg type arrangement</option>
-        {Object.entries(EVENT_GROUPS).map(([groupName, events]) => (
-          <optgroup key={groupName} label={groupName} className={styles.group}>
-            {events.map(eventType => (
-              <option key={eventType} value={eventType}>
-                {eventType}
-              </option>
+    <>
+      <div className={styles.container}>
+        <SearchInput
+          type="text"
+          name="name"
+          placeholder={t("searchAfter")}
+          value={filter.name}
+          onChange={handleChange}
+          icon={<SearchIcon />}
+        />
+        <SearchInput
+          type="text"
+          name="location"
+          placeholder={t("place")}
+          value={filter.location}
+          onChange={handleChange}
+          icon={<MapPin />}
+        />
+        <SearchInput
+          type="date"
+          name="date"
+          placeholder={t("chooseDate")}
+          value={filter.date}
+          onChange={handleChange}
+          icon={<Calendar />}
+        />
+        <label className={inputStyles.inputContainer} htmlFor="type">
+          <Filter size={"1rem"} />
+          <select
+            name="type"
+            onChange={handleChange}
+            required
+            value={filter.type}
+            className={inputStyles.input}
+          >
+            <option value="">{t("selectType")}</option>
+            {Object.entries(EVENT_GROUPS).map(([groupName, events]) => (
+              <optgroup
+                key={groupName}
+                label={groupName}
+                className={styles.group}
+              >
+                {events.map(eventType => (
+                  <option key={eventType} value={eventType}>
+                    {eventType}
+                  </option>
+                ))}
+              </optgroup>
             ))}
-          </optgroup>
-        ))}
-      </select>
-
-      {/*/ NAVN PÅ ARRANGEMENT*/}
-      <input
-        type="text"
-        name="name"
-        placeholder="Navn"
-        value={filter.name}
-        onChange={handleChange}
-      />
-
-      {/*/ LOKASJON*/}
-      <input
-        type="text"
-        name="location"
-        placeholder="Sted"
-        value={filter.location}
-        onChange={handleChange}
-      />
-
-      {/*/ DATO*/}
-      <input
-        type="date"
-        name="date"
-        value={filter.date}
-        onChange={handleChange}
-      />
-
-      <br></br>
-      {/*Søkeknapp*/}
-      <button onClick={handleSearch} className={styles.button}>
-        Søk
-      </button>
-
-      {/*Nullstille filter*/}
-      <button onClick={handleClearFilter} className={styles.button}>
-        Fjern filter
-      </button>
-
+          </select>
+        </label>
+        <Button
+          text={t("search")}
+          className={styles.searchButton}
+          onClick={handleSearch}
+        />
+        <Button
+          text={t("empty")}
+          className={styles.emptyButton}
+          onClick={handleClearFilter}
+        />
+      </div>
       {/*OUTPUT FOR ARR */}
-      <ul className={styles.outputListe}>
+      <div className={styles.outputList}>
         {results.map((event, key) => (
           <SearchResult key={key} event={event} />
         ))}
-      </ul>
-    </div>
+      </div>
+    </>
   );
 };
 

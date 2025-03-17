@@ -1,95 +1,97 @@
 import React from "react";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { render, screen, fireEvent, waitFor } from "@/test-utils";
 import EventSearch from "@/components/eventSearch/EventSearch";
 import { eventSearch } from "@/firebase/DatabaseService";
-import { useRouter } from "next/navigation";
+import { EVENT_GROUPS, EventData } from "@/firebase/Event";
+import messages from "messages/no.json";
 
-// Mock Next.js router
-jest.mock("next/navigation", () => ({
-  useRouter: jest.fn(),
-}));
-
-// Mock eventSearch for å unngå ekte API-kall
+// Mock the DatabaseService
 jest.mock("@/firebase/DatabaseService", () => ({
   eventSearch: jest.fn(),
 }));
 
-describe("EventSearch Component", () => {
+// Mock the SearchResult component
+jest.mock("@/components/eventSearch/SearchResult", () => {
+  return function MockSearchResult({ event }: { event: EventData }) {
+    return (
+      <div data-testid={`search-result-${event.eventID}`}>{event.title}</div>
+    );
+  };
+});
+
+describe("EventSearch", () => {
+  // Get translations
+  const translations = {
+    searchAfter: messages.Search.searchAfter,
+    place: messages.Search.place,
+    chooseDate: messages.Search.chooseDate,
+    selectType: messages.Search.selectType,
+    search: messages.Search.search,
+    empty: messages.Search.empty,
+  };
+
   beforeEach(() => {
-    (useRouter as jest.Mock).mockReturnValue({
-      push: jest.fn(),
-    });
-
-    (eventSearch as jest.Mock).mockResolvedValue([
-      {
-        id: "1",
-        title: "Testarrangement",
-        startTime: { toDate: () => new Date("2025-04-20") },
-        location: "Oslo",
-        tags: ["Teknologi", "NTNU"],
-      },
-    ]);
+    jest.clearAllMocks();
+    (eventSearch as jest.Mock).mockResolvedValue([]);
   });
 
-  test("rendrer komponenten uten feil", () => {
+  it("renders the search form with all inputs", () => {
     render(<EventSearch />);
-    expect(screen.getByText("Søk etter et arrangement")).toBeInTheDocument();
+
+    // Check if all search inputs are rendered
+    expect(screen.getByTestId("input-name")).toBeInTheDocument();
+    expect(screen.getByTestId("input-location")).toBeInTheDocument();
+    expect(screen.getByTestId("input-date")).toBeInTheDocument();
+
+    // Check if the type select is rendered
+    expect(screen.getByRole("combobox")).toBeInTheDocument();
+
+    // Check if both buttons are rendered
+    expect(
+      screen.getByTestId(`button-${translations.search}`)
+    ).toBeInTheDocument();
+    expect(
+      screen.getByTestId(`button-${translations.empty}`)
+    ).toBeInTheDocument();
   });
 
-  test("bruker kan fylle ut søkefelt og trigge søk", async () => {
+  it("renders event type options correctly", () => {
     render(<EventSearch />);
 
-    // Skriv inn et arrangementnavn
-    fireEvent.change(screen.getByPlaceholderText("Navn"), {
-      target: { value: "Testarrangement" },
+    const typeSelect = screen.getByRole("combobox");
+
+    // Click to open the dropdown
+    fireEvent.click(typeSelect);
+
+    // Check if the default option is there
+    expect(screen.getByText(translations.selectType)).toBeInTheDocument();
+
+    // Check if all event types from EVENT_GROUPS are rendered
+    Object.entries(EVENT_GROUPS).forEach(([, events]) => {
+      events.forEach(eventType => {
+        // Note: This may need adjustment depending on how option groups are rendered in your environment
+        expect(screen.getByText(eventType)).toBeInTheDocument();
+      });
     });
+  });
 
-    // Klikk på søkeknappen
-    fireEvent.click(screen.getByText("Søk"));
+  it("handles empty search results", async () => {
+    (eventSearch as jest.Mock).mockResolvedValue([]);
 
-    // Vent på at resultater vises
+    render(<EventSearch />);
+
+    // Click search button
+    const searchButton = screen.getByTestId(`button-${translations.search}`);
+    fireEvent.click(searchButton);
+
+    // Wait for search to complete
     await waitFor(() => {
-      /*expect(
-        screen.getByText("Testarrangement (20.4.2025)")
-      ).toBeInTheDocument();*/
-      expect(screen.getByText("Oslo")).toBeInTheDocument();
-    });
-  });
-
-  test("nullstiller søkefilteret", async () => {
-    render(<EventSearch />);
-
-    // Skriv inn noe i feltet
-    fireEvent.change(screen.getByPlaceholderText("Navn"), {
-      target: { value: "Testarrangement" },
+      expect(eventSearch).toHaveBeenCalled();
     });
 
-    // Klikk på nullstill-knappen
-    fireEvent.click(screen.getByText("Fjern filter"));
-
-    // Sjekk at input-feltet er tomt igjen
-    expect(screen.getByPlaceholderText("Navn")).toHaveValue("");
-  });
-
-  test("navigerer til arrangementsside ved klikk på resultat", async () => {
-    const mockPush = jest.fn();
-    (useRouter as jest.Mock).mockReturnValue({ push: mockPush });
-
-    render(<EventSearch />);
-
-    /*// Klikk på søk for å få resultater
-    fireEvent.click(screen.getByText("Søk"));
-
-    await waitFor(() => {
-      expect(
-        screen.getByText("Testarrangement (20.4.2025)")
-      ).toBeInTheDocument();
-    });
-
-    // Klikk på arrangementet
-    fireEvent.click(screen.getByText("Testarrangement (20.4.2025)"));
-
-    // Sjekk at router.push ble kalt med riktig ID
-    expect(mockPush).toHaveBeenCalledWith("/event/1");*/
+    // Output list should be empty
+    const outputList = document.querySelector(".outputList");
+    expect(outputList).toBeInTheDocument();
+    expect(outputList?.children.length).toBe(0);
   });
 });

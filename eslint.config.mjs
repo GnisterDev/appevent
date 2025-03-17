@@ -13,7 +13,7 @@ export default [
   {
     rules: {
       "react/prop-types": "off",
-      "react/jsx-no-literals": "warn",
+      "react/jsx-no-literals": "error",
     },
   },
   {

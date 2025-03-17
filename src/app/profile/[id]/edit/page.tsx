@@ -8,8 +8,10 @@ import Loading from "@/components/Loading";
 import PersonalInformation from "@/components/profile/edit/PersonalInformation";
 import styles from "./editProfile.module.css";
 import InterestsEdit from "@/components/profile/edit/InterestsEdit";
+import { useTranslations } from "next-intl";
 
 const UserEdit: React.FC = () => {
+  const t = useTranslations("Profile.Manage");
   const router = useRouter();
   const { id } = useParams();
   const userID = Array.isArray(id) ? id[0] : id;
@@ -65,19 +67,19 @@ const UserEdit: React.FC = () => {
     <UserContext.Provider value={{ formData, updateFormData }}>
       <main className={styles.main}>
         <form onSubmit={handleSubmit}>
-          <h1 className={styles.title}>Rediger profil</h1>
+          <h1 className={styles.title}>{t("editProfile")}</h1>
           <PersonalInformation />
           <InterestsEdit />
           <div className={styles.buttonGroup}>
             <button type="submit" className={styles.saveButton}>
-              Lagre endringer
+              {t("saveChanges")}
             </button>
             <button
               type="button"
               className={styles.cancelButton}
               onClick={() => router.back()}
             >
-              Avbryt
+              {t("cancel")}
             </button>
           </div>
         </form>

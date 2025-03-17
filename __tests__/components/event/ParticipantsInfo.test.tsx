@@ -4,6 +4,7 @@ import ParticipantsInfo from "@/components/event/overview/participant/Participan
 import { EventDisplayContext } from "@/firebase/contexts";
 import messages from "messages/no.json";
 import { UserData } from "@/firebase/User";
+import { DefaultEventData } from "@/firebase/Event";
 
 // Mock the EventDisplayContext
 jest.mock("@/firebase/contexts", () => {
@@ -75,8 +76,8 @@ describe("ParticipantsInfo", () => {
       <EventDisplayContext.Provider
         value={{
           participants,
-          eventID: null,
-          eventData: null,
+          eventID: "",
+          eventData: DefaultEventData,
           isOrg: false,
           refreshInfo: async () => Promise.resolve(),
         }}

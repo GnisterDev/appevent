@@ -6,12 +6,14 @@ import { useState, useEffect } from "react";
 import { useAuth } from "@/firebase/AuthService";
 import { getUser } from "@/firebase/DatabaseService";
 import Button from "@/components/Button";
+import { useTranslations } from "next-intl";
 
 const CommentInput = ({
   onAddComment,
 }: {
   onAddComment: (content: string) => void;
 }) => {
+  const t = useTranslations("Comment");
   const [text, setText] = useState("");
   const [userName, setUserName] = useState<string | null>(null);
 
@@ -58,7 +60,7 @@ const CommentInput = ({
         placeholder="..."
       />
       <Button
-        text="Send"
+        text={t("send")}
         onClick={handleSubmit}
         className={styles.commentButton}
       />

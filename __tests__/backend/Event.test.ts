@@ -8,6 +8,7 @@ import {
 describe("EventData", () => {
   it("should have default values in DefaultEventData", () => {
     expect(DefaultEventData).toEqual({
+      eventID: "",
       title: "",
       description: "",
       startTime: null,
@@ -23,7 +24,7 @@ describe("EventData", () => {
 
   it("should match the EventData type structure", () => {
     const sampleEvent: EventData = {
-      id: "1",
+      eventID: "1",
       title: "Sample Event",
       description: "This is a sample event",
       startTime: Timestamp.now(),
