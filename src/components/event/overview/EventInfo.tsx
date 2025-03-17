@@ -3,8 +3,10 @@ import styles from "./eventinfo.module.css";
 import { Calendar, MapPin, Users } from "lucide-react";
 import Tag from "@/components/event/Tag";
 import { EventDisplayContext } from "@/firebase/contexts";
+import { useTranslations } from "next-intl";
 
 const EventInfo: React.FC = () => {
+  const t = useTranslations("Event.Info");
   const { eventData } = useContext(EventDisplayContext);
   if (!eventData) return;
 
@@ -58,7 +60,7 @@ const EventInfo: React.FC = () => {
         ))}
       </div>
       <div className={styles.textArea}>
-        <h2 className={styles.title}>Om arrangemanget</h2>
+        <h2 className={styles.title}>{t("about")}</h2>
         <div className={styles.text}>{eventData.description}</div>
       </div>
     </div>

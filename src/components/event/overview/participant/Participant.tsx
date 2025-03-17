@@ -1,4 +1,3 @@
-import { UserMinus } from "lucide-react";
 import React from "react";
 import styles from "./participant.module.css";
 import { useRouter } from "next/navigation";
@@ -10,10 +9,6 @@ interface ParticipantProps {
 const Participant: React.FC<ParticipantProps> = ({ name, userID }) => {
   const router = useRouter();
 
-  const handleRemoveParticipant = () => {
-    console.log(`Removing participant ${name} from event`);
-  };
-
   return (
     <div className={styles.participant}>
       <p
@@ -22,13 +17,6 @@ const Participant: React.FC<ParticipantProps> = ({ name, userID }) => {
       >
         {name}
       </p>
-      <div
-        className={styles.icon}
-        onClick={handleRemoveParticipant}
-        aria-label={`Remove ${name}`}
-      >
-        <UserMinus size={"1rem"} />
-      </div>
     </div>
   );
 };

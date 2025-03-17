@@ -31,11 +31,20 @@ const ProfilePage = () => {
       .finally(() => setLoading(false));
   }, [profileUserID]);
 
+  const updateInvitedEvents = (eventID: string) => {
+    setUserData(prev => ({
+      ...prev,
+      invitations: prev.invitations.filter(event => event.id !== eventID),
+    }));
+  };
+
   if (loading) return <Loading />;
   if (!userID) return;
 
   return (
-    <UserDisplayContext.Provider value={{ userID, userData }}>
+    <UserDisplayContext.Provider
+      value={{ userID, userData, updateInvitedEvents }}
+    >
       <main className={styles.main}>
         <ProfileOverview />
         <Interests />
