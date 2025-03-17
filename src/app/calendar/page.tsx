@@ -1,0 +1,37 @@
+"use client";
+
+import React, { useEffect, useState } from "react";
+import styles from "./calendar.module.css";
+import EventList from "@/components/calendar/EventList";
+import { useAuth } from "@/firebase/AuthService";
+import { getEventsByRole } from "@/firebase/DatabaseService";
+import { DefaultListEvents, ListEvents } from "@/firebase/Event";
+
+export default function Home() {
+  const [eventsData, setEventsData] = useState<ListEvents>(DefaultListEvents);
+
+  const { userID } = useAuth();
+  useEffect(() => {
+    getEventsByRole().then(setEventsData);
+  }, [userID]);
+
+  return (
+    <main className={styles.main}>
+      <h1>Mine arrangementer</h1>
+      <div className={styles.lists}>
+        <div className={styles.list}>
+          <h3>Registrerte arrangementer</h3>
+          <EventList events={eventsData.registered} />
+        </div>
+        <div className={styles.list}>
+          <h3>Organiserte arrangement</h3>
+          <EventList events={eventsData.organizer} />
+        </div>
+        <div className={styles.list}>
+          <h3>Inviterte arrangement</h3>
+          <EventList events={eventsData.invited} />
+        </div>
+      </div>
+    </main>
+  );
+}

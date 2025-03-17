@@ -28,7 +28,7 @@ const Navbar = () => {
             <Link href="/" className={styles.link}>
               {t("yourEvents")}
             </Link>
-            <Link href="/" className={styles.link}>
+            <Link href="/calendar" className={styles.link}>
               {t("calendar")}
             </Link>
           </div>

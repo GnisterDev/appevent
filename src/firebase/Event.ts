@@ -33,6 +33,18 @@ export type EventContextType = {
   updateFormData: (field: string, value: unknown) => void;
 };
 
+export type ListEvents = {
+  invited: EventData[];
+  registered: EventData[];
+  organizer: EventData[];
+};
+
+export const DefaultListEvents: ListEvents = {
+  invited: [],
+  registered: [],
+  organizer: [],
+};
+
 export const EVENT_GROUPS: Record<string, string[]> = {
   "Faglige arrangementer": [
     "Fagkveld",

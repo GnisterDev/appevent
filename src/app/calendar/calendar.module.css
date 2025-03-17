@@ -1,0 +1,30 @@
+.main {
+  padding: 2rem;
+  padding-top: 5rem;
+  max-width: 1024px;
+  margin: 0 auto;
+}
+
+.wrapper {
+  font-family: Arial, sans-serif;
+  background-color: var(--background);
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  color: var(--text);
+}
+
+.lists {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.list {
+  width: 100%;
+  margin-top: 2rem;
+  padding: 1.5rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--box-shadow);
+}
