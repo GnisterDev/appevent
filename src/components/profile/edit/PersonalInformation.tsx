@@ -2,19 +2,21 @@ import React, { useContext } from "react";
 import styles from "./EditProfileComponents.module.css";
 import { UserContext } from "@/firebase/contexts";
 import { MapPin } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 const PersonalInformation = () => {
+  const t = useTranslations("Profile.Manage");
   const { formData, updateFormData } = useContext(UserContext);
 
   return (
     <div className={styles.module}>
-      <h2>Personlig informasjon</h2>
+      <h2>{t("personalInformation")}</h2>
       <div className={styles.singleInputGroup}>
-        <h3 className={styles.title}>Navn</h3>
+        <h3 className={styles.title}>{t("name")}</h3>
         <input
           type="text"
           name="name"
-          placeholder="Skriv inn en visningsnavnet ditt"
+          placeholder={t("namePlaceholder")}
           className={styles.input}
           value={formData.name}
           onChange={e => updateFormData(e.target.name, e.target.value)}
@@ -24,25 +26,25 @@ const PersonalInformation = () => {
       <div className={styles.singleInputGroup}>
         <div className={styles.title}>
           <MapPin size={"1rem"} />
-          <h3 className={styles.title}>Lokasjon</h3>
+          <h3 className={styles.title}>{t("location")}</h3>
         </div>
         <input
           type="text"
           name="location"
-          placeholder="Skriv inn en visningsnavnet ditt"
+          placeholder={t("locationPlaceholder")}
           className={styles.input}
           value={formData.location}
           onChange={e => updateFormData(e.target.name, e.target.value)}
         />
       </div>
       <div className={styles.singleInputGroup}>
-        <h3 className={styles.title}>Om meg</h3>
+        <h3 className={styles.title}>{t("aboutMe")}</h3>
         <textarea
           name="description"
           className={`${styles.input} ${styles.textarea}`}
           value={formData.description}
           onChange={e => updateFormData(e.target.name, e.target.value)}
-          placeholder="Fortell om deg selv"
+          placeholder={t("aboutMePlaceholder")}
         />
       </div>
     </div>

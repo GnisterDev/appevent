@@ -1,22 +1,24 @@
 import React from "react";
 import styles from "./ProfileComponents.module.css";
+import { useTranslations } from "next-intl";
 
 const ProfileInfo = () => {
+  const t = useTranslations("Profile.Info");
   return (
     <div className={styles.module}>
-      <h2 className={styles.title}>Statistics</h2>
+      <h2 className={styles.title}>{t("statistics")}</h2>
       <div>
         <div className={styles.statisticsInfo}>
-          <span>Arrangert</span>
-          <span style={{ fontWeight: "bold" }}>0</span>
+          <span>{t("organized")}</span>
+          <span style={{ fontWeight: "bold" }}>{"0"}</span>
         </div>
         <div className={styles.statisticsInfo}>
-          <span>Påmeldt</span>
-          <span style={{ fontWeight: "bold" }}>0</span>
+          <span>{t("enrolled")}</span>
+          <span style={{ fontWeight: "bold" }}>{"0"}</span>
         </div>
         <div className={styles.statisticsInfo}>
-          <span>Invitert til</span>
-          <span style={{ fontWeight: "bold" }}>0</span>
+          <span>{t("invitedTo")}</span>
+          <span style={{ fontWeight: "bold" }}>{"0"}</span>
         </div>
       </div>
     </div>

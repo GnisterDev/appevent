@@ -123,5 +123,39 @@
     "registeredEvents": "Registrerte arrangementer",
     "organizedEvents": "Organiserte arrangement",
     "invitedEvents": "Inviterte arrangement"
+  },
+  "Profile": {
+    "Info": {
+      "intrests": "Interesser",
+      "noIntrests": "Ingen intersesser",
+      "quickSelection": "Hurtigvalg",
+      "myCalendar": "Min kalender",
+      "settings": "Innstilinger",
+      "logout": "Logg ut",
+      "statistics": "Statestikk",
+      "organized": "Arrangert",
+      "enrolled": "Påmeldt",
+      "invitedTo": "Invitert til"
+    },
+    "Invitation": {
+      "invites": "Invitasjoner",
+      "organizor": "Arrangør:",
+      "date": "Dato:"
+    },
+    "Manage": {
+      "editProfile": "Rediger profil",
+      "saveChanges": "Lagre endringer",
+      "cancel": "Avbryt",
+      "intrests": "Interesser",
+      "addIntrests": "Legg til interesse",
+      "addIntrestsPlaceholder": "Skriv interesse og trykk Enter",
+      "personalInformation": "Personlig informasjon",
+      "name": "Navn",
+      "namePlaceholder": "Skriv inn en visningsnavnet ditt",
+      "location": "Lokasjon",
+      "locationPlaceholder": "F.eks Trondheim, Norge",
+      "aboutMe": "Om meg",
+      "aboutMePlaceholder": "Fortell litt om deg selv..."
+    } 
   }
 }

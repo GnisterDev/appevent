@@ -126,5 +126,39 @@
     "myEvents": "My events",
     "organizedEvents": "Organized events",
     "registeredEvents": "Registered events"
+  },
+  "Profile": {
+    "Info": {
+      "enrolled": "Enrolled",
+      "intrests": "Interest",
+      "invitedTo": "Invited to",
+      "logout": "Log out",
+      "myCalendar": "My calendar",
+      "noIntrests": "No interests",
+      "organized": "Organized",
+      "quickSelection": "Quick Selection",
+      "settings": "Settings",
+      "statistics": "State stick"
+    },
+    "Invitation": {
+      "date": "Date:",
+      "invites": "Invitations",
+      "organizor": "Organizer:"
+    },
+    "Manage": {
+      "aboutMe": "About me",
+      "aboutMePlaceholder": "Tell us a little about yourself...",
+      "addIntrests": "Add interest",
+      "addIntrestsPlaceholder": "Write interest and press enter",
+      "cancel": "Cancel",
+      "editProfile": "Edit profile",
+      "intrests": "Interest",
+      "location": "Location",
+      "locationPlaceholder": "Eg. Trondheim, Norway",
+      "name": "Name",
+      "namePlaceholder": "Enter a view name",
+      "personalInformation": "Personal information",
+      "saveChanges": "Save changes"
+    }
   }
 }

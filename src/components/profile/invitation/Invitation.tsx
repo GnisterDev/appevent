@@ -11,12 +11,14 @@ import {
   declineEventInvitation,
 } from "@/firebase/DatabaseService";
 import { UserDisplayContext } from "@/firebase/contexts";
+import { useTranslations } from "next-intl";
 
 interface InvitationInterface {
   event: DocumentReference<DocumentData, DocumentData>;
 }
 
 const Invitation: React.FC<InvitationInterface> = ({ event }) => {
+  const t = useTranslations("Profile.Invitation");
   const [title, setTitle] = useState("");
   const [organizerName, setOrganizerName] = useState("");
   const [startTime, setStartTime] = useState("");
@@ -54,8 +56,12 @@ const Invitation: React.FC<InvitationInterface> = ({ event }) => {
     <div className={styles.module}>
       <div className={styles.infoContainer}>
         <h3>{title}</h3>
-        <p className={styles.info}>Arrangør: {organizerName}</p>
-        <p className={styles.info}>Dato: {startTime}</p>
+        <p className={styles.info}>
+          {t("organizor")} {organizerName}
+        </p>
+        <p className={styles.info}>
+          {t("date")} {startTime}
+        </p>
       </div>
       <div className={styles.buttons}>
         <Button
