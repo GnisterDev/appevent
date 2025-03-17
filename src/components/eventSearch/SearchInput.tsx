@@ -19,7 +19,11 @@ const SearchInput: React.FC<SearchInputProps> = ({
   icon,
 }) => {
   return (
-    <label className={styles.inputContainer} htmlFor={name}>
+    <label
+      className={styles.inputContainer}
+      htmlFor={name}
+      data-testid={`input-${name}`}
+    >
       {icon}
       <input
         className={styles.input}
