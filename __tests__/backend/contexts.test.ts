@@ -5,7 +5,8 @@ import {
   EventDisplayContext,
   UserContext,
   UserDisplayContext,
-} from "../../src/firebase/contexts";
+} from "@/firebase/contexts";
+import { DefaultEventData } from "@/firebase/Event";
 
 describe("Contexts", () => {
   describe("EventContext", () => {
@@ -36,8 +37,8 @@ describe("Contexts", () => {
       render(createElement(TestComponent));
 
       expect(contextValue).toEqual({
-        eventID: null,
-        eventData: null,
+        eventID: "",
+        eventData: DefaultEventData,
         isOrg: false,
         participants: [],
         refreshInfo: expect.any(Function),

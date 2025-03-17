@@ -9,8 +9,10 @@ export type EventData = {
   location: string;
   organizer: DocumentReference;
   participants: DocumentReference[];
-  private: boolean; // If the event is private
-  type: string; // Type of the event
+  private: boolean;
+
+  type: string;
+  comments: DocumentReference[];
 };
 
 export const DefaultEventData: EventData = {
@@ -23,6 +25,7 @@ export const DefaultEventData: EventData = {
   participants: [],
   private: false,
   type: "",
+  comments: [],
 };
 
 export type EventContextType = {
