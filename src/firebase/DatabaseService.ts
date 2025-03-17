@@ -568,8 +568,8 @@ export const getEventsByRole = async (
   role: "participant" | "organizer"
 ): Promise<EventData[]> => {
   try {
-    const user = auth.currentUser;
-    if (!user) return [];
+    const userID = getUserID();
+    if (!userID) return [];
 
     // Get all events
     const eventsSnapshot = await getDocs(collection(db, "events"));
@@ -584,7 +584,7 @@ export const getEventsByRole = async (
         const isParticipant =
           eventData.participants &&
           eventData.participants.some(
-            participantRef => participantRef.id === user.uid
+            participantRef => participantRef.id === userID
           );
 
         if (isParticipant) {
@@ -595,7 +595,7 @@ export const getEventsByRole = async (
         }
       } else if (role === "organizer") {
         const isOrganizer =
-          eventData.organizer && eventData.organizer.id === user.uid;
+          eventData.organizer && eventData.organizer.id === userID;
 
         if (isOrganizer) {
           matchingEvents.push({
