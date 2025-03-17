@@ -1,7 +1,4 @@
 import {
-  addDoc,
-  arrayRemove,
-  arrayUnion,
   collection,
   deleteDoc,
   doc,
@@ -245,17 +242,26 @@ export const eventSearch = async ({ name, type, location, date }: Search) => {
 
 export const addComment = async (
   eventID: string,
-  comment: Comment
-): Promise<void> => {
+  content: string
+): Promise<Comment> => {
   try {
-    const commentDocRef = await addDoc(collection(db, "comments"), comment);
+    const userID = getUserID();
+    const commentID = doc(collection(db, "comments")).id;
+
+    const comment: Comment = {
+      commentID: commentID,
+      author: doc(db, "users", userID || "unknown"),
+      content: content,
+      time: Timestamp.now(),
+    };
+    await setDoc(doc(db, "comments", commentID), comment);
 
     const eventRef = doc(db, "events", eventID);
     await updateDoc(eventRef, {
-      comments: arrayUnion(commentDocRef),
+      comments: arrayUnion(doc(db, "comments", commentID)),
     });
 
-    console.log("Comment added successfully");
+    return comment;
   } catch (error) {
     console.error("Error adding comment:", error);
     throw error;
@@ -267,18 +273,36 @@ export const deleteComment = async (
   commentID: string
 ): Promise<void> => {
   try {
+    const eventRef = doc(db, "events", eventID);
     const commentRef = doc(db, "comments", commentID);
 
-    const eventRef = doc(db, "events", eventID);
+    await deleteDoc(commentRef);
     await updateDoc(eventRef, {
       comments: arrayRemove(commentRef),
     });
 
-    await deleteDoc(commentRef);
-
     console.log("Comment deleted successfully");
   } catch (error) {
     console.error("Error deleting comment:", error);
+    throw error;
+  }
+};
+
+export const getComment = async (
+  commentID: string
+): Promise<Comment | null> => {
+  try {
+    const commentRef = doc(db, "comments", commentID);
+    const commentDoc = await getDoc(commentRef);
+
+    if (!commentDoc.exists()) {
+      console.log(`Comment with ID ${commentID} not found`);
+      return null;
+    }
+
+    return commentDoc.data() as Comment;
+  } catch (error) {
+    console.error("Error getting comment:", error);
     throw error;
   }
 };

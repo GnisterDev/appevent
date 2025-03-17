@@ -6,13 +6,15 @@ import styles from "./commentsection.module.css";
 import CommentInput from "./CommentInput";
 import CommentItem from "./CommentItem";
 import { Comment } from "@/firebase/Comment";
-import { addComment, getComments } from "@/firebase/DatabaseService";
+import {
+  addComment,
+  deleteComment,
+  getComments,
+} from "@/firebase/DatabaseService";
 import { EventDisplayContext } from "@/firebase/contexts";
-import { auth, db } from "@/firebase/config";
-import { doc, Timestamp } from "firebase/firestore";
 
 const CommentSection = () => {
-  const eventData = useContext(EventDisplayContext);
+  const { eventID } = useContext(EventDisplayContext);
 
   const [comments, setComments] = useState<Comment[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -20,11 +22,11 @@ const CommentSection = () => {
 
   useEffect(() => {
     const fetchComments = async () => {
-      if (!eventData || !eventData.eventID) return;
+      if (!eventID) return;
 
       setLoading(true);
       try {
-        await getComments(eventData.eventID)
+        await getComments(eventID)
           .then(setComments)
           .catch(err => setError(err));
       } catch (err) {
@@ -36,17 +38,19 @@ const CommentSection = () => {
     };
 
     fetchComments();
-  }, [eventData]);
+  }, [eventID]);
 
   const handleAddComment = async (content: string) => {
     if (!content.trim()) return;
-    const comment = {
-      author: doc(db, "users", auth.currentUser?.uid || "unknown"),
-      content: content,
-      time: Timestamp.now(),
-    };
-    addComment(eventData.eventID, comment);
-    setComments(prev => [comment, ...prev]);
+
+    addComment(eventID, content).then(comment =>
+      setComments(prev => [comment, ...prev])
+    );
+  };
+
+  const handleRemoveComment = async (comment: Comment) => {
+    deleteComment(eventID, comment.commentID);
+    setComments(prev => prev.filter(c => c.commentID !== comment.commentID));
   };
 
   if (loading) return;
@@ -59,7 +63,11 @@ const CommentSection = () => {
         {comments
           .sort((a, b) => b.time.seconds - a.time.seconds)
           .map((comment, index) => (
-            <CommentItem key={index} comment={comment} />
+            <CommentItem
+              key={index}
+              comment={comment}
+              onDelete={handleRemoveComment}
+            />
           ))}
       </div>
       {error && <p>{error}</p>}

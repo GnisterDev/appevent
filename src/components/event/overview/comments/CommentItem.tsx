@@ -7,7 +7,12 @@ import Button from "@/components/Button";
 import { Trash } from "lucide-react";
 import { isAdministrator } from "@/firebase/AuthService";
 
-const CommentItem = ({ comment }: { comment: Comment }) => {
+interface CommentItemInterface {
+  comment: Comment;
+  onDelete: (comment: Comment) => void;
+}
+
+const CommentItem: React.FC<CommentItemInterface> = ({ comment, onDelete }) => {
   const isAdmin = isAdministrator();
   const [author, setAuthor] = useState<string>("");
 
@@ -38,6 +43,7 @@ const CommentItem = ({ comment }: { comment: Comment }) => {
             text=""
             icon={<Trash size={"1rem"} />}
             className={styles.deleteButton}
+            onClick={() => onDelete(comment)}
           />
         )}
       </div>
