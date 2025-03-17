@@ -197,7 +197,7 @@ export const eventSearch = async ({ name, type, location, date }: Search) => {
       events.push(doc.data() as EventData);
     });
 
-    return events;
+    return events.filter(event => !event.private);
   } catch (error) {
     console.error("Error searching events:", error);
     throw error;
