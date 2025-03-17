@@ -9,6 +9,8 @@ import {
   setDoc,
   Timestamp,
   updateDoc,
+  arrayUnion,
+  arrayRemove,
   where,
 } from "firebase/firestore";
 import { db } from "./config";
@@ -48,6 +50,7 @@ export const getUser = async (userID: string): Promise<UserData> => {
 export const createEvent = async (data: EventData): Promise<string> => {
   const userID = getUserID();
   if (!userID) throw new Error("User ID is null");
+
   const eventID = doc(collection(db, "events")).id;
   const organizerRef = doc(db, "users", userID);
 
@@ -84,6 +87,45 @@ export const getEvent = async (eventId: string): Promise<EventData> => {
     console.error("Error fetching event:", error);
     throw error;
   }
+};
+
+export const isParticipant = async (eventID: string): Promise<boolean> => {
+  const userID = getUserID();
+  if (!userID) return false;
+
+  const userRef = doc(db, "users", userID);
+
+  const eventSnap = await getDoc(doc(db, "events", eventID));
+  if (!eventSnap.exists()) return false;
+
+  const eventData = eventSnap.data() as EventData;
+  if (!eventData.participants) return false;
+
+  return eventData.participants.some(p => p.id === userRef.id);
+};
+
+export const joinEvent = async (eventID: string): Promise<void> => {
+  const userID = getUserID();
+  if (!userID) throw new Error("Ingen bruker er innlogget!");
+
+  const eventRef = doc(db, "events", eventID);
+  const userRef = doc(db, "users", userID);
+
+  updateDoc(eventRef, {
+    participants: arrayUnion(userRef),
+  });
+};
+
+export const leaveEvent = async (eventID: string): Promise<void> => {
+  const userID = getUserID();
+  if (!userID) throw new Error("Ingen bruker er innlogget!");
+
+  const eventRef = doc(db, "events", eventID);
+  const userRef = doc(db, "users", userID);
+
+  updateDoc(eventRef, {
+    participants: arrayRemove(userRef),
+  });
 };
 
 export const isUserParticipant = async (
