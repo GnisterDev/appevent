@@ -5,6 +5,7 @@ import styles from "./commentInput.module.css";
 import { useState, useEffect } from "react";
 import { useAuth } from "@/firebase/AuthService";
 import { getUser } from "@/firebase/DatabaseService";
+import Button from "@/components/Button";
 
 const CommentInput = ({
   onAddComment,
@@ -56,7 +57,11 @@ const CommentInput = ({
         onKeyDown={handleKeyDown}
         placeholder="..."
       />
-      <button onClick={handleSubmit}>Send</button>
+      <Button
+        text="Send"
+        onClick={handleSubmit}
+        className={styles.commentButton}
+      />
     </div>
   );
 };
