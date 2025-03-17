@@ -21,20 +21,41 @@
   },
   "Auth": {
     "SignIn": {
-      "title": "Logg inn!",
-      "loginButton": "Logg inn",
-      "noAccount": "Har ikke bruker"
+      "title": "Velommen tilbake!",
+      "subtitle": "Logg inn for å se dine arrangementer, administrere invitasjoner, og mer.",
+      "cards": [{
+        "title": "Oppdag arrangementer",
+        "content": "Finn arrangementer i nærheten, delta i spennende arrangementer, og hold kontakten med venner."
+      }],
+      "form": {
+        "title": "Logg inn",
+        "subtitle": "Logg inn med e-post og passord",
+        "prompt": "Har du allerede en konto?"
+      }
     },
     "SignUp": {
-      "title": "Registrer deg!",
-      "fullName": "Fult navn",
-      "choosePassword": "Velg passord",
-      "repeatPassword": "Gjenta passord",
-      "registerButton": "Registrer",
-      "alreadyHaveAccount": "Har allerede bruker"
+      "title": "Bli med i Appevent!",
+      "subtitle": "Registrer deg for å oppdage og dele arrangementer med venner og likesinnede.",
+      "cards": [{
+        "title": "Oppdag arrangementer",
+        "content": "Del dine arrangementer med venner og få oversikt over hvem som deltar."
+      }, {
+        "title": "Personlige tilpasninger",
+        "content": "Få tilpassede anbefalinger basert på dine interesser og tidligere deltakelser."
+      }],
+      "form": {
+        "title": "Registrer deg",
+        "subtitle": "Opprett en ny konto for å komme i gang",
+        "prompt": "Har du ikke en konto?"
+      }
     },
-    "name": "Name",
-    "email": "Email",
+    "Placeholder": {
+      "name": "Ditt navn",
+      "email": "din@epost.no",
+      "password": "●●●●●●"
+    },
+    "name": "Navn",
+    "email": "E-Post",
     "password": "Passord"
   },
   "Event": {
