@@ -165,5 +165,9 @@
     "selectType": "Velg type arrangement",
     "search": "Søk",
     "empty": "Tøm"
+  }, 
+  "Comment": {
+    "comments": "Kommentarer",
+    "send": "Send"
   }
 }

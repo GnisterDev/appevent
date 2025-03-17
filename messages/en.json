@@ -168,5 +168,9 @@
     "search": "Search",
     "searchAfter": "Search for event",
     "selectType": "Select the type of event"
+  },
+  "Comment": {
+    "comments": "Comments",
+    "send": "Send"
   }
 }

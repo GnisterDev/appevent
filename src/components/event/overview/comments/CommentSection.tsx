@@ -12,8 +12,10 @@ import {
   getComments,
 } from "@/firebase/DatabaseService";
 import { EventDisplayContext } from "@/firebase/contexts";
+import { useTranslations } from "next-intl";
 
 const CommentSection = () => {
+  const t = useTranslations("Comment");
   const { eventID } = useContext(EventDisplayContext);
 
   const [comments, setComments] = useState<Comment[]>([]);
@@ -57,7 +59,7 @@ const CommentSection = () => {
 
   return (
     <div className={styles.commentContainer}>
-      <h3>Kommentarer</h3>
+      <h3>{t("comments")}</h3>
       <CommentInput onAddComment={handleAddComment} />
       <div className={styles.commentWrapper}>
         {comments
