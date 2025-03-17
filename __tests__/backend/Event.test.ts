@@ -17,6 +17,7 @@ describe("EventData", () => {
       participants: [],
       private: false,
       type: "",
+      comments: [],
     });
   });
 
@@ -32,6 +33,7 @@ describe("EventData", () => {
       participants: [{} as DocumentReference<DocumentData>], // Mock DocumentReference array
       private: true,
       type: "Workshop",
+      comments: [],
     };
 
     expect(sampleEvent).toBeDefined();
