@@ -4,12 +4,13 @@
   border: 1px solid var(--border);
   border-radius: var(--radius);
   box-shadow: var(--box-shadow);
+  position: relative;
 }
 
 .title {
   display: flex;
   flex-direction: row;
-  align-items: ce;
+  align-items: center;
   gap: 0.5rem;
   font-size: 1rem;
   line-height: 2.25rem;

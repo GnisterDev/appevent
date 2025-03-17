@@ -96,3 +96,22 @@ export const isOrganizer = (eventID: string): boolean => {
 
   return isOrg;
 };
+
+export const isParticipant = (eventID: string): boolean => {
+  const { user } = useAuth();
+  const [isParticipant, setIsParticipant] = useState(false);
+
+  useEffect(() => {
+    if (user) {
+      getEvent(eventID)
+        .then(({ participants }) =>
+          setIsParticipant(participants.some(p => p.id === user.uid))
+        )
+        .catch(() => setIsParticipant(false));
+    } else {
+      setIsParticipant(false);
+    }
+  }, [eventID, user]); // Added eventID to dependencies
+
+  return isParticipant;
+};

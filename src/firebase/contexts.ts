@@ -11,10 +11,14 @@ export const EventDisplayContext = createContext<{
   eventID: string | null;
   eventData: EventData | null;
   isOrg: boolean;
+  participants: UserData[];
+  refreshInfo: () => Promise<void>;
 }>({
   eventID: null,
   eventData: null,
   isOrg: false,
+  participants: [],
+  refreshInfo: async () => {},
 });
 
 export const UserContext = createContext<UserContextType>({
@@ -25,7 +29,9 @@ export const UserContext = createContext<UserContextType>({
 export const UserDisplayContext = createContext<{
   userID: string;
   userData: UserData;
+  updateInvitedEvents: (eventID: string) => void;
 }>({
   userID: "",
   userData: null as unknown as UserData,
+  updateInvitedEvents: () => {},
 });

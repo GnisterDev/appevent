@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import styles from "./Invitation.module.css";
 import Button from "../../Button";
 import { Check, X } from "lucide-react";
@@ -6,6 +6,11 @@ import { DocumentData, DocumentReference } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { getDoc } from "firebase/firestore";
 import { UserData } from "@/firebase/User";
+import {
+  acceptEventInvitation,
+  declineEventInvitation,
+} from "@/firebase/DatabaseService";
+import { UserDisplayContext } from "@/firebase/contexts";
 
 interface InvitationInterface {
   event: DocumentReference<DocumentData, DocumentData>;
@@ -15,6 +20,7 @@ const Invitation: React.FC<InvitationInterface> = ({ event }) => {
   const [title, setTitle] = useState("");
   const [organizerName, setOrganizerName] = useState("");
   const [startTime, setStartTime] = useState("");
+  const { updateInvitedEvents } = useContext(UserDisplayContext);
 
   useEffect(() => {
     const fetchEventData = async () => {
@@ -36,6 +42,14 @@ const Invitation: React.FC<InvitationInterface> = ({ event }) => {
     fetchEventData();
   }, [event]);
 
+  const update = (func: (eventID: string) => Promise<boolean>) => {
+    func(event.id).then(success => {
+      if (success) {
+        updateInvitedEvents(event.id);
+      }
+    });
+  };
+
   return (
     <div className={styles.module}>
       <div className={styles.infoContainer}>
@@ -48,11 +62,13 @@ const Invitation: React.FC<InvitationInterface> = ({ event }) => {
           text="Godta"
           icon={<Check size={"1rem"} />}
           className={styles.acceptButton}
+          onClick={() => update(acceptEventInvitation)}
         />
         <Button
           text="Avslå"
           icon={<X size={"1rem"} />}
           className={styles.declineButton}
+          onClick={() => update(declineEventInvitation)}
         />
       </div>
     </div>

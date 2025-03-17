@@ -5,8 +5,10 @@ import Switch from "@/components/Switch";
 import { EVENT_GROUPS } from "@/firebase/Event";
 import { Timestamp } from "firebase/firestore";
 import { EventContext } from "@/firebase/contexts";
+import { useTranslations } from "next-intl";
 
 const BaseInformation = () => {
+  const t = useTranslations("Event.Manage.BaseInformation");
   const { formData, updateFormData } = useContext(EventContext);
 
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -34,13 +36,13 @@ const BaseInformation = () => {
 
   return (
     <div className={styles.module}>
-      <h2>Grunnleggende informasjon</h2>
+      <h2>{t("title")}</h2>
       <div className={styles.singleInputGroup}>
-        <h3 className={styles.title}>Arrangementstittel</h3>
+        <h3 className={styles.title}>{t("eventTitle")}</h3>
         <input
           type="text"
           name="title"
-          placeholder="Skriv inn en tittel"
+          placeholder={t("eventPlaceholder")}
           className={styles.input}
           value={formData.title}
           onChange={e => updateFormData(e.target.name, e.target.value)}
@@ -49,7 +51,7 @@ const BaseInformation = () => {
       </div>
       <div className={styles.doubleInputGroup}>
         <div className={styles.singleInputGroup}>
-          <h3 className={styles.title}>Dato</h3>
+          <h3 className={styles.title}>{t("date")}</h3>
           <input
             type="date"
             name="date"
@@ -62,7 +64,7 @@ const BaseInformation = () => {
           />
         </div>
         <div className={styles.singleInputGroup}>
-          <h3 className={styles.title}>Tidspunkt</h3>
+          <h3 className={styles.title}>{t("time")}</h3>
           <input
             type="time"
             name="time"
@@ -76,11 +78,11 @@ const BaseInformation = () => {
         </div>
       </div>
       <div className={styles.singleInputGroup}>
-        <h3 className={styles.title}>Sted</h3>
+        <h3 className={styles.title}>{t("place")}</h3>
         <input
           type="text"
           name="location"
-          placeholder="Arrangementssted"
+          placeholder={t("placePlaceholder")}
           maxLength={32}
           className={styles.input}
           value={formData.location}
@@ -89,7 +91,7 @@ const BaseInformation = () => {
         />
       </div>
       <div className={styles.singleInputGroup}>
-        <h3 className={styles.title}>Type</h3>
+        <h3 className={styles.title}>{t("type")}</h3>
         <select
           className={styles.input}
           name="type"
@@ -124,13 +126,13 @@ const BaseInformation = () => {
         {!formData.private && (
           <>
             <Globe size={"1.5rem"} />
-            <h3>Offentlig arrangement</h3>
+            <h3>{t("publicEvent")}</h3>
           </>
         )}
         {formData.private && (
           <>
             <Lock size={"1.5rem"} />
-            <h3>Privat arrangement</h3>
+            <h3>{t("privateEvent")}</h3>
           </>
         )}
       </div>

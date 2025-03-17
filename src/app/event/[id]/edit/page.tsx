@@ -3,20 +3,30 @@ import React, { useEffect, useState } from "react";
 import styles from "./edit.module.css";
 import BaseInformation from "@/components/event/create/BaseInformation";
 import Invites from "@/components/event/create/Invites";
-import { EventData } from "@/firebase/Event";
+import { DefaultEventData, EventData } from "@/firebase/Event";
 import { EventContext } from "@/firebase/contexts";
 import { useParams, useRouter } from "next/navigation";
-import { changeEvent, getEvent } from "@/firebase/DatabaseService";
+import {
+  cancelEventInvitation,
+  changeEvent,
+  getAllInvited,
+  getEvent,
+  inviteUsersToEvent,
+} from "@/firebase/DatabaseService";
 import Details from "@/components/event/create/Details";
 import Loading from "@/components/Loading";
+import { UserData } from "@/firebase/User";
+import { useTranslations } from "next-intl";
 
 const EventEdit: React.FC = () => {
+  const t = useTranslations("Event.Manage");
   const router = useRouter();
   const { id } = useParams();
   const eventID = Array.isArray(id) ? id[0] : id;
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [formData, setFormData] = useState<EventData>();
+  const [formData, setFormData] = useState<EventData>(DefaultEventData);
+  const [invitees, setInvitees] = useState<UserData[]>([]);
 
   useEffect(() => {
     if (!eventID) {
@@ -25,27 +35,30 @@ const EventEdit: React.FC = () => {
       return;
     }
 
+    getAllInvited(eventID).then(setInvitees);
+
     getEvent(eventID)
-      .then(data => {
-        setFormData(data);
-      })
-      .catch(err => {
-        console.error("Error fetching event:", err);
-        setError("Failed to load event details");
-      })
-      .finally(() => {
-        console.log("Event loaded");
-        setLoading(false);
-      });
+      .then(setFormData)
+      .catch(err => setError(`Failed to load event details, ${err}`))
+      .finally(() => setLoading(false));
   }, [eventID]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!eventID) return;
 
-    changeEvent(eventID, {
-      ...formData,
-    }).then(() => router.push(`/event/${eventID}`));
+    // if user is in getAllInvited but not in invitees, they have been removed
+    (await getAllInvited(eventID))
+      .filter(({ userID }) => !invitees.some(({ userID: id }) => id === userID))
+      .forEach(({ userID }) =>
+        cancelEventInvitation(eventID, userID).catch(console.error)
+      );
+    inviteUsersToEvent(
+      eventID,
+      invitees.map(user => user.userID)
+    ).catch(err => console.error("Error inviting users to event:", err));
+
+    changeEvent(eventID, formData).then(() => router.push(`/event/${eventID}`));
   };
 
   const updateFormData = (field: string, value: unknown) => {
@@ -60,26 +73,27 @@ const EventEdit: React.FC = () => {
 
   if (loading) return <Loading />;
   if (error) router.push("/404");
-  if (!formData) return;
 
   return (
     <EventContext.Provider value={{ formData, updateFormData }}>
       <main className={styles.main}>
         <form onSubmit={handleSubmit}>
-          <h1 className={styles.title}>Rediger arrangement</h1>
+          <h1 className={styles.title}>{t("editTitle")}</h1>
           <BaseInformation />
           <Details />
-          {formData.private && <Invites />}
+          {formData.private && (
+            <Invites invitedUsers={invitees} setInvitedUsers={setInvitees} />
+          )}
           <div className={styles.buttonGroup}>
             <button type="submit" className={styles.saveButton}>
-              Lagre endringer
+              {t("saveChangesButton")}
             </button>
             <button
               type="button"
               className={styles.cancelButton}
               onClick={() => router.back()}
             >
-              Avbryt
+              {t("cancelButton")}
             </button>
           </div>
         </form>

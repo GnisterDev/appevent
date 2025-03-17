@@ -57,5 +57,63 @@
     "email": "Email",
     "name": "Name",
     "password": "Password"
+  },
+  "Event": {
+    "Info": {
+      "about": "About the event",
+      "delete": "Delete event",
+      "edit": "Edit",
+      "organizor": "Event",
+      "organizorIsYou": "You",
+      "organizorTitle": "Overview",
+      "participantTitle": "Registration",
+      "private": "Private",
+      "public": "Public",
+      "registeredParticipants": "Registered participants",
+      "share": "Share event",
+      "status": "Status",
+      "subscribe": "Register me",
+      "subtext": "Secure your place at the event",
+      "total": "total",
+      "unsubscribe": "Unregister me"
+    },
+    "Manage": {
+      "cancelButton": "Cancel",
+      "createEventButton": "Create event",
+      "createTitle": "Create event",
+      "editTitle": "Edit event",
+      "saveChangesButton": "Save changes",
+      "BaseInformation": {
+        "date": "Date",
+        "eventPlaceholder": "Enter a title",
+        "eventTitle": "Event title",
+        "place": "Place",
+        "placePlaceholder": "Event",
+        "privateEvent": "Private event",
+        "publicEvent": "Public event",
+        "time": "Time",
+        "title": "Basic information",
+        "type": "Type"
+      },
+      "Details": {
+        "description": "Description",
+        "descriptionPlaceholder": "Tell about the event",
+        "tags": "Tags",
+        "tagsPlaceholder": "Write a tag and press Enter",
+        "title": "Details"
+      },
+      "Invites": {
+        "invite": "Invite",
+        "invitedParticipants": "Invited participants",
+        "noInvitedParticipants": "No participants invited yet",
+        "noRegisteredParticipants": "No participants registered yet",
+        "noResults": "No users found",
+        "registeredParticipants": "Registered participants",
+        "searchPlaceholder": "Search for Name or Email",
+        "searching": "Searching...",
+        "title": "Invite",
+        "remove": "Remove"
+      }
+    }
   }
 }

@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import styles from "./event.module.css";
 import Registration from "@/components/event/overview/Registration";
 import EventInfo from "@/components/event/overview/EventInfo";
@@ -8,9 +8,9 @@ import { getAllParticipants, getEvent } from "@/firebase/DatabaseService";
 import { EventData } from "@/firebase/Event";
 import { EventDisplayContext } from "@/firebase/contexts";
 import Participants from "@/components/event/overview/participant/ParticipantsInfo";
-import { LoaderCircle } from "lucide-react";
-import { isOrganizer } from "@/firebase/AuthService";
+import { isOrganizer, isParticipant } from "@/firebase/AuthService";
 import { UserData } from "@/firebase/User";
+import Loading from "@/components/Loading";
 
 const EventView = () => {
   const router = useRouter();
@@ -20,7 +20,18 @@ const EventView = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const isOrg = isOrganizer(eventID);
+  const isPar = isParticipant(eventID);
   const [participantsInfo, setParticipantsInfo] = useState<UserData[]>([]);
+
+  const refreshInfo = useCallback(async () => {
+    if (!eventID) return;
+    getAllParticipants(eventID)
+      .then(setParticipantsInfo)
+      .catch(err => setError(`Failed to load participant details: ${err}`));
+    getEvent(eventID)
+      .then(setEventData)
+      .catch(err => setError(`Failed to load event details: ${err}`));
+  }, [eventID]);
 
   useEffect(() => {
     if (!eventID) {
@@ -28,37 +39,24 @@ const EventView = () => {
       setLoading(false);
       return;
     }
-
-    setLoading(true);
-    getEvent(eventID)
-      .then(data => {
-        if (data) {
-          setEventData(data);
-        } else {
-          router.push("/404");
-        }
-      })
-      .catch(err => setError(`Failed to load event details: ${err}`))
-      .finally(() => setLoading(false));
-
-    getAllParticipants(eventID)
-      .then(setParticipantsInfo)
-      .catch(err => setError(`Failed to load event details: ${err}`));
+    refreshInfo().finally(() => setLoading(false));
   }, [eventID, router]);
 
-  if (loading)
-    return (
-      <div className={styles.loading}>
-        <LoaderCircle size={"5rem"} />
-      </div>
-    );
-  if (error) router.push("/404");
   if (!eventData) return;
-  // if (eventData.private && !isCurrentUserParticipant(eventID))
-  //   router.push("/404");
+  if (loading) return <Loading />;
+  if (error) router.push("/404");
+  if (eventData.private && !isPar) router.push("/404");
 
   return (
-    <EventDisplayContext.Provider value={{ eventID, eventData, isOrg }}>
+    <EventDisplayContext.Provider
+      value={{
+        eventID,
+        eventData,
+        isOrg,
+        participants: participantsInfo,
+        refreshInfo,
+      }}
+    >
       <main className={styles.main}>
         <div className={styles.eventGrid}>
           <div className={styles.eventInfo}>
@@ -70,7 +68,7 @@ const EventView = () => {
           <div className={styles.eventActions}>
             <div className={styles.eventActionsInner}>
               <Registration />
-              <Participants participants={participantsInfo} />
+              <Participants />
             </div>
           </div>
         </div>
