@@ -113,7 +113,7 @@ const EventSearch = () => {
         />
       </div>
       {/*OUTPUT FOR ARR */}
-      <div className={styles.outputListe}>
+      <div className={styles.outputList}>
         {results.map((event, key) => (
           <SearchResult key={key} event={event} />
         ))}

@@ -17,3 +17,9 @@
     background-color: color-mix(in srgb, var(--primary) 85%, white);
   }
 }
+
+.outputList {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}

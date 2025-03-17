@@ -19,18 +19,24 @@ export default function Home() {
     <main className={styles.main}>
       <h1>Mine arrangementer</h1>
       <div className={styles.lists}>
-        <div className={styles.list}>
-          <h3>Registrerte arrangementer</h3>
-          <EventList events={eventsData.registered} />
-        </div>
-        <div className={styles.list}>
-          <h3>Organiserte arrangement</h3>
-          <EventList events={eventsData.organizer} />
-        </div>
-        <div className={styles.list}>
-          <h3>Inviterte arrangement</h3>
-          <EventList events={eventsData.invited} />
-        </div>
+        {eventsData.registered.length != 0 && (
+          <div>
+            <h3>Registrerte arrangementer</h3>
+            <EventList events={eventsData.registered} />
+          </div>
+        )}
+        {eventsData.organizer.length != 0 && (
+          <div>
+            <h3>Organiserte arrangement</h3>
+            <EventList events={eventsData.organizer} />
+          </div>
+        )}
+        {eventsData.invited.length != 0 && (
+          <div>
+            <h3>Inviterte arrangement</h3>
+            <EventList events={eventsData.invited} />
+          </div>
+        )}
       </div>
     </main>
   );
