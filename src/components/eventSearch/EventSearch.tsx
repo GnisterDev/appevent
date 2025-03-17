@@ -6,11 +6,9 @@ import { EVENT_GROUPS } from "@/firebase/Event";
 import { eventSearch } from "@/firebase/DatabaseService";
 import { Search } from "@/firebase/Search";
 import { EventData } from "@/firebase/Event";
-import { useRouter } from "next/navigation";
+import SearchResult from "./SearchResult";
 
 const EventSearch = () => {
-  const router = useRouter();
-
   //Filter fra start
   const [filter, setFilter] = useState<Search>({
     type: "",
@@ -50,13 +48,6 @@ const EventSearch = () => {
   const handleSearch = async () => {
     const searchResults = await eventSearch(filter);
     setResults(searchResults);
-  };
-
-  //Når et output arrangement trykkes på, kan være undefined
-  const handleClick = (clickedEventId: string | undefined) => {
-    if (clickedEventId) {
-      router.push(`/event/${encodeURIComponent(clickedEventId)}`);
-    }
   };
 
   return (
@@ -116,33 +107,8 @@ const EventSearch = () => {
 
       {/*OUTPUT FOR ARR */}
       <ul className={styles.outputListe}>
-        {results.map(event => (
-          //Hvert enkelt arrangement
-          <li
-            key={event.id}
-            className={styles.outputEvent}
-            onClick={() => handleClick(event.id)}
-          >
-            {/*Tittel på arr og dato for start */}
-            <h2>
-              {event.title}
-              {" ("}
-              {new Date(event.startTime.toDate()).toLocaleDateString()}
-              {")"}
-            </h2>
-
-            {/*Beskrivelse*/}
-            <p className={styles.outputLocation}>{event.location}</p>
-
-            {/*Mapper hver enkelt tag fra eventtag (array)*/}
-            <div className={styles.tagDiv}>
-              {event.tags.map((tag, index) => (
-                <span key={index} className={styles.outputTag}>
-                  {tag}
-                </span>
-              ))}
-            </div>
-          </li>
+        {results.map((event, key) => (
+          <SearchResult key={key} event={event} />
         ))}
       </ul>
     </div>

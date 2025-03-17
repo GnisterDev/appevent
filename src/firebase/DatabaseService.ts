@@ -17,7 +17,7 @@ import {
 } from "firebase/firestore";
 import { db } from "./config";
 import { UserData } from "./User";
-import { EventData } from "./Event";
+import { DefaultListEvents, EventData, ListEvents } from "./Event";
 import { getUserID } from "./AuthService";
 import { Search } from "./Search";
 import { Comment } from "./Comment";
@@ -564,49 +564,40 @@ export const cancelEventInvitation = async (
   }
 };
 
-export const getEventsByRole = async (
-  role: "participant" | "organizer"
-): Promise<EventData[]> => {
+export const getEventsByRole = async (): Promise<ListEvents> => {
   try {
     const userID = getUserID();
-    if (!userID) return [];
+    if (!userID) return DefaultListEvents;
 
-    // Get all events
     const eventsSnapshot = await getDocs(collection(db, "events"));
+    const userSnapshot = await getDoc(doc(db, "users", userID));
+    const userData = userSnapshot.data() as UserData;
 
-    const matchingEvents: EventData[] = [];
+    const registered: EventData[] = eventsSnapshot.docs
+      .map(doc => ({ ...doc.data(), id: doc.id } as EventData))
+      .filter(event =>
+        event.participants
+          .filter(participants => participants.id != event.organizer.id)
+          .map(participants => participants.id)
+          .some(id => id === userID)
+      );
 
-    // Filter events based on role
-    eventsSnapshot.forEach(doc => {
-      const eventData = doc.data() as EventData;
+    const organizer: EventData[] = eventsSnapshot.docs
+      .map(doc => ({ ...doc.data(), id: doc.id } as EventData))
+      .filter(event => event.organizer.id == userID);
 
-      if (role === "participant") {
-        const isParticipant =
-          eventData.participants &&
-          eventData.participants.some(
-            participantRef => participantRef.id === userID
-          );
+    const invited: EventData[] = await Promise.all(
+      userData.invitations.map(async invitation => {
+        const eventSnap = await getDoc(invitation);
+        return eventSnap.exists()
+          ? ({ ...eventSnap.data(), id: eventSnap.id } as EventData)
+          : null;
+      })
+    ).then(events =>
+      events.filter((event): event is EventData => event !== null)
+    );
 
-        if (isParticipant) {
-          matchingEvents.push({
-            id: doc.id,
-            ...eventData,
-          });
-        }
-      } else if (role === "organizer") {
-        const isOrganizer =
-          eventData.organizer && eventData.organizer.id === userID;
-
-        if (isOrganizer) {
-          matchingEvents.push({
-            id: doc.id,
-            ...eventData,
-          });
-        }
-      }
-    });
-
-    return matchingEvents;
+    return { registered, organizer, invited };
   } catch (error) {
     console.error("Error getting events by role:", error);
     throw error;
