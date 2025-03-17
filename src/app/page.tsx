@@ -6,8 +6,10 @@ import { auth } from "../firebase/config";
 import Loading from "@/components/Loading";
 
 import EventSearch from "@/components/eventSearch/EventSearch";
+import { useTranslations } from "next-intl";
 
 export default function Home() {
+  const t = useTranslations("HomePage");
   const router = useRouter();
   const [loading, setLoading] = useState(true);
 
@@ -30,13 +32,10 @@ export default function Home() {
       <div className={styles.page}>
         <div className={styles.header}>
           <h1 style={{ fontSize: "3rem" }}>
-            Oppdag spennende{" "}
-            <span style={{ color: "var(--primary)" }}>arrangementer</span>
+            {t("discover")}{" "}
+            <span style={{ color: "var(--primary)" }}>{t("events")}</span>
           </h1>
-          <p className={styles.subtext}>
-            Finn og delta på arrangementer som passer deg. Opprett egne
-            arrangementer og del opplevelsene med andre.
-          </p>
+          <p className={styles.subtext}>{t("subtext")}</p>
         </div>
         <EventSearch />
       </div>

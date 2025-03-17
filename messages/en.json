@@ -1,8 +1,8 @@
 {
   "HomePage": {
-    "subtext": "This is the",
-    "subtext-bold": "HOMEPAGE",
-    "signOut": "Sign Out"
+    "discover": "Discover exciting",
+    "events": "events",
+    "subtext": "Find and attend events that suit you. Create your own events and share your experiences with others."
   },
   "Navbar": {
     "appName": "Appevent",

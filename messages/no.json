@@ -1,8 +1,8 @@
 {
   "HomePage": {
-    "subtext": "Dette er",
-    "subtext-bold": "HJEMMESIDEN",
-    "signOut": "Logg Ut"
+    "discover": "Oppdag spennende",
+    "events": "arrangementer",
+    "subtext": "Finn og delta på arrangementer som passer deg. Opprett egne arrangementer og del opplevelsene med andre."
   },
   "Navbar": {
     "appName": "Appevent",
