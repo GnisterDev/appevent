@@ -1,7 +1,7 @@
 import { DocumentData, DocumentReference, Timestamp } from "firebase/firestore";
 
 export type EventData = {
-  id?: string;
+  eventID: string;
   title: string;
   description: string;
   startTime: Timestamp;
@@ -16,6 +16,7 @@ export type EventData = {
 };
 
 export const DefaultEventData: EventData = {
+  eventID: "",
   title: "",
   description: "",
   startTime: null as unknown as Timestamp,
