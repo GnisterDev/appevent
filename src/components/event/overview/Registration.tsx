@@ -1,25 +1,100 @@
 "use client";
 
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import styles from "./registration.module.css";
 import Button from "@/components/Button";
-import { Pencil, Share2, Ticket, Trash } from "lucide-react";
-import { isAdministrator } from "@/firebase/AuthService";
-import { deleteEvent } from "@/firebase/DatabaseService";
+import { Pencil, Share2, Ticket, TicketX, Trash } from "lucide-react";
 import { useRouter } from "next/navigation";
+
+// OBS: Pass på å importere disse fra dine filer
+import { useAuth } from "@/firebase/AuthService";
+import { isAdministrator } from "@/firebase/AuthService";
+import {
+  getEvent,
+  joinEvent,
+  leaveEvent,
+  deleteEvent,
+} from "@/firebase/DatabaseService";
+import { doc } from "firebase/firestore";
+import { db } from "@/firebase/config";
 import { EventDisplayContext } from "@/firebase/contexts";
 
+// Viser litt info om arrangementet (eksempel)
 const info = {
-  Påmeldingsfirst: "{date}",
+  Påmeldingsfrist: "{date}",
   "Ledige plasser": "{reg} av {total}",
 };
 
 const Registration: React.FC = () => {
   const router = useRouter();
+  const { user, isLoggedIn } = useAuth();
   const isAdmin = isAdministrator();
   const { eventID, isOrg } = useContext(EventDisplayContext);
 
   if (!eventID) return;
+  const [isParticipating, setIsParticipating] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    const checkParticipation = async () => {
+      try {
+        if (!eventID) {
+          setLoading(false);
+          return;
+        }
+
+        if (!isLoggedIn || !user) {
+          setIsParticipating(false);
+          setLoading(false);
+          return;
+        }
+
+        const eventData = await getEvent(eventID);
+        if (!eventData || !eventData.participants) {
+          setIsParticipating(false);
+          setLoading(false);
+          return;
+        }
+
+        const userRef = doc(db, "users", user.uid);
+        const found = eventData.participants.some(p => p.id === userRef.id);
+        setIsParticipating(found);
+        setLoading(false);
+      } catch (error) {
+        console.error("Feil ved henting av event:", error);
+      }
+    };
+
+    checkParticipation();
+  }, [eventID, isLoggedIn, user]);
+
+  const handleJoin = async () => {
+    if (!isLoggedIn) {
+      alert("Du må være innlogget for å melde deg på.");
+      return;
+    }
+    try {
+      await joinEvent(eventID);
+      setIsParticipating(true);
+    } catch (err) {
+      console.error("Feil ved påmelding:", err);
+    }
+  };
+
+  const handleLeave = async () => {
+    if (!isLoggedIn) {
+      alert("Du må være innlogget for å melde deg av.");
+      return;
+    }
+    try {
+      await leaveEvent(eventID);
+      setIsParticipating(false);
+    } catch (err) {
+      console.error("Feil ved avmelding:", err);
+    }
+  };
+
+  if (loading) return;
 
   return (
     <div className={styles.module}>
@@ -31,6 +106,7 @@ const Registration: React.FC = () => {
           </p>
         )}
       </div>
+
       <div style={{ padding: "1.5rem 0" }}>
         {Object.entries(info).map(([key, value]) => (
           <div className={styles.info} key={key}>
@@ -39,9 +115,10 @@ const Registration: React.FC = () => {
           </div>
         ))}
       </div>
+
       {isOrg && <h3>Du er organisator</h3>}
+
       <div className={styles.buttons}>
-        <br />
         {isOrg && (
           <Button
             text="Rediger"
@@ -50,18 +127,32 @@ const Registration: React.FC = () => {
             onClick={() => router.push(`/event/${eventID}/edit`)}
           />
         )}
-        {!isOrg && (
+
+        {!isOrg && isParticipating ? (
+          <Button
+            text="Meld meg av"
+            className={styles.registerButton}
+            icon={<TicketX size={"1.25rem"} />}
+            onClick={handleLeave}
+          />
+        ) : (
           <Button
             text="Meld meg på"
             className={styles.registerButton}
             icon={<Ticket size={"1.25rem"} />}
+            onClick={handleJoin}
           />
         )}
+
         <Button
           text="Del arrangement"
           className={styles.shareButton}
           icon={<Share2 size={"1.25rem"} />}
+          onClick={() => {
+            alert("Funksjonalitet for deling ikke implementert ennå.");
+          }}
         />
+
         {(isAdmin || isOrg) && (
           <Button
             onClick={() => {

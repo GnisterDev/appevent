@@ -1,6 +1,7 @@
 import { DocumentData, DocumentReference, Timestamp } from "firebase/firestore";
 
 export type EventData = {
+  id?: string;
   title: string;
   description: string;
   startTime: Timestamp;

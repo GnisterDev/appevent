@@ -1,17 +1,22 @@
-.title {
-  color: var(--text);
-}
-.profileContainer {
-  margin-top: 80px;
-  padding: 20px;
+.main {
+  max-width: 1024px;
+  margin: 0 auto;
+  margin-top: 5rem;
+  padding: 2rem;
 }
 
-.deleteButton {
-  color: var(--foreground);
-  background-color: var(--error);
-  width: 20rem;
-
-  &:hover {
-    background-color: color-mix(in srgb, var(--error) 85%, white);
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.5rem;
+}
+@media (max-width: 1024px) {
+  .grid {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    column-gap: 0;
   }
+}
+
+.spanTwo {
+  grid-column: span 2 / span 2;
 }

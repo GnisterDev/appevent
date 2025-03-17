@@ -1,7 +1,10 @@
 import React from "react";
 import { render as rtlRender } from "@testing-library/react";
-import { NextIntlClientProvider } from "next-intl";
-import messages from "messages/no.json";
+import { AbstractIntlMessages, NextIntlClientProvider } from "next-intl";
+import messagesImport from "messages/no.json";
+
+// Type assertion to tell TypeScript that the messages structure is compatible
+const messages = messagesImport as unknown as AbstractIntlMessages;
 
 const customRender = (
   ui: React.ReactElement,

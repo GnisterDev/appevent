@@ -7,7 +7,7 @@ import {
   UserCredential,
 } from "firebase/auth";
 import { auth } from "./config";
-import { LoginRequest, SignupRequest } from "./User";
+import { DefaultUserData, LoginRequest, SignupRequest } from "./User";
 import { createUser, getEvent, getUser } from "./DatabaseService";
 import { useEffect, useState } from "react";
 
@@ -36,6 +36,7 @@ export const useSignup = (data: SignupRequest) => {
   return createUserWithEmailAndPassword(auth, data.email, data.password).then(
     userCredential => {
       return createUser({
+        ...DefaultUserData,
         name: data.name,
         email: data.email,
         userID: userCredential.user.uid,

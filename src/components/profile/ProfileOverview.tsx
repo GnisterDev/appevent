@@ -1,28 +1,43 @@
-import { Settings, User } from "lucide-react";
+import { MapPin, Trash, User } from "lucide-react";
 import React, { useContext } from "react";
 import styles from "./ProfileOverview.module.css";
-import Button from "../Button";
 import { UserDisplayContext } from "@/firebase/contexts";
+import Button from "../Button";
+import { isAdministrator, useAuth } from "@/firebase/AuthService";
 
 const ProfileOverview = () => {
-  const context = useContext(UserDisplayContext);
+  const { userData } = useContext(UserDisplayContext);
+  const isAdmin = isAdministrator();
+  const { userID } = useAuth();
+  const isOwnProfile = userData.userID === userID;
+  const canDelete = !isOwnProfile && isAdmin;
+
+  console.log(userData.userID, userID);
 
   return (
     <div className={styles.module}>
-      <div className={styles.userInfo}>
+      <div className={styles.userInfoContainer}>
         <div className={styles.profileCircle}>
           <User size={"3rem"} style={{ color: "var(--text-secondary)" }} />
         </div>
-        <div>
-          <h2>{context.name}</h2>
-          <p>{context.email}</p>
+        <div className={styles.userInfo}>
+          <h2>{userData.name}</h2>
+          <p>{userData.email}</p>
+          {userData.location && (
+            <span className={styles.userInfoLocation}>
+              <MapPin size={"1rem"} />
+              {userData.location}
+            </span>
+          )}
         </div>
       </div>
-      <Button
-        text="Rediger profil"
-        icon={<Settings />}
-        className={styles.settingsButton}
-      />
+      {canDelete && (
+        <Button
+          text="Slett Bruker"
+          icon={<Trash />}
+          className={styles.deleteButton}
+        />
+      )}
     </div>
   );
 };
