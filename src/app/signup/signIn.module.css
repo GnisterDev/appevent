@@ -1,7 +1,0 @@
-.page{
-    background-color: var(--background);
-    display: flex;
-    justify-content: center;  /* Sentrerer innholdet horisontalt */
-    align-items: center;      /* Sentrerer innholdet vertikalt */
-    height: 100vh;
-}

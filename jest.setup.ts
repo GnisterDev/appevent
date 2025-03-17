@@ -1,14 +1,11 @@
 // jest.setup.ts or tests/setup.ts
 import "@testing-library/jest-dom";
+import { arrayRemove, arrayUnion } from "firebase/firestore";
+import React from "react";
 
 // Mock Next.js router
 jest.mock("next/navigation", () => ({
-  useRouter: () => ({
-    push: jest.fn(),
-    replace: jest.fn(),
-    prefetch: jest.fn(),
-    pathname: "/",
-  }),
+  useRouter: jest.fn(),
 }));
 
 // Mock Firebase modules
@@ -74,8 +71,28 @@ jest.mock("firebase/firestore", () => {
     where: jest.fn(() => ({})),
     orderBy: jest.fn(() => ({})),
     limit: jest.fn(() => ({})),
+    arrayUnion: jest.fn(() => arrayUnion()),
+    arrayRemove: jest.fn(() => arrayRemove()),
+    Transaction: jest.fn(() => ({})),
+    runTransaction: jest.fn(),
+    Timestamp: {
+      seconds: Number,
+      nanoseconds: Number,
+      now: jest.fn(() => ({})),
+      toDate: jest.fn(() => new Date()),
+    },
   };
 });
+
+jest.mock("lucide-react", () => ({
+  LoaderCircle: jest.fn(() => "Mocked LoaderCircle"),
+  Globe: jest.fn(() => "Mocked Globe"),
+}));
+
+jest.mock("js-cookie", () => ({
+  get: jest.fn(),
+  set: jest.fn(),
+}));
 
 // This mock is crucial - it prevents Firebase initialization errors
 jest.mock(
@@ -90,6 +107,27 @@ jest.mock(
   }),
   { virtual: true }
 );
+
+jest.mock(
+  "lucide-react",
+  () => ({
+    UserMinus: jest.fn(() => null),
+  }),
+  { virtual: true }
+);
+
+jest.mock("lucide-react", () => ({
+  UserMinus: function UserMinusMock(props: React.SVGProps<SVGSVGElement>) {
+    return React.createElement(
+      "div",
+      {
+        "data-testid": "user-minus-icon",
+        ...props,
+      },
+      "Icon Mock"
+    );
+  },
+}));
 
 // If you have separate auth service files, mock them too
 // jest.mock(

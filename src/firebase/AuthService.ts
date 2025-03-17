@@ -7,7 +7,7 @@ import {
   UserCredential,
 } from "firebase/auth";
 import { auth } from "./config";
-import { LoginRequest, SignupRequest } from "./User";
+import { DefaultUserData, LoginRequest, SignupRequest } from "./User";
 import { createUser, getEvent, getUser } from "./DatabaseService";
 import { useEffect, useState } from "react";
 
@@ -36,6 +36,7 @@ export const useSignup = (data: SignupRequest) => {
   return createUserWithEmailAndPassword(auth, data.email, data.password).then(
     userCredential => {
       return createUser({
+        ...DefaultUserData,
         name: data.name,
         email: data.email,
         userID: userCredential.user.uid,
@@ -84,13 +85,33 @@ export const isOrganizer = (eventID: string): boolean => {
 
   useEffect(() => {
     if (user) {
-      getEvent(eventID).then(({ organizer }) =>
-        setIsOrg(organizer.id === user.uid)
-      );
+      getEvent(eventID)
+        // .then(data => console.log(data))
+        .then(({ organizer }) => setIsOrg(organizer.id === user.uid))
+        .catch(() => setIsOrg(false));
     } else {
       setIsOrg(false);
     }
   }, [eventID, user]); // Added eventID to dependencies
 
   return isOrg;
+};
+
+export const isParticipant = (eventID: string): boolean => {
+  const { user } = useAuth();
+  const [isParticipant, setIsParticipant] = useState(false);
+
+  useEffect(() => {
+    if (user) {
+      getEvent(eventID)
+        .then(({ participants }) =>
+          setIsParticipant(participants.some(p => p.id === user.uid))
+        )
+        .catch(() => setIsParticipant(false));
+    } else {
+      setIsParticipant(false);
+    }
+  }, [eventID, user]); // Added eventID to dependencies
+
+  return isParticipant;
 };

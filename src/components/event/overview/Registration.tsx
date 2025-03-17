@@ -1,75 +1,133 @@
 "use client";
 
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styles from "./registration.module.css";
 import Button from "@/components/Button";
-import { Pencil, Share2, Ticket, Trash } from "lucide-react";
-import { isAdministrator, isOrganizer } from "@/firebase/AuthService";
-import { deleteEvent } from "@/firebase/DatabaseService";
+import { Pencil, Share2, Ticket, TicketX, Trash } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { getUserID, isAdministrator } from "@/firebase/AuthService";
+import {
+  joinEvent,
+  leaveEvent,
+  deleteEvent,
+  isParticipant,
+  getUser,
+} from "@/firebase/DatabaseService";
+import { EventDisplayContext } from "@/firebase/contexts";
+import { DefaultUserData, UserData } from "@/firebase/User";
+import { useTranslations } from "next-intl";
 
-const info = {
-  Påmeldingsfirst: "{date}",
-  "Ledige plasser": "{reg} av {total}",
-};
-
-interface RegistrationProps {
-  eventID: string;
-}
-
-const Registration: React.FC<RegistrationProps> = ({ eventID }) => {
+const Registration: React.FC = () => {
+  const t = useTranslations("Event.Info");
   const router = useRouter();
   const isAdmin = isAdministrator();
-  const isOrg = isOrganizer(eventID);
+  const { eventID, isOrg, eventData, refreshInfo } =
+    useContext(EventDisplayContext);
+  const [isParticipating, setIsParticipating] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [organizor, setOrganizor] = useState<UserData>(DefaultUserData);
+
+  useEffect(() => {
+    if (!eventID) return;
+    if (!eventData) return;
+    isParticipant(eventID)
+      .then(setIsParticipating)
+      .finally(() => setLoading(false));
+    getUser(eventData.organizer.id).then(setOrganizor);
+  }, [eventID, eventData]);
+
+  const handleJoin = async () => {
+    if (!eventID) return;
+    joinEvent(eventID)
+      .then(() => setIsParticipating(true))
+      .catch(console.error)
+      .finally(refreshInfo);
+  };
+
+  const handleLeave = async () => {
+    if (!eventID) return;
+    leaveEvent(eventID)
+      .then(() => setIsParticipating(false))
+      .catch(console.error)
+      .finally(refreshInfo);
+    if (eventData?.private) router.push("/");
+  };
+
+  if (!eventID) return;
+  if (loading) return;
+  if (!eventData) return;
+
+  console.log(organizor.name);
 
   return (
     <div className={styles.module}>
       <div className={styles.header}>
-        <h3 className={styles.title}>{isOrg ? "Oversikt" : "Påmelding"}</h3>
-        {!isOrg && (
-          <p style={{ paddingTop: "0.5rem" }}>
-            Sikre din plass på arrangementet
-          </p>
-        )}
+        <h3 className={styles.title}>
+          {isOrg ? t("organizorTitle") : t("participantTitle")}
+        </h3>
+        {!isOrg && <p style={{ paddingTop: "0.5rem" }}>{t("subtext")}</p>}
       </div>
+
       <div style={{ padding: "1.5rem 0" }}>
-        {Object.entries(info).map(([key, value]) => (
-          <div className={styles.info} key={key}>
-            <span>{key}</span>
-            <span style={{ fontWeight: "bold" }}>{value}</span>
-          </div>
-        ))}
+        <div className={styles.info}>
+          <span>{t("organizor")}</span>
+          <span style={{ fontWeight: "bold" }}>
+            {eventData.organizer.id === getUserID()
+              ? t("organizorIsYou")
+              : organizor.name}
+          </span>
+        </div>
+        <div className={styles.info}>
+          <span>{t("status")}</span>
+          <span style={{ fontWeight: "bold" }}>
+            {eventData?.private ? t("private") : t("public")}
+          </span>
+        </div>
       </div>
-      {isOrg && <h3>Du er organisator</h3>}
+
       <div className={styles.buttons}>
-        <br />
         {isOrg && (
           <Button
-            text="Rediger"
+            text={t("edit")}
             className={styles.editButton}
             icon={<Pencil size={"1.25rem"} />}
             onClick={() => router.push(`/event/${eventID}/edit`)}
           />
         )}
-        {!isOrg && (
+
+        {!isOrg && !isParticipating && !eventData.private && (
           <Button
-            text="Meld meg på"
+            text={t("subscribe")}
             className={styles.registerButton}
             icon={<Ticket size={"1.25rem"} />}
+            onClick={handleJoin}
           />
         )}
+        {!isOrg && isParticipating && (
+          <Button
+            text={t("unsubscribe")}
+            className={styles.registerButton}
+            icon={<TicketX size={"1.25rem"} />}
+            onClick={handleLeave}
+          />
+        )}
+
         <Button
-          text="Del arrangement"
+          text={t("share")}
           className={styles.shareButton}
           icon={<Share2 size={"1.25rem"} />}
+          onClick={() => {
+            alert("Funksjonalitet for deling ikke implementert ennå.");
+          }}
         />
-        {(isAdmin || isOrg) && (
+
+        {(isOrg || isAdmin) && (
           <Button
             onClick={() => {
               deleteEvent(eventID);
               router.push("/");
             }}
-            text="Slett arrangement"
+            text={t("delete")}
             className={styles.deleteButton}
             icon={<Trash size={"1.25rem"} />}
           />
