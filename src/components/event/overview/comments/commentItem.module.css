@@ -1,20 +1,32 @@
 .commentItem {
   padding: 1rem;
-  border-bottom: 1px solid #ddd; /* Skiller kommentarer */
-  margin-bottom: 10px; /* Mellomrom mellom kommentarer */
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 1rem;
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 0.5rem;
 }
 
 .commentUser {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   font-weight: bold;
-  color: #444;
-  margin-bottom: 5px; /* Litt avstand mellom navn og kommentar */
+  color: var(--text-primary);
+  margin-bottom: 1rem;
 }
 
 .commentText {
-  font-size: 14px;
+  font-size: 1rem;
   line-height: 1.5;
-  color: #222;
+  color: var(--text-seocondary);
+}
+
+.deleteButton {
+  background-color: var(--error);
+  color: var(--background);
+
+  &:hover {
+    background-color: color-mix(in srgb, var(--error) 75%, white);
+  }
 }

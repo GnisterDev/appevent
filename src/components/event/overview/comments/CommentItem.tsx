@@ -3,8 +3,12 @@ import styles from "./commentItem.module.css";
 import { Comment } from "@/firebase/Comment";
 import { getUser } from "@/firebase/DatabaseService";
 import { Timestamp } from "firebase/firestore";
+import Button from "@/components/Button";
+import { Trash } from "lucide-react";
+import { isAdministrator } from "@/firebase/AuthService";
 
 const CommentItem = ({ comment }: { comment: Comment }) => {
+  const isAdmin = isAdministrator();
   const [author, setAuthor] = useState<string>("");
 
   useEffect(() => {
@@ -24,9 +28,19 @@ const CommentItem = ({ comment }: { comment: Comment }) => {
 
   return (
     <div className={styles.commentItem}>
-      <p className={styles.commentUser}>
-        <strong>{author}</strong> <span>{convertTimestamp(comment.time)}</span>
-      </p>
+      <div className={styles.commentUser}>
+        <div>
+          <strong>{author}</strong>{" "}
+          <span>{convertTimestamp(comment.time)}</span>
+        </div>
+        {isAdmin && (
+          <Button
+            text=""
+            icon={<Trash size={"1rem"} />}
+            className={styles.deleteButton}
+          />
+        )}
+      </div>
       <p className={styles.commentText}>{comment.content}</p>
     </div>
   );

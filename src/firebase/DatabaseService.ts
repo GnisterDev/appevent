@@ -1,5 +1,6 @@
 import {
   addDoc,
+  arrayRemove,
   arrayUnion,
   collection,
   deleteDoc,
@@ -185,6 +186,27 @@ export const addComment = async (
     console.log("Comment added successfully");
   } catch (error) {
     console.error("Error adding comment:", error);
+    throw error;
+  }
+};
+
+export const deleteComment = async (
+  eventID: string,
+  commentID: string
+): Promise<void> => {
+  try {
+    const commentRef = doc(db, "comments", commentID);
+
+    const eventRef = doc(db, "events", eventID);
+    await updateDoc(eventRef, {
+      comments: arrayRemove(commentRef),
+    });
+
+    await deleteDoc(commentRef);
+
+    console.log("Comment deleted successfully");
+  } catch (error) {
+    console.error("Error deleting comment:", error);
     throw error;
   }
 };
