@@ -77,7 +77,7 @@ const EventEdit: React.FC = () => {
   return (
     <EventContext.Provider value={{ formData, updateFormData }}>
       <main className={styles.main}>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} role="form">
           <h1 className={styles.title}>{t("editTitle")}</h1>
           <BaseInformation />
           <Details />
