@@ -22,7 +22,7 @@ const mockComment: Comment = {
   commentID: "commentID1",
   author: { id: "userID1" } as unknown as DocumentReference,
   content: "This is a test comment",
-  time: Timestamp.fromDate(new Date("2023-01-01T12:00:00Z")),
+  time: Timestamp.fromDate(new Date("2023-01-01T12:00:00")),
 };
 
 describe("CommentItem", () => {
@@ -33,7 +33,7 @@ describe("CommentItem", () => {
     render(<CommentItem comment={mockComment} onDelete={jest.fn()} />);
 
     expect(screen.getByText("This is a test comment")).toBeInTheDocument();
-    expect(screen.getByText("01/01/2023 13:00")).toBeInTheDocument();
+    expect(screen.getByText("01/01/2023 12:00")).toBeInTheDocument();
 
     await waitFor(() => {
       expect(screen.getByText("Test User")).toBeInTheDocument();
