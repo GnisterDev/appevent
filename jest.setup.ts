@@ -137,7 +137,6 @@ jest.mock("lucide-react", () => ({
   },
 }));
 
-// If you have separate auth service files, mock them too
 // jest.mock(
 //   "@/firebase/AuthService",
 //   () => ({
