@@ -25,9 +25,7 @@ const CommentInput = ({
       .then(user => {
         setUserName(user.name);
       })
-      .catch(error => {
-        console.error("Failed to fetch user:", error);
-      });
+      .catch(error => console.error("Failed to fetch user:", error));
   }, [userID]);
 
   const handleSubmit = () => {
@@ -37,11 +35,8 @@ const CommentInput = ({
       console.error("Feil: userID eller userName er ikke satt!");
       return;
     }
-
-    console.log("Sender kommentar:", text, "fra bruker:", userName);
-
     onAddComment(text);
-    setText(""); // Nullstiller etter kommentaren er sendt
+    setText("");
   };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
