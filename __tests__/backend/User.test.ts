@@ -1,4 +1,4 @@
-import { DefaultUserData, UserData } from "../../src/firebase/User";
+import { DefaultUserData, UserData } from "@/firebase/User";
 
 describe("UserData Tests", () => {
   it("should have correct default values in DefaultUserData", () => {

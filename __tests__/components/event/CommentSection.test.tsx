@@ -64,18 +64,15 @@ describe("CommentSection", () => {
   it("renders comments and handles adding a new comment", async () => {
     renderWithContext();
 
-    // Ensure comments are rendered before checking for trash-icon
     await waitFor(() => {
       expect(screen.getByText("This is a test comment")).toBeInTheDocument();
     });
 
     await waitFor(() => {
-      // Ensure comments are rendered
       expect(screen.getByText("This is a test comment")).toBeInTheDocument();
       expect(screen.getByText("Another test comment")).toBeInTheDocument();
     });
 
-    // Test adding a new comment
     const newCommentContent = "New test comment";
     const input = screen.getByPlaceholderText("...") as HTMLInputElement;
     fireEvent.change(input, { target: { value: newCommentContent } });
@@ -86,7 +83,6 @@ describe("CommentSection", () => {
     (getComments as jest.Mock).mockResolvedValueOnce([]);
     renderWithContext();
 
-    // nothing to be in the component
     expect(
       screen.queryByText("This is a test comment")
     ).not.toBeInTheDocument();

@@ -1,9 +1,5 @@
 import { DocumentData, DocumentReference, Timestamp } from "firebase/firestore";
-import {
-  DefaultEventData,
-  EVENT_GROUPS,
-  EventData,
-} from "../../src/firebase/Event";
+import { DefaultEventData, EVENT_GROUPS, EventData } from "@/firebase/Event";
 
 describe("EventData", () => {
   it("should have default values in DefaultEventData", () => {
@@ -30,8 +26,8 @@ describe("EventData", () => {
       startTime: Timestamp.now(),
       tags: ["sample", "event"],
       location: "Sample Location",
-      organizer: {} as DocumentReference<DocumentData>, // Mock DocumentReference
-      participants: [{} as DocumentReference<DocumentData>], // Mock DocumentReference array
+      organizer: {} as DocumentReference<DocumentData>,
+      participants: [{} as DocumentReference<DocumentData>],
       private: true,
       type: "Workshop",
       comments: [],

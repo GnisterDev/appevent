@@ -6,7 +6,6 @@ import messages from "messages/no.json";
 import { EventData } from "@/firebase/Event";
 import { DocumentReference, Timestamp } from "firebase/firestore";
 
-// Mock the Tag component
 jest.mock("@/components/event/Tag", () => {
   return function MockTag({ text }: { text: string }) {
     return <div data-testid={`tag-${text}`}>{text}</div>;
@@ -14,12 +13,10 @@ jest.mock("@/components/event/Tag", () => {
 });
 
 describe("EventInfo", () => {
-  // Get the actual translated strings from the messages file
   const translations = {
     about: messages.Event.Info.about,
   };
 
-  // Mock event data
   const mockEventData: EventData = {
     eventID: "event123",
     title: "Test Event",
@@ -55,28 +52,17 @@ describe("EventInfo", () => {
   it("renders the event information correctly", () => {
     renderWithContext();
 
-    // Check if event title is rendered
     expect(screen.getByText(mockEventData.title)).toBeInTheDocument();
-
-    // Check if location is rendered
     expect(screen.getByText(mockEventData.location)).toBeInTheDocument();
-
-    // Check if participant count is rendered
     expect(
       screen.getByText(mockEventData.participants.length.toString())
     ).toBeInTheDocument();
-
-    // Check if description is rendered
     expect(screen.getByText(mockEventData.description)).toBeInTheDocument();
-
-    // Check if about title is rendered
     expect(screen.getByText(translations.about)).toBeInTheDocument();
   });
 
   it("renders all event tags", () => {
     renderWithContext();
-
-    // Check if all tags are rendered
     mockEventData.tags.forEach(tag => {
       expect(screen.getByTestId(`tag-${tag}`)).toBeInTheDocument();
     });
@@ -84,8 +70,6 @@ describe("EventInfo", () => {
 
   it("formats the date correctly", () => {
     renderWithContext();
-
-    // The locale string format for the given date (adjust based on your exact locale format)
     const expectedDateFormat = new Date(mockEventData.startTime.toDate())
       .toLocaleString("no-nb", {
         day: "2-digit",
@@ -97,7 +81,6 @@ describe("EventInfo", () => {
       })
       .replaceAll(".", "/")
       .replaceAll(",", "");
-
     expect(screen.getByText(expectedDateFormat)).toBeInTheDocument();
   });
 
@@ -106,7 +89,7 @@ describe("EventInfo", () => {
       <EventDisplayContext.Provider
         value={{
           eventData: null,
-          eventID: null,
+          eventID: "",
           participants: [],
           isOrg: false,
           refreshInfo: async () => Promise.resolve(),
@@ -116,7 +99,6 @@ describe("EventInfo", () => {
       </EventDisplayContext.Provider>
     );
 
-    // Container should be empty
     expect(container.firstChild).toBeNull();
   });
 });

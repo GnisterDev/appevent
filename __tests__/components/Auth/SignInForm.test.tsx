@@ -5,7 +5,6 @@ import { useLogin } from "@/firebase/AuthService";
 import { useRouter } from "next/navigation";
 import messages from "messages/no.json";
 
-// Mock the modules we need
 jest.mock("@/firebase/AuthService", () => ({
   useLogin: jest.fn(),
 }));
@@ -19,7 +18,6 @@ describe("SignInForm", () => {
   const mockUseLogin = useLogin as jest.Mock;
   const mockUseRouter = useRouter as jest.Mock;
 
-  // Get the actual translated strings from the messages file
   const translations = {
     title: messages.Auth.SignIn.form.title,
     subtitle: messages.Auth.SignIn.form.subtitle,
@@ -33,7 +31,6 @@ describe("SignInForm", () => {
   };
 
   beforeEach(() => {
-    // Setup mocks before each test
     mockUseRouter.mockReturnValue({
       push: mockPush,
     });
@@ -44,12 +41,10 @@ describe("SignInForm", () => {
   it("renders the sign-in form correctly", () => {
     render(<SignInForm />);
 
-    // Check if title is rendered
     expect(
       screen.getByRole("heading", { name: translations.title })
     ).toBeInTheDocument();
 
-    // Check if form inputs are rendered
     expect(
       screen.getByPlaceholderText(translations.emailPlaceholder)
     ).toBeInTheDocument();
@@ -57,12 +52,10 @@ describe("SignInForm", () => {
       screen.getByPlaceholderText(translations.passwordPlaceholder)
     ).toBeInTheDocument();
 
-    // Check if the sign-in button is rendered
     expect(
       screen.getByRole("button", { name: translations.signInButton })
     ).toBeInTheDocument();
 
-    // Check if the sign-up link is rendered
     expect(screen.getByText(translations.signUpLink)).toBeInTheDocument();
   });
 
@@ -76,17 +69,15 @@ describe("SignInForm", () => {
       translations.passwordPlaceholder
     );
 
-    // Simulate user input
     fireEvent.change(emailInput, { target: { value: "test@example.com" } });
     fireEvent.change(passwordInput, { target: { value: "password123" } });
 
-    // Check if the input values are updated
     expect(emailInput).toHaveValue("test@example.com");
     expect(passwordInput).toHaveValue("password123");
   });
 
   it("calls useLogin and redirects when form is submitted successfully", async () => {
-    mockUseLogin.mockResolvedValue(undefined); // Mock successful login
+    mockUseLogin.mockResolvedValue(undefined);
 
     render(<SignInForm />);
 
@@ -97,17 +88,13 @@ describe("SignInForm", () => {
       translations.passwordPlaceholder
     );
 
-    // Fill the form
     fireEvent.change(emailInput, { target: { value: "test@example.com" } });
     fireEvent.change(passwordInput, { target: { value: "password123" } });
-
-    // Submit the form
     const form = screen.getByRole("button", {
       name: translations.signInButton,
     });
-    fireEvent.click(form);
 
-    // Wait for the async call to resolve
+    fireEvent.click(form);
     await waitFor(() => {
       expect(mockUseLogin).toHaveBeenCalledWith({
         email: "test@example.com",
@@ -124,7 +111,6 @@ describe("SignInForm", () => {
 
     render(<SignInForm />);
 
-    // Fill the form
     const emailInput = screen.getByPlaceholderText(
       translations.emailPlaceholder
     );
@@ -134,14 +120,11 @@ describe("SignInForm", () => {
 
     fireEvent.change(emailInput, { target: { value: "test@example.com" } });
     fireEvent.change(passwordInput, { target: { value: "password123" } });
-
-    // Submit the form
     const form = screen.getByRole("button", {
       name: translations.signInButton,
     });
-    fireEvent.click(form);
 
-    // Wait for the error to be logged
+    fireEvent.click(form);
     await waitFor(() => {
       expect(consoleLogSpy).toHaveBeenCalledWith(error);
       expect(mockPush).not.toHaveBeenCalled();
@@ -153,13 +136,11 @@ describe("SignInForm", () => {
   it("validates required fields", async () => {
     render(<SignInForm />);
 
-    // Submit form without filling required fields
     const form = screen.getByRole("button", {
       name: translations.signInButton,
     });
-    fireEvent.click(form);
 
-    // Check if useLogin was not called (form validation prevented submission)
+    fireEvent.click(form);
     await waitFor(() => {
       expect(mockUseLogin).not.toHaveBeenCalled();
     });

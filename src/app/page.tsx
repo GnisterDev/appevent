@@ -2,7 +2,7 @@
 import styles from "./page.module.css";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import { auth } from "../firebase/config";
+import { auth } from "@/firebase/config";
 import Loading from "@/components/Loading";
 
 import EventSearch from "@/components/eventSearch/EventSearch";

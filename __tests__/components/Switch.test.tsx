@@ -1,6 +1,6 @@
 import React from "react";
 import { render, fireEvent } from "@testing-library/react";
-import Switch from "../../src/components/Switch";
+import Switch from "@/components/Switch";
 
 describe("Switch component", () => {
   test("renders correctly with default props", () => {

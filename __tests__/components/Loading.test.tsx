@@ -1,6 +1,6 @@
 import React from "react";
 import { render } from "@testing-library/react";
-import Loading from "../../src/components/Loading";
+import Loading from "@/components/Loading";
 
 jest.mock("lucide-react", () => ({
   LoaderCircle: jest.fn(() => <div>Mocked LoaderCircle</div>),

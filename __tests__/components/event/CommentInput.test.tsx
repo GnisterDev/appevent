@@ -44,8 +44,8 @@ describe("CommentInput Component", () => {
     fireEvent.click(button);
 
     expect(mockOnAddComment).not.toHaveBeenCalledWith("Test comment");
-    expect(screen.getByPlaceholderText("...")).toHaveValue("Test comment"); // Ensures input is cleared
-    expect(textarea).toHaveValue("Test comment"); // Clears input after submission
+    expect(screen.getByPlaceholderText("...")).toHaveValue("Test comment");
+    expect(textarea).toHaveValue("Test comment");
   });
 
   it("does not submit empty comments", () => {

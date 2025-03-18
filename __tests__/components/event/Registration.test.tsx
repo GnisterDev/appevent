@@ -10,7 +10,6 @@ import * as DatabaseService from "@/firebase/DatabaseService";
 import { EventData } from "@/firebase/Event";
 import { DocumentReference, Timestamp } from "firebase/firestore";
 
-// Mock the modules
 jest.mock("next/navigation", () => ({
   useRouter: jest.fn(),
 }));
@@ -40,7 +39,6 @@ jest.mock("@/firebase/contexts", () => {
 });
 
 describe("Registration", () => {
-  // Get translations
   const translations = {
     organizorTitle: messages.Event.Info.organizorTitle,
     participantTitle: messages.Event.Info.participantTitle,
@@ -57,7 +55,6 @@ describe("Registration", () => {
     delete: messages.Event.Info.delete,
   };
 
-  // Mock data
   const mockUserID = "user123";
   const mockOrganizerID = "org123";
   const mockEventID = "event123";
@@ -84,6 +81,8 @@ describe("Registration", () => {
     participants: [],
     type: "Example Type",
     tags: ["tech", "networking"],
+    comments: [],
+    eventID: "",
   };
 
   // Mock router
@@ -93,7 +92,6 @@ describe("Registration", () => {
   beforeEach(() => {
     jest.clearAllMocks();
 
-    // Default mock implementations
     (AuthService.getUserID as jest.Mock).mockReturnValue(mockUserID);
     (AuthService.isAdministrator as jest.Mock).mockReturnValue(false);
     (DatabaseService.isParticipant as jest.Mock).mockResolvedValue(false);
@@ -143,26 +141,16 @@ describe("Registration", () => {
   it("renders participant view correctly when not organizer and not participating", async () => {
     renderWithContext(mockEventID, mockEventData, false);
 
-    // Wait for the component to load
     await waitFor(() => {
       expect(DatabaseService.isParticipant).toHaveBeenCalledWith(mockEventID);
     });
-
-    // Check title
     expect(
       await screen.findByText(translations.participantTitle)
     ).toBeInTheDocument();
 
-    // Check subtext
     expect(screen.getByText(translations.subtext)).toBeInTheDocument();
-
-    // Check organizer name
     expect(screen.getByText(mockUser.name)).toBeInTheDocument();
-
-    // Check event status
     expect(screen.getByText(translations.public)).toBeInTheDocument();
-
-    // Check buttons
     expect(
       screen.getByTestId(`button-${translations.subscribe}`)
     ).toBeInTheDocument();
@@ -186,13 +174,10 @@ describe("Registration", () => {
     await waitFor(() => {
       expect(DatabaseService.isParticipant).toHaveBeenCalledWith(mockEventID);
     });
-
-    // Check title
     expect(
       await screen.findByText(translations.organizorTitle)
     ).toBeInTheDocument();
 
-    // Check buttons
     expect(
       screen.getByTestId(`button-${translations.edit}`)
     ).toBeInTheDocument();
@@ -211,7 +196,6 @@ describe("Registration", () => {
   });
 
   it("shows 'You' as organizer when current user is the organizer", async () => {
-    // Mock user ID to match organizer ID
     (AuthService.getUserID as jest.Mock).mockReturnValue(mockOrganizerID);
 
     renderWithContext(mockEventID, mockEventData, true);
@@ -219,14 +203,12 @@ describe("Registration", () => {
     await waitFor(() => {
       expect(DatabaseService.isParticipant).toHaveBeenCalledWith(mockEventID);
     });
-
     expect(
       await screen.findByText(translations.organizorIsYou)
     ).toBeInTheDocument();
   });
 
   it("shows unsubscribe button when user is already participating", async () => {
-    // Mock user is already participating
     (DatabaseService.isParticipant as jest.Mock).mockResolvedValue(true);
 
     renderWithContext(mockEventID, mockEventData, false);
@@ -309,7 +291,6 @@ describe("Registration", () => {
   });
 
   it("shows delete button for admin users even if not organizer", async () => {
-    // Mock user as admin
     (AuthService.isAdministrator as jest.Mock).mockReturnValue(true);
 
     renderWithContext(mockEventID, mockEventData, false);
@@ -329,7 +310,6 @@ describe("Registration", () => {
       private: true,
     };
 
-    // Ensure the user is a participant
     (DatabaseService.isParticipant as jest.Mock).mockResolvedValue(true);
 
     await waitFor(() => {
@@ -340,7 +320,6 @@ describe("Registration", () => {
       expect(DatabaseService.isParticipant).toHaveBeenCalledWith(mockEventID);
     });
 
-    // Ensure the unsubscribe button is rendered
     const unsubscribeButton = screen.getByTestId(
       `button-${translations.unsubscribe}`
     );

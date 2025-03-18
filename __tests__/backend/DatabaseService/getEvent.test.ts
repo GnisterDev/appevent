@@ -1,20 +1,18 @@
 import { db } from "@/firebase/config";
 import { getEvent } from "@/firebase/DatabaseService";
-import { EventData } from "@/firebase/Event";
-import { doc, DocumentReference, getDoc, Timestamp } from "firebase/firestore";
+import { DefaultEventData, EventData } from "@/firebase/Event";
+import { doc, getDoc, Timestamp } from "firebase/firestore";
 
 describe("getEvent", () => {
   const mockEventId = "testEventId";
   const mockEventData: EventData = {
+    ...DefaultEventData,
     title: "Test Event",
     type: "Private",
     location: "Test Location",
     startTime: Timestamp.now(),
     private: true,
-    tags: [],
     description: "Test Description",
-    organizer: null as unknown as DocumentReference,
-    participants: [],
   };
 
   it("should return event data when the event exists", async () => {

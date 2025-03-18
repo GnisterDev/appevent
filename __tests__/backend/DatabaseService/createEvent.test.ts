@@ -1,13 +1,8 @@
 import { getUserID } from "@/firebase/AuthService";
 import { db } from "@/firebase/config";
 import { createEvent } from "@/firebase/DatabaseService";
-import { EventData } from "@/firebase/Event";
-import {
-  collection,
-  doc,
-  DocumentReference,
-  Timestamp,
-} from "firebase/firestore";
+import { DefaultEventData, EventData } from "@/firebase/Event";
+import { collection, doc, Timestamp } from "firebase/firestore";
 
 jest.mock("@/firebase/AuthService", () => ({
   getUserID: jest.fn(),
@@ -16,15 +11,13 @@ jest.mock("@/firebase/AuthService", () => ({
 describe("createEvent", () => {
   const mockUserID = "testUserID";
   const mockEventData: EventData = {
+    ...DefaultEventData,
     title: "Test Event",
     type: "Private",
     location: "Test Location",
     startTime: Timestamp.now(),
     private: true,
-    tags: [],
     description: "Test Description",
-    organizer: null as unknown as DocumentReference,
-    participants: [],
   };
 
   beforeEach(() => {

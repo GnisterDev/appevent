@@ -13,7 +13,7 @@ describe("Comment Type and DefaultComment", () => {
   it("should match the Comment type structure", () => {
     const testComment: Comment = {
       commentID: "123",
-      author: {} as DocumentReference, // Mocking DocumentReference
+      author: {} as DocumentReference,
       content: "This is a test comment",
       time: Timestamp.now(),
     };
