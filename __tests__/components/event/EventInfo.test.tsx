@@ -21,7 +21,7 @@ describe("EventInfo", () => {
 
   // Mock event data
   const mockEventData: EventData = {
-    id: "event123",
+    eventID: "event123",
     title: "Test Event",
     description: "This is a test event description.",
     location: "Oslo, Norway",
@@ -33,6 +33,7 @@ describe("EventInfo", () => {
     type: "Example type",
     private: false,
     organizer: null as unknown as DocumentReference,
+    comments: [],
   };
 
   const renderWithContext = (eventData = mockEventData) => {
@@ -40,7 +41,7 @@ describe("EventInfo", () => {
       <EventDisplayContext.Provider
         value={{
           eventData,
-          eventID: eventData?.id || null,
+          eventID: eventData?.eventID || "",
           participants: [],
           isOrg: false,
           refreshInfo: async () => Promise.resolve(),

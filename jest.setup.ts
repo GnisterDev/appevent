@@ -41,6 +41,19 @@ jest.mock("firebase/auth", () => {
 });
 
 jest.mock("firebase/firestore", () => {
+  const mockTimestamp = {
+    fromDate: jest.fn(date => ({
+      toDate: () => date,
+      seconds: Math.floor(date.getTime() / 1000),
+      nanoseconds: 0,
+    })),
+    now: jest.fn(() => ({
+      toDate: () => new Date(),
+      seconds: Math.floor(Date.now() / 1000),
+      nanoseconds: 0,
+    })),
+  };
+
   return {
     getFirestore: jest.fn(() => ({})),
     collection: jest.fn(() => ({})),
@@ -75,12 +88,7 @@ jest.mock("firebase/firestore", () => {
     arrayRemove: jest.fn(() => arrayRemove()),
     Transaction: jest.fn(() => ({})),
     runTransaction: jest.fn(),
-    Timestamp: {
-      seconds: Number,
-      nanoseconds: Number,
-      now: jest.fn(() => ({})),
-      toDate: jest.fn(() => new Date()),
-    },
+    Timestamp: mockTimestamp,
   };
 });
 
