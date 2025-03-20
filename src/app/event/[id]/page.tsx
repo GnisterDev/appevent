@@ -43,9 +43,9 @@ const EventView = () => {
     refreshInfo().finally(() => setLoading(false));
   }, [eventID, router]);
 
-  if (!eventData) return;
   if (loading) return <Loading />;
   if (error) router.push("/404");
+  if (!eventData) return;
   if (eventData.private && !isPar) router.push("/404");
 
   return (

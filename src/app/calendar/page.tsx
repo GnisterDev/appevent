@@ -8,7 +8,7 @@ import { getEventsByRole } from "@/firebase/DatabaseService";
 import { DefaultListEvents, ListEvents } from "@/firebase/Event";
 import { useTranslations } from "next-intl";
 
-export default function Home() {
+const Calendar = () => {
   const t = useTranslations("Calendar");
   const [eventsData, setEventsData] = useState<ListEvents>(DefaultListEvents);
 
@@ -42,4 +42,6 @@ export default function Home() {
       </div>
     </main>
   );
-}
+};
+
+export default Calendar;

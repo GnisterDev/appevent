@@ -4,7 +4,7 @@ import Tag from "../event/Tag";
 import styles from "./SearchResult.module.css";
 import { Calendar, Clock, MapPin, Users } from "lucide-react";
 import Link from "next/link";
-import Button from "../Button";
+import Button from "@/components/Button";
 
 interface SearchResultInterface {
   event: EventData;

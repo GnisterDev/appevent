@@ -7,7 +7,7 @@ import { useSignup } from "@/firebase/AuthService";
 import { SignupRequest } from "@/firebase/User";
 import { Lock, Mail, User, UserPlus } from "lucide-react";
 import AuthInput from "./AuthInput";
-import Button from "../Button";
+import Button from "@/components/Button";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 

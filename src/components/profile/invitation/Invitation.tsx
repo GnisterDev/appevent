@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import styles from "./Invitation.module.css";
-import Button from "../../Button";
+import Button from "@/components/Button";
 import { Check, X } from "lucide-react";
 import { DocumentData, DocumentReference } from "firebase/firestore";
 import { useEffect, useState } from "react";

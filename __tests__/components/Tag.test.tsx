@@ -1,6 +1,6 @@
 import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
-import Tag from "../../src/components/event/Tag";
+import Tag from "@/components/event/Tag";
 
 jest.mock("lucide-react", () => ({
   X: jest.fn(() => <div>Mocked LoaderCircle</div>),
@@ -19,7 +19,7 @@ describe("Tag Component", () => {
 
   test("renders delete button when onDelete is provided", () => {
     render(<Tag text="Example Tag" onDelete={() => {}} />);
-    // The X component from lucide-react will render as an SVG, which typically has an img role
+
     const deleteButton = screen.getByText("Example Tag").nextSibling;
     expect(deleteButton).toBeInTheDocument();
   });
@@ -41,14 +41,15 @@ describe("Tag Component", () => {
 
   test("applies the provided color as backgroundColor", () => {
     render(<Tag text="Example Tag" color="#ff0000" />);
+
     const tagElement = screen.getByText("Example Tag").parentElement;
     expect(tagElement).toHaveStyle("background-color: #ff0000");
   });
 
   test("applies default styling when no color is provided", () => {
     render(<Tag text="Example Tag" />);
+
     const tagElement = screen.getByText("Example Tag").parentElement;
-    // We're not testing the actual default color as it comes from CSS modules
     expect(tagElement).toHaveClass("tag");
   });
 
@@ -62,11 +63,9 @@ describe("Tag Component", () => {
   test("applies custom class name from the CSS module", () => {
     render(<Tag text="Example Tag" onDelete={() => {}} />);
 
-    // Check that the main container has the tag class
     const tagElement = screen.getByText("Example Tag").parentElement;
     expect(tagElement).toHaveClass("tag");
 
-    // Check that the delete button has the delete class
     const deleteContainer = tagElement?.querySelector("div");
     expect(deleteContainer).toHaveClass("delete");
   });

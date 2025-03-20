@@ -17,8 +17,8 @@ describe("inviteUserToEvent", () => {
     const mockUserRef = { id: "user123" } as DocumentReference;
 
     (doc as jest.Mock)
-      .mockReturnValueOnce(mockEventRef) // First call for event
-      .mockReturnValueOnce(mockUserRef); // Second call for user
+      .mockReturnValueOnce(mockEventRef)
+      .mockReturnValueOnce(mockUserRef);
 
     (getDoc as jest.Mock).mockResolvedValueOnce({
       exists: jest.fn().mockReturnValue(false),

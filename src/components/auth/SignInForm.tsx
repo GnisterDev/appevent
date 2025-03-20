@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { useLogin } from "@/firebase/AuthService";
 import { LoginRequest } from "@/firebase/User";
 import { Lock, LogIn, Mail } from "lucide-react";
-import Button from "../Button";
+import Button from "@/components/Button";
 import Link from "next/link";
 import AuthInput from "./AuthInput";
 import { useTranslations } from "next-intl";

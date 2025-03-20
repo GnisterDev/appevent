@@ -26,17 +26,10 @@ const CommentSection = () => {
     const fetchComments = async () => {
       if (!eventID) return;
 
-      setLoading(true);
-      try {
-        await getComments(eventID)
-          .then(setComments)
-          .catch(err => setError(err));
-      } catch (err) {
-        console.error("Error fetching comments:", err);
-        setError("Failed to load comments. Please try again later.");
-      } finally {
-        setLoading(false);
-      }
+      getComments(eventID)
+        .then(setComments)
+        .catch(err => setError(err))
+        .finally(() => setLoading(false));
     };
 
     fetchComments();
@@ -44,7 +37,6 @@ const CommentSection = () => {
 
   const handleAddComment = async (content: string) => {
     if (!content.trim()) return;
-
     addComment(eventID, content).then(comment =>
       setComments(prev => [comment, ...prev])
     );

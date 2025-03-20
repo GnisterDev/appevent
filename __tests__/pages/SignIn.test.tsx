@@ -32,7 +32,6 @@ jest.mock("@/components/Card", () => {
 });
 
 describe("SignIn Page", () => {
-  // Get the actual translated strings from the messages file
   const translations = {
     title: messages.Auth.SignIn.title,
     subtitle: messages.Auth.SignIn.subtitle,
@@ -47,17 +46,14 @@ describe("SignIn Page", () => {
   it("renders the SignIn page correctly", () => {
     render(<SignIn />);
 
-    // Check if the page title and subtitle are rendered
     expect(screen.getByText(translations.title)).toBeInTheDocument();
     expect(screen.getByText(translations.subtitle)).toBeInTheDocument();
 
-    // Check if the Card component is rendered with correct props
     const card = screen.getByTestId("mock-card");
     expect(card).toBeInTheDocument();
     expect(screen.getByText(translations.cardTitle)).toBeInTheDocument();
     expect(screen.getByText(translations.cardContent)).toBeInTheDocument();
 
-    // Check if the SignInForm is rendered
     expect(screen.getByTestId("mock-signin-form")).toBeInTheDocument();
     expect(SignInForm).toHaveBeenCalled();
   });
@@ -65,28 +61,18 @@ describe("SignIn Page", () => {
   it("applies the correct CSS classes", () => {
     render(<SignIn />);
 
-    // Check if main contains the expected class
     const main = screen.getByRole("main");
-    expect(main).toHaveClass(styles.main);
-
-    // Find container div
     const container = main.querySelector(`.${styles.container}`);
-    expect(container).toBeInTheDocument();
-
-    // Check info section
     const info = container?.querySelector(`.${styles.info}`);
-    expect(info).toBeInTheDocument();
-
-    // Check header section
     const header = info?.querySelector(`.${styles.header}`);
-    expect(header).toBeInTheDocument();
-
-    // Check card styling
     const card = screen.getByTestId("mock-card");
-    expect(card).toHaveClass(styles.card);
-
-    // Check form section
     const form = container?.querySelector(`.${styles.form}`);
+
+    expect(main).toHaveClass(styles.main);
+    expect(container).toBeInTheDocument();
+    expect(info).toBeInTheDocument();
+    expect(header).toBeInTheDocument();
+    expect(card).toHaveClass(styles.card);
     expect(form).toBeInTheDocument();
   });
 

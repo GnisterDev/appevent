@@ -1,6 +1,6 @@
 import React from "react";
 import { render, screen } from "@/test-utils";
-import Card from "../../src/components/Card";
+import Card from "@/components/Card";
 
 describe("Card Component", () => {
   it("renders the title correctly", () => {

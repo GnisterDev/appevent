@@ -75,7 +75,7 @@ describe("Contexts", () => {
 
       expect(contextValue).toEqual({
         userID: "",
-        userData: expect.any(Object), // Changed from null to match your expected structure
+        userData: expect.any(Object),
         updateInvitedEvents: expect.any(Function),
       });
     });
