@@ -14,15 +14,16 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, user => {
+    const unsubscribe = auth.onAuthStateChanged(user => {
       if (!user) {
-        router.push("/login");
+        router.push("/signin");
+      } else {
+        setLoading(false);
       }
-      setLoading(false);
     });
 
     return () => unsubscribe();
-  }, [router]);
+  }, []);
 
   if (loading) return <Loading />;
 
