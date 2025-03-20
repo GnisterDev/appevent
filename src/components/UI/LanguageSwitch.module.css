@@ -1,0 +1,15 @@
+.module {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  margin: 0 2rem;
+  padding: 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  cursor: pointer;
+
+  &:hover {
+    background-color: color-mix(in srgb, var(--navbar) 85%, black);
+  }
+}

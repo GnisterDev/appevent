@@ -1,0 +1,52 @@
+.module {
+  padding: 1.5rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--box-shadow);
+  height: 100%;
+  margin-bottom: 1.5rem;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.infoContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.info {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.acceptButton {
+  border: 1px solid var(--success);
+  color: var(--success);
+  background-color: color-mix(in srgb, var(--success) 25%, white);
+
+  &:hover {
+    color: var(--text-primary);
+    background-color: color-mix(in srgb, var(--success) 35%, white);
+  }
+}
+
+.declineButton {
+  border: 1px solid var(--error);
+  color: var(--error);
+  background-color: color-mix(in srgb, var(--error) 25%, white);
+
+  &:hover {
+    color: var(--text-primary);
+    background-color: color-mix(in srgb, var(--error) 35%, white);
+  }
+}

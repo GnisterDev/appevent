@@ -1,89 +1,42 @@
 "use client";
 
-import React, { useState } from "react";
-import { auth } from "@/firebase/config";
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import styles from "./styles.module.css";
-import { useRouter } from "next/navigation";
+import React from "react";
+import styles from "./signUp.module.css";
+import Card from "@/components/Card";
+import { useTranslations } from "next-intl";
+import SignUpForm from "@/components/auth/SignUpForm";
 
-const SignUp: React.FC = () => {
-  const router = useRouter();
-
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    try {
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        formData.email,
-        formData.password
-      );
-      console.log("User created:", userCredential.user);
-      setFormData({
-        email: "",
-        password: "",
-      });
-      return router.push("/");
-    } catch (err: unknown) {
-      console.error(
-        "Error creating user:",
-        err instanceof Error ? err.message : err
-      );
-    }
-  };
+const SignUp = () => {
+  const t = useTranslations("Auth.SignUp");
 
   return (
-    <div className={styles.wrapper}>
+    <main className={styles.main}>
       <div className={styles.container}>
-        <form className="signup-form" onSubmit={handleSubmit}>
-          <h2>Sign Up</h2>
-
-          <div className="form-group">
-            <label htmlFor="email">Email</label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              placeholder="Enter your email"
-              required
-            />
+        <div className={styles.info}>
+          <div className={styles.header}>
+            <h1>{t("title")}</h1>
+            <p>{t("subtitle")}</p>
           </div>
-
-          <div className="form-group">
-            <label htmlFor="password">Password</label>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              placeholder="Enter your password"
-              required
-            />
-          </div>
-
-          <button type="submit" className="signup-button">
-            Sign Up
-          </button>
-          <button type="button" onClick={() => router.push("/login")}>
-            Go to Sign In
-          </button>
-        </form>
+          <Card
+            title={t("cards.0.title")}
+            color="var(--secondary)"
+            className={styles.card}
+          >
+            {t("cards.0.content")}
+          </Card>
+          <Card
+            title={t("cards.1.title")}
+            color="color-mix(in srgb, var(--error) 25%, white)"
+            className={styles.card}
+          >
+            {t("cards.1.content")}
+          </Card>
+        </div>
+        <div className={styles.form}>
+          <SignUpForm />
+        </div>
       </div>
-    </div>
+    </main>
   );
 };
-
 export default SignUp;

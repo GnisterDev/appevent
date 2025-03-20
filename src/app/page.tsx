@@ -1,13 +1,15 @@
 "use client";
-
-import Image from "next/image";
 import styles from "./page.module.css";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "../firebase/config";
+import { auth } from "@/firebase/config";
+import Loading from "@/components/Loading";
+
+import EventSearch from "@/components/eventSearch/EventSearch";
+import { useTranslations } from "next-intl";
 
 export default function Home() {
+  const t = useTranslations("HomePage");
   const router = useRouter();
   const [loading, setLoading] = useState(true);
 
@@ -22,31 +24,20 @@ export default function Home() {
     return () => unsubscribe();
   }, [router]);
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
-  const signOut = async () => {
-    await auth.signOut();
-    router.push("/login");
-  };
+  if (loading) return <Loading />;
 
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <div>
-          This is the <code>HOMEPAGE</code>
+    <main className={styles.main}>
+      <div className={styles.page}>
+        <div className={styles.header}>
+          <h1 style={{ fontSize: "3rem" }}>
+            {t("discover")}{" "}
+            <span style={{ color: "var(--primary)" }}>{t("events")}</span>
+          </h1>
+          <p className={styles.subtext}>{t("subtext")}</p>
         </div>
-        <button onClick={signOut}>Sign Out</button>
-      </main>
-    </div>
+        <EventSearch />
+      </div>
+    </main>
   );
 }

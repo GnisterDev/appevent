@@ -1,0 +1,70 @@
+import React, { useContext } from "react";
+import styles from "./eventinfo.module.css";
+import { Calendar, MapPin, Users } from "lucide-react";
+import Tag from "@/components/event/Tag";
+import { EventDisplayContext } from "@/firebase/contexts";
+import { useTranslations } from "next-intl";
+
+const EventInfo: React.FC = () => {
+  const t = useTranslations("Event.Info");
+  const { eventData } = useContext(EventDisplayContext);
+  if (!eventData) return;
+
+  return (
+    <div className={styles.module}>
+      <div>
+        <h1 className={styles.title}>{eventData.title}</h1>
+        <div className={styles.quickinfo}>
+          <div className={styles.quickinfoElement}>
+            <Calendar
+              size={"1.25rem"}
+              color={"var(--text-secondary)"}
+              strokeWidth={2.25}
+            />
+            <span>
+              {eventData.startTime
+                .toDate()
+                .toLocaleString("no-nb", {
+                  day: "2-digit",
+                  month: "2-digit",
+                  year: "numeric",
+                  hour: "2-digit",
+                  minute: "2-digit",
+                  hour12: false,
+                })
+                .replaceAll(".", "/")
+                .replaceAll(",", "")}
+            </span>
+          </div>
+          <div className={styles.quickinfoElement}>
+            <MapPin
+              size={"1.25rem"}
+              color={"var(--text-secondary)"}
+              strokeWidth={2.25}
+            />
+            <span>{eventData.location}</span>
+          </div>
+          <div className={styles.quickinfoElement}>
+            <Users
+              size={"1.25rem"}
+              color={"var(--text-secondary)"}
+              strokeWidth={2.25}
+            />
+            <span>{eventData.participants.length}</span>
+          </div>
+        </div>
+      </div>
+      <div className={styles.tags}>
+        {eventData.tags.map((tag, index) => (
+          <Tag key={index} text={tag} />
+        ))}
+      </div>
+      <div className={styles.textArea}>
+        <h2 className={styles.title}>{t("about")}</h2>
+        <div className={styles.text}>{eventData.description}</div>
+      </div>
+    </div>
+  );
+};
+
+export default EventInfo;

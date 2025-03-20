@@ -1,0 +1,13 @@
+.module {
+  width: 100%;
+  padding: 1.5rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--box-shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  max-height: 48rem;
+  overflow-y: scroll;
+}

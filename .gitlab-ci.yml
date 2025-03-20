@@ -1,43 +1,71 @@
-image: node:18
+stages:
+  - setup
+  - quality
+  - build
 
+variables:
+  NODE_VERSION: "22"
+  NPM_REGISTRY: "https://registry.npmjs.org"
+
+# Cache dependencies across jobs
 cache:
   key: ${CI_COMMIT_REF_SLUG}
   paths:
     - node_modules/
     - .next/cache/
 
-stages:
-  - setup
-  - quality
-  - build
-
-setup:
+# Setup Stage - Install dependencies
+install_dependencies:
   stage: setup
+  image: node:${NODE_VERSION}
   script:
+    - echo "Installing dependencies..."
     - npm ci
+    - npm list next-intl || npm install next-intl
 
+# Quality Stage - Linting
 lint:
   stage: quality
+  image: node:${NODE_VERSION}
+  needs:
+    - install_dependencies
   script:
-    - npm run lint
-  dependencies:
-    - setup
-  rules:
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH  # Runs on main branch
-    - if: $CI_COMMIT_BRANCH == "development"       # Runs on development branch
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event"  # Runs when an MR is created
+    - echo "Making sure next-intl is installed..."
+    - npm install next-intl
+    - echo "Linting code with ESLint..."
+    - npx next lint
 
+# Quality Stage - Testing
+tests:
+  stage: quality
+  image: node:${NODE_VERSION}
+  needs:
+    - install_dependencies
+  script:
+    - echo "Making sure next-intl is installed..."
+    - npm install next-intl
+    - echo "Running Jest tests..."
+    - npx jest --config=jest.config.ts
+  coverage: /All files[^|]*\|[^|]*\s+([\d\.]+)/
+
+# prettier:
+#   stage: quality
+#   image: node:${NODE_VERSION}
+#   needs:
+#     - install_dependencies
+#   script:
+#     - echo "Running Prettier..."
+#     - npx prettier --check .
+
+# Build Stage - Build the Next.js application
 build:
   stage: build
+  image: node:${NODE_VERSION}
+  needs:
+    - lint
+    - tests
   script:
+    - echo "Installing dependencies..."
+    - npm install
+    - echo "Building Next.js application..."
     - npm run build
-  artifacts:
-    paths:
-      - .next/
-    expire_in: 1 week
-  dependencies:
-    - setup
-  rules:
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH  # Runs on main branch
-    - if: $CI_COMMIT_BRANCH == "development"       # Runs on development branch
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event"  # Runs when an MR is created

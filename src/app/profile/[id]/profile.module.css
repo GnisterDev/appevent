@@ -1,0 +1,22 @@
+.main {
+  max-width: 1024px;
+  margin: 0 auto;
+  margin-top: 5rem;
+  padding: 2rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.5rem;
+}
+@media (max-width: 1024px) {
+  .grid {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    column-gap: 0;
+  }
+}
+
+.spanTwo {
+  grid-column: span 2 / span 2;
+}

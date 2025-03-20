@@ -1,0 +1,173 @@
+{
+  "HomePage": {
+    "discover": "Oppdag spennende",
+    "events": "arrangementer",
+    "subtext": "Finn og delta på arrangementer som passer deg. Opprett egne arrangementer og del opplevelsene med andre."
+  },
+  "Navbar": {
+    "appName": "Appevent",
+    "explore": "Utforsk",
+    "yourEvents": "Dine Arranement",
+    "calendar": "Kalender",
+    "create": "Opprett arrangement"
+  },
+  "Global": {
+    "otherLanguage": "English"
+  },
+  "NotFound": {
+    "title": "404 - Fant ikke ressursen",
+    "description": "Beklager, arrangementet du leter etter eksisterer ikke.",
+    "backButton": "Tilbake til hjemmeside"
+  },
+  "Auth": {
+    "SignIn": {
+      "title": "Velommen tilbake!",
+      "subtitle": "Logg inn for å se dine arrangementer, administrere invitasjoner, og mer.",
+      "cards": [{
+        "title": "Oppdag arrangementer",
+        "content": "Finn arrangementer i nærheten, delta i spennende arrangementer, og hold kontakten med venner."
+      }],
+      "form": {
+        "title": "Logg inn",
+        "subtitle": "Logg inn med e-post og passord",
+        "prompt": "Har du allerede en konto?"
+      }
+    },
+    "SignUp": {
+      "title": "Bli med i Appevent!",
+      "subtitle": "Registrer deg for å oppdage og dele arrangementer med venner og likesinnede.",
+      "cards": [{
+        "title": "Oppdag arrangementer",
+        "content": "Del dine arrangementer med venner og få oversikt over hvem som deltar."
+      }, {
+        "title": "Personlige tilpasninger",
+        "content": "Få tilpassede anbefalinger basert på dine interesser og tidligere deltakelser."
+      }],
+      "form": {
+        "title": "Registrer deg",
+        "subtitle": "Opprett en ny konto for å komme i gang",
+        "prompt": "Har du ikke en konto?"
+      }
+    },
+    "Placeholder": {
+      "name": "Ditt navn",
+      "email": "din@epost.no",
+      "password": "●●●●●●"
+    },
+    "name": "Navn",
+    "email": "E-Post",
+    "password": "Passord"
+  },
+  "Event": {
+    "Info": {
+      "about": "Om arrangemanget",
+      "organizorTitle": "Oversikt",
+      "participantTitle": "Påmelding",
+      "subtext": "Sikre din plass på arrangementet",
+      "organizor": "Arrangsjør",
+      "organizorIsYou": "Deg",
+      "status": "Status",
+      "private": "Privat",
+      "public": "Offentlig",
+      
+      "edit": "Rediger",
+      "subscribe": "Meld meg på",
+      "unsubscribe": "Meld meg av",
+      "share": "Del arrangement",
+      "delete": "Slett arrangement",
+
+      "registeredParticipants": "Påmeldte deltagere",
+      "total": "total"
+    },
+    "Manage": {
+      "editTitle": "Rediger arrangement",
+      "createTitle": "Lag arrangement",
+      "cancelButton": "Avbryt",
+      "saveChangesButton": "Lagre endringer",
+      "createEventButton": "Opprett Arrangement",
+      "BaseInformation": {
+        "title": "Grunnlegende informasjon",
+        "eventTitle": "Arrangementstittel",
+        "eventPlaceholder": "Skriv inn en tittel",
+        "date": "Dato",
+        "time": "Tidspunkt",
+        "place": "Sted",
+        "placePlaceholder": "Arrangementssted",
+        "type": "Type",
+        "publicEvent": "Offentlig arrangement",
+        "privateEvent": "Privat arrangement"
+      },
+      "Details": {
+        "title": "Detaljer",
+        "description": "Beskrivelse",
+        "descriptionPlaceholder": "Fortell om arrangementet",
+        "tags": "Merkelapper",
+        "tagsPlaceholder": "Skriv merkelapp og trykk Enter"
+      },
+      "Invites": {
+        "title": "Inviter",
+        "searchPlaceholder": "Søk etter navn eller epost",
+        "invite": "Inviter",
+        "invitedParticipants": "Inviterte deltakere",
+        "noInvitedParticipants": "Ingen deltakere invitert ennå",
+        "registeredParticipants": "Registrerte deltakere",
+        "noRegisteredParticipants": "Ingen deltakere registrert ennå",
+        "searching": "Søker...",
+        "noResults": "Ingen brukere funnet",
+        "remove": "Fjern"
+      }
+    }
+  },
+  "Calendar": {
+    "myEvents": "Mine arrangementer",
+    "registeredEvents": "Registrerte arrangementer",
+    "organizedEvents": "Organiserte arrangement",
+    "invitedEvents": "Inviterte arrangement"
+  },
+  "Profile": {
+    "Info": {
+      "intrests": "Interesser",
+      "noIntrests": "Ingen intersesser",
+      "quickSelection": "Hurtigvalg",
+      "myCalendar": "Min kalender",
+      "settings": "Innstilinger",
+      "logout": "Logg ut",
+      "statistics": "Statestikk",
+      "organized": "Arrangert",
+      "enrolled": "Påmeldt",
+      "invitedTo": "Invitert til"
+    },
+    "Invitation": {
+      "invites": "Invitasjoner",
+      "organizor": "Arrangør:",
+      "date": "Dato:"
+    },
+    "Manage": {
+      "editProfile": "Rediger profil",
+      "saveChanges": "Lagre endringer",
+      "cancel": "Avbryt",
+      "intrests": "Interesser",
+      "addIntrests": "Legg til interesse",
+      "addIntrestsPlaceholder": "Skriv interesse og trykk Enter",
+      "personalInformation": "Personlig informasjon",
+      "name": "Navn",
+      "namePlaceholder": "Skriv inn en visningsnavnet ditt",
+      "location": "Lokasjon",
+      "locationPlaceholder": "F.eks Trondheim, Norge",
+      "aboutMe": "Om meg",
+      "aboutMePlaceholder": "Fortell litt om deg selv..."
+    } 
+  },
+  "Search": {
+    "searchAfter": "Søk etter arrangement",
+    "place": "Sted",
+    "chooseDate": "Velg dato",
+    "selectType": "Velg type arrangement",
+    "search": "Søk",
+    "empty": "Tøm"
+  }, 
+  "Comment": {
+    "comments": "Kommentarer",
+    "send": "Send"
+  }
+}

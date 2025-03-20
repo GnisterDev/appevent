@@ -1,0 +1,46 @@
+/* In your CSS module */
+.main {
+  max-width: 800px;
+  margin: 0 auto;
+  margin-top: 5rem;
+  padding: 2rem;
+}
+
+.title {
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+  margin-bottom: 2rem;
+}
+
+.buttonGroup {
+  display: flex;
+  flex-direction: row-reverse;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.saveButton,
+.cancelButton {
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius);
+  cursor: pointer;
+}
+
+.saveButton {
+  background-color: var(--primary);
+  color: white;
+  border: none;
+
+  &:hover {
+    background-color: color-mix(in srgb, var(--primary) 85%, white);
+  }
+}
+
+.cancelButton {
+  background-color: transparent;
+  border: 1px solid var(--border);
+
+  &:hover {
+    background-color: var(--border);
+  }
+}
